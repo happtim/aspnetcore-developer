@@ -14,8 +14,6 @@ using (var channel = connection.CreateModel())
 	channel.BasicQos(0, 1, false);
 
 	var consumer = new EventingBasicConsumer(channel);
-	channel.BasicConsume(queue: "rpc_queue", autoAck: false, consumer: consumer);
-	Console.WriteLine(" [x] Awaiting RPC requests");
 
 	consumer.Received += (model, ea) =>
 	{
@@ -46,7 +44,8 @@ using (var channel = connection.CreateModel())
 		}
 	};
 	
-
+	channel.BasicConsume(queue: "rpc_queue", autoAck: false, consumer: consumer);
+	Console.WriteLine(" [x] Awaiting RPC requests");
 
 	Console.WriteLine(" Press [enter] to exit.");
 	Console.ReadLine();
