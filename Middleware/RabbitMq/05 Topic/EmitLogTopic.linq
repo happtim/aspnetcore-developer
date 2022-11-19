@@ -17,7 +17,7 @@ using (var channel = connection.CreateModel())
 		var message = "Hello World!";
 
 		var body = Encoding.UTF8.GetBytes(message);
-		channel.BasicPublish(exchange: "topic_logs",	 routingKey: routingKey, basicProperties: null, body: body);
+		channel.BasicPublish(exchange: "topic_logs", routingKey: routingKey, basicProperties: null, body: body);
 
 		Console.WriteLine(" [x] Sent '{0}':'{1}'", routingKey, message);
 	}

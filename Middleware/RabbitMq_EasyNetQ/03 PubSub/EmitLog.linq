@@ -7,16 +7,21 @@
 
 using (var bus = RabbitHutch.CreateBus("host=localhost"))
 {
-	var message = "Hello World!";
-	bus.PubSub.Publish(new TextMessage { Text = message });
-	Console.WriteLine(" [x] Sent {0}", message);
+	var exchange =  bus.Advanced.ExchangeDeclare("logs","fanout",durable:false);
+	
+	var message = new Message<TextMessage>(new TextMessage { Text = "info:HelloWorld;" });
+	
+	bus.Advanced.Publish(exchange, "", false, message);
+	
+	Console.WriteLine(" [x] Sent {0}", message.Body.Text);
+	
 }
 
 Console.WriteLine(" Press [enter] to exit.");
 Console.ReadLine();
 
 
-[Queue("hello", ExchangeName = "")]
+//[Queue("task_queue", ExchangeName = "")]
 public class TextMessage
 {
 	public string Text { get; set; }
