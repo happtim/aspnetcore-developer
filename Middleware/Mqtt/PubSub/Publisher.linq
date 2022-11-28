@@ -13,6 +13,7 @@
 * or at least provides backward compatibility where possible.
 */
 
+//http://www.steves-internet-guide.com/understanding-mqtt-topics/
 var mqttFactory = new MqttFactory();
 
 using (var mqttClient = mqttFactory.CreateMqttClient())
