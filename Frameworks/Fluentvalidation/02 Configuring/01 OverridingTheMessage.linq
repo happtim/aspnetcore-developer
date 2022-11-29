@@ -33,7 +33,6 @@ public class CustomerValidator : AbstractValidator<Customer>
 	}
 }
 
-
 public class Customer
 {
 	public int Id { get; set; }

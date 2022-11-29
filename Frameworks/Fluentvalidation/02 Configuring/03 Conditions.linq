@@ -43,7 +43,7 @@ public class CustomerValidator : AbstractValidator<Customer>
 		//When 只提供一个条件判断。如下When1只提供Matches的条件判断。并不判断NotEmpty。
 		RuleFor(customer => customer.Photo)
 			.NotEmpty()
-			//.When(customer => customer.IsPreferredCustomer, ApplyConditionTo.CurrentValidator)
+			// .When(customer => customer.IsPreferredCustomer, ApplyConditionTo.CurrentValidator)
 			.Matches("https://wwww.photos.io/\\d+\\.png")
 			.When(customer => customer.IsPreferredCustomer, ApplyConditionTo.CurrentValidator)
 			.Empty()
