@@ -15,15 +15,15 @@
 
 // house/# 匹配
 //house/room1/alarm
-//house / garage / main-light
-//house / main-door
-//house /
+//house/garage/main-light
+//house/main-door
+//house/
 //house
 
 //house/+/main-light 匹配
-//house / room1 / main-light
-//house / room2 / main-light
-//house / garage / main-light
+//house/room1/main-light
+//house/room2/main-light
+//house/garage/main-light
 
 
 //何时创建主题
@@ -46,7 +46,13 @@ using (var mqttClient = mqttFactory.CreateMqttClient())
 		.WithTopicFilter(
 			f =>
 			{
+				//匹配多个topic的时候 如下写法会覆盖。实际订阅使用room2的topic
 				f.WithTopic("rooms/room1/sensors/temp");
+				f.WithTopic("rooms/room2/sensors/temp");
+			})
+		.WithTopicFilter(f =>
+			{
+				f.WithTopic("rooms/room3/sensors/temp");
 			})
 		.Build();
 
