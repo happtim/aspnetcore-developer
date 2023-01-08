@@ -56,7 +56,7 @@ JObject rss =
 								new JArray(
 									from c in p.Categories
 									select new JValue(c)))))))));
-rss.ToString().Dump();
+rss.Dump();
 
 //Creating JSON from an object
 //最后一个选项是使用 FromObject() 方法从非 JSON 类型创建 JSON 对象。
