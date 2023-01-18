@@ -1,7 +1,13 @@
 <Query Kind="Statements" />
 
+//https://zhuanlan.zhihu.com/p/58093669
+//传统模式下的构造函数
 
+HtmlBuilder textBuilder = new HtmlBuilder();
+Director director = new Director(textBuilder);
+director.Construct();
 
+Util.RawHtml(textBuilder.getResult()).Dump();
 
 public class Director
 {
@@ -13,7 +19,7 @@ public class Director
 	}
 
 	// 编写文档
-	public void construct()
+	public void Construct()
 	{
 		_builder.makeTitle("Greeting");
 		_builder.makeString("从早上到中午");
@@ -65,7 +71,7 @@ public class TextBuilder : Builder
 public class HtmlBuilder : Builder
 {
 	private string filename;
-	private StreamWriter writer;
+	private StringWriter writer;
 
 	public override void close()
 	{
@@ -91,14 +97,14 @@ public class HtmlBuilder : Builder
 	public override void makeTitle(string title)
 	{
 		filename = title + ".html";
-		writer = new StreamWriter(filename);
+		writer = new StringWriter();
 		writer.WriteLine("<html><head><title>" + title + "</title></head><body>");
 		writer.WriteLine("<h1>" + title + "</h1>");
 	}
 
 	public string getResult()
 	{
-		return filename;
+		return writer.ToString();
 	}
 }
 

@@ -35,7 +35,6 @@ public class Proxy : Subject
 
 public abstract class Subject
 {
-
 	public abstract void Request();
 	public abstract void SomeMethod();
 	public abstract void SomeMethod2();
