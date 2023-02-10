@@ -56,6 +56,12 @@ public class ConcreteFactory2 : AbstractFactory
 		return new ProductB2();
 	}
 }
+public abstract class AbstractFactory
+{
+	public abstract AbstractProductA CreateProductA();
+	public abstract AbstractProductB CreateProductB();
+}
+
 
 public class ProductA1 : AbstractProductA{}
 
@@ -77,11 +83,8 @@ public class ProductB2 : AbstractProductB
 	}
 }
 
-public abstract class AbstractFactory
-{
-	public abstract AbstractProductA CreateProductA();
-	public abstract AbstractProductB CreateProductB();
-}
-
 public abstract class AbstractProductA{}
-public abstract class AbstractProductB{ public abstract void Interact(AbstractProductA a);}
+public abstract class AbstractProductB
+{ 
+	public abstract void Interact(AbstractProductA a);
+}

@@ -1,5 +1,6 @@
 <Query Kind="Statements" />
 
+//Castle.Core
 
 Subject s = new Proxy();
 s.SomeMethod();
