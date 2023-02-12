@@ -1,6 +1,6 @@
 <Query Kind="Statements" />
 
-
+//https://zhuanlan.zhihu.com/p/366561608
 
 AbstractFactory factory1 = new ConcreteFactory1();
 Client c1 = new Client(factory1);
