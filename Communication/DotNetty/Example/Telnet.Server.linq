@@ -10,6 +10,7 @@
   <Namespace>DotNetty.Codecs</Namespace>
   <Namespace>Microsoft.Extensions.Logging</Namespace>
   <Namespace>System.Threading.Tasks</Namespace>
+  <Namespace>System.Net</Namespace>
 </Query>
 
 //https://github.com/Azure/DotNetty/blob/dev/examples/Factorial.Server/Program.cs
