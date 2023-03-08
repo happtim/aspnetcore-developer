@@ -53,6 +53,17 @@ void Main()
 	
 }
 
+public class VssStorageChangeEto : List<VssStorageItem>
+{
+}
+
+public class VssStorageItem
+{
+	public string Station { get; set; }
+	public string Status { get; set; }
+	public string StatusName { get; set; }
+}
+
 class Product
 {
 	public string Name {get;set;}
