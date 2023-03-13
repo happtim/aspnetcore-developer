@@ -52,13 +52,28 @@ _memoryCache.Set("key3", "value3", cacheOptions);
 
 while (true)
 {
-	var value = _memoryCache.Get("key3").Dump();
-	if (value == null)
+	var value3 = _memoryCache.Get("key3").Dump();
+	if (value3 == null)
 		break;
 	Thread.Sleep(10*1000);
 }
 
 _memoryCache.Get("key4").Dump();
+
+_memoryCache.TryGetValue("key4",out var value4).Dump();
+_memoryCache.TryGetValue("key2",out var value2).Dump();
+
+_memoryCache.GetOrCreate("key5", (cacheEntry ) => 
+{
+	cacheEntry.AbsoluteExpirationRelativeToNow = TimeSpan.FromSeconds(10);
+	return "value5";
+});
+
+_memoryCache.Get("key5").Dump();
+
+//移除
+_memoryCache.Remove("key5");
+
 
 host.Run();
 
