@@ -1,6 +1,6 @@
 <Query Kind="Statements" />
 
-
+//DotNetty.Transport.Channels.ChannelHandlerAdapter
 
 Target t = new Adapter();
 t.targetMethod1();
