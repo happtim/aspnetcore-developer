@@ -10,6 +10,7 @@ switch (x)
 		break;
 }
 
+//https://learn.microsoft.com/en-us/dotnet/csharp/language-reference/operators/patterns#constant-pattern
 
 int y = x switch 
 {
@@ -18,7 +19,7 @@ int y = x switch
 	5 => 5,
 	6 => 6,
 	_ => 0,
-}
+};
 
 
 string str  = "123" switch
