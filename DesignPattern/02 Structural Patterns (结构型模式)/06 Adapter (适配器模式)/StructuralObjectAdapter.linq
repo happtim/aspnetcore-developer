@@ -20,6 +20,17 @@ public class Adapter : Target
 	}
 }
 
+public class Adaptee
+{
+	public void MethodA()
+	{
+		Console.Write("Adaptee MethodA");
+	}
+
+	public void MethodB() { }
+	public void MethodC() { }
+}
+
 public abstract class Target
 {
 	public abstract void targetMethod1();
@@ -27,13 +38,3 @@ public abstract class Target
 	public abstract void targetMethod2();
 }
 
-public class Adaptee
-{
-	public void MethodA()
-	{
-		Console.Write("Adaptee MethodA");
-	}
-	
-	public void MethodB(){}
-	public void MethodC(){}
-}

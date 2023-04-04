@@ -17,13 +17,6 @@ public class Adapter : Adaptee, ITarget
 		MethodB();
 	}
 }
-
-interface ITarget
-{
-	void targetMethod1();
-	void targetMethod2();
-}
-
 public class Adaptee
 {
 	public void MethodA()
@@ -34,3 +27,10 @@ public class Adaptee
 	public void MethodB() { }
 	public void MethodC() { }
 }
+
+interface ITarget
+{
+	void targetMethod1();
+	void targetMethod2();
+}
+

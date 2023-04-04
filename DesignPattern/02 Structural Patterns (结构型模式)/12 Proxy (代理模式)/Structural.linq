@@ -1,6 +1,7 @@
 <Query Kind="Statements" />
 
-//Castle.Core
+//Castle.Core 动态代理
+// preRequest Request PostRequest
 
 Subject s = new Proxy();
 s.SomeMethod();
@@ -34,12 +35,6 @@ public class Proxy : Subject
 	}
 }
 
-public abstract class Subject
-{
-	public abstract void Request();
-	public abstract void SomeMethod();
-	public abstract void SomeMethod2();
-}
 
 public class RealSubject : Subject
 {
@@ -64,4 +59,11 @@ public class RealSubject : Subject
 	{
 		Console.WriteLine("RealSubject Request2");
 	}
+}
+
+public abstract class Subject
+{
+	public abstract void Request();
+	public abstract void SomeMethod();
+	public abstract void SomeMethod2();
 }

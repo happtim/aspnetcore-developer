@@ -36,9 +36,9 @@ public class LazySingleton
 
 public class SafeLazySingleton
 {
-	private static SafeLazySingleton instance = null;
+	private static volatile SafeLazySingleton instance = null;
 	private SafeLazySingleton() { }
-	private static volatile object locker = new Object();
+	private static object locker = new Object();
 
 	public static SafeLazySingleton GetInstance()
 	{
