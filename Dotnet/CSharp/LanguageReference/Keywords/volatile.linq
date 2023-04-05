@@ -1,6 +1,8 @@
 <Query Kind="Statements" />
 
 //https://www.jianshu.com/p/b94ed0b709de
+//https://www.runoob.com/w3cnote/c-volatile-keyword.html
+//需要在visual studio 中debug/release模式才会出现效果
 
 // Create the worker thread object. This does not start the thread.
 Worker workerObject = new Worker();
@@ -16,7 +18,7 @@ while (!workerThread.IsAlive)
 
 // Put the main thread to sleep for 500 milliseconds to
 // allow the worker thread to do some work.
-Thread.Sleep(10);
+Thread.Sleep(500);
 
 // Request that the worker thread stop itself.
 workerObject.RequestStop();
