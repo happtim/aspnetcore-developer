@@ -4,9 +4,10 @@
 // preRequest Request PostRequest
 
 Subject s = new Proxy();
-s.SomeMethod();
-s.SomeMethod2();
 s.Request();
+
+s.SomeMethod();
+//s.SomeMethod2();
 
 
 public class Proxy : Subject
@@ -21,12 +22,15 @@ public class Proxy : Subject
 			real = new RealSubject();
 		}
 
+
 		real.Request();
 	}
 
 	public override void SomeMethod()
 	{
-		Console.WriteLine("SomeMethod");
+		Console.WriteLine("Pre SomeMethod");
+		real.SomeMethod();
+		Console.WriteLine("Post SomeMethod");
 	}
 
 	public override void SomeMethod2()
