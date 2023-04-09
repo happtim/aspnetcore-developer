@@ -4,6 +4,7 @@
 </Query>
 
 //https://redis.io/docs/data-types/streams/
+//https://www.infoworld.com/article/3321938/how-to-use-redis-streams.html
 
 //Redis 流是一种数据结构，其作用类似于仅追加日志。 您可以使用流实时记录和同时联合事件。 Redis 流用例的示例包括：
 	//事件溯源（例如，跟踪用户操作、点击等）

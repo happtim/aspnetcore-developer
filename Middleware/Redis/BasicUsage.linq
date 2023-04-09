@@ -1,6 +1,7 @@
 <Query Kind="Statements">
   <NuGetReference>StackExchange.Redis</NuGetReference>
   <Namespace>StackExchange.Redis</Namespace>
+  <Namespace>System.Threading.Tasks</Namespace>
 </Query>
 
 //https://github.com/redis/redis-doc/blob/master/docs/data-types/tutorial.md
