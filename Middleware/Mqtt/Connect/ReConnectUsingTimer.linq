@@ -30,6 +30,7 @@ using (var mqttClient = mqttFactory.CreateMqttClient())
 							// This code will also do the very first connect! So no call to _ConnectAsync_ is required in the first place.
 					if (!await mqttClient.TryPingAsync())
 					{
+						//注意 重连之后需要重新订阅 消息 否则收不到消息了。
 						await mqttClient.ConnectAsync(mqttClientOptions, CancellationToken.None);
 
 								// Subscribe to topics when session is clean etc.

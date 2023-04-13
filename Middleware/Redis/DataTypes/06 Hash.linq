@@ -23,8 +23,11 @@ db.HashSet(key, new HashEntry[] {
 	new HashEntry("username", "martina"),
 	new HashEntry("firstName", "Martina"),
 	new HashEntry("lastName", "Elisa"),
-	new HashEntry("country", "GB"),
 	} );
+
+db.HashSet(key, new HashEntry[] {
+	new HashEntry("country", "GB"),
+});
 	
 db.HashGet(key,"username").ToString().Dump("username");
 

@@ -71,6 +71,8 @@ db.StreamAdd(key,"message","banana");
 //Alice 获取一个新的消息
 var apple =  db.StreamReadGroup(key,group1,"Alice",">",1);
 
+//apple.Dump();
+
 apple[0].Values.Select(s => s.ToString() ).Dump("Alice get apple");
 
 //Alice 获取PendingList中数据
