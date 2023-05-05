@@ -1,0 +1,14 @@
+{
+  "version": 2,
+  "dgSpecHash": "Skfk/5XRzzYEDeYCSF5Au6lWFHNyD+6ptsgTzFvDRAhVxJ2XMJLQmVIPuDO1o1uduhm3F6G75d/FAWjAyeXXbA==",
+  "success": false,
+  "projectFilePath": "D:\\Projects\\mylinqpad\\AspNetCore\\Security\\IdentitySample.DefaultUI\\IdentitySample.DefaultUI.csproj",
+  "expectedPackageFiles": [],
+  "logs": [
+    {
+      "code": "NU1105",
+      "level": "Error",
+      "message": "Unable to read project information for 'IdentitySample.DefaultUI': Invalid framework identifier ''."
+    }
+  ]
+}

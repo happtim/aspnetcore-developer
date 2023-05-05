@@ -1,0 +1,30 @@
+{
+  "format": 1,
+  "restore": {
+    "D:\\Projects\\mylinqpad\\AspNetCore\\Security\\IdentitySample.DefaultUI\\IdentitySample.DefaultUI.csproj": {}
+  },
+  "projects": {
+    "D:\\Projects\\mylinqpad\\AspNetCore\\Security\\IdentitySample.DefaultUI\\IdentitySample.DefaultUI.csproj": {
+      "restore": {
+        "projectUniqueName": "D:\\Projects\\mylinqpad\\AspNetCore\\Security\\IdentitySample.DefaultUI\\IdentitySample.DefaultUI.csproj",
+        "projectPath": "D:\\Projects\\mylinqpad\\AspNetCore\\Security\\IdentitySample.DefaultUI\\IdentitySample.DefaultUI.csproj",
+        "packagesPath": "C:\\Users\\Tim\\.nuget\\packages\\",
+        "outputPath": "D:\\Projects\\mylinqpad\\AspNetCore\\Security\\IdentitySample.DefaultUI\\obj\\",
+        "projectStyle": "PackageReference",
+        "fallbackFolders": [
+          "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages"
+        ],
+        "configFilePaths": [
+          "C:\\Users\\Tim\\AppData\\Roaming\\NuGet\\NuGet.Config",
+          "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.FallbackLocation.config",
+          "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
+        ],
+        "sources": {
+          "C:\\Program Files (x86)\\Microsoft SDKs\\NuGetPackages\\": {},
+          "https://api.nuget.org/v3/index.json": {},
+          "https://szagv-nuget.pkg.coding.net/agvs/szagv-nuget/v3/index.json": {}
+        }
+      }
+    }
+  }
+}
