@@ -15,6 +15,7 @@
 </Query>
 
 #load "..\Authentication\UserService"
+#load ".\ProductService"
 
 //https://www.tektutorialshub.com/asp-net-core/resource-based-authorization-in-asp-net-core/
 
@@ -40,12 +41,19 @@ builder.Services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationSc
 builder.Services.AddAuthorization();
 builder.Services.AddAuthorization(options =>
 {
+	options.AddPolicy("sameAuthorPolicy",
+		policy =>
+			policy.AddRequirements(
+				new SameAuthorRequirement()
+			));
 
 });
 
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 builder.Services.AddScoped<IUserService, UserService>();
+builder.Services.AddScoped<IProductService,ProductService>();
+builder.Services.AddSingleton<IAuthorizationHandler, DocumentAuthorizationHandler>();
 
 var app = builder.Build();
 
@@ -57,7 +65,7 @@ app.UseAuthentication();
 app.UseAuthorization();
 
 app.MapGet("/", () => "Hello World!");
-app.MapGet("/home", [Authorize(Policy = "canManageProduct")] async (HttpContext context) =>
+app.MapGet("/home", [Authorize] async (HttpContext context) =>
 {
 	var result = "";
 	var user = context.User;
@@ -92,7 +100,6 @@ app.MapPost("/login", async (LoginModel login, HttpContext context, IUserService
 		new Claim(ClaimTypes.NameIdentifier, user.Id.ToString()),
 		new Claim(ClaimTypes.Name, user.Username),
 		new Claim("UserDefined", "whatever"),
-		//new Claim("Employee",""),
 	};
 
 	var identity = new ClaimsIdentity(claims, CookieAuthenticationDefaults.AuthenticationScheme);
@@ -117,6 +124,57 @@ app.MapGet("/denied", () =>
 	return responseBody;
 });
 
+//创建一个产品
+app.MapPost("/product",  [Authorize] async (
+	HttpContext context,
+	 Product product,
+	IProductService productService) => {
+
+	var User = context.User;
+	product.CreatedUserID = User.FindFirstValue(ClaimTypes.NameIdentifier);
+	await productService.InsertAsync(product);
+	
+	return product;
+	
+});
+
+//编辑一个产品页面
+app.MapGet("/edit/{id}", async ( 
+	HttpContext context, 
+	int? id ,
+	IAuthorizationService  authorizationService, 
+	IProductService productService) =>
+{
+	if (id == null)
+	{
+		return Results.NotFound();
+	}
+
+	var product = await productService.FindAsync(id);
+	if (product == null)
+	{
+		return Results.NotFound();
+	}
+	
+	var User = context.User;
+
+	var result = await authorizationService.AuthorizeAsync(User, product, "sameAuthorPolicy");
+	if (!result.Succeeded)
+	{
+		if (User.Identity.IsAuthenticated)
+		{
+			return Results.Forbid();
+		}
+		else
+		{
+			return Results.Challenge();
+		}
+	}
+	
+	return Results.Ok(product);
+
+});
+
 Process.Start(new ProcessStartInfo
 {
 	FileName = "http://localhost:5000/swagger/index.html",
@@ -126,3 +184,27 @@ Process.Start(new ProcessStartInfo
 app.Run();
 
 record LoginModel(string Username, string Password);
+
+//一个Requirement 类必须从Microsoft.AspNetCore.Authorization命名空间实现IAuthorizationRequirement。
+public class SameAuthorRequirement : IAuthorizationRequirement
+{
+}
+
+//创建Handler 来验证SameAuthorRequirement是否是有效的。
+public class DocumentAuthorizationHandler : AuthorizationHandler<SameAuthorRequirement, Product>
+{
+	protected override Task HandleRequirementAsync(AuthorizationHandlerContext context,
+													SameAuthorRequirement requirement,
+													Product resource)
+	{
+
+		//在代码中，我们检查产品（资源）的CreatedUserID是否与已登录用户的相同。如果为真则返回成功。
+		if (context.User.HasClaim(ClaimTypes.NameIdentifier, resource.CreatedUserID))
+		{
+			context.Succeed(requirement);
+		}
+
+		return Task.CompletedTask;
+	}
+}
+
