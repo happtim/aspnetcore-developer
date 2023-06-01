@@ -18,6 +18,7 @@ using (var channel = connection.CreateModel())
 	string message = "Hello World!";
 	var body = Encoding.UTF8.GetBytes(message);
 
+	//这里exchange 为空，我们还未引入exchange的概念。
 	channel.BasicPublish(exchange: "",
 						 routingKey: "hello",
 						 basicProperties: null,
