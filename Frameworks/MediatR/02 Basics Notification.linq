@@ -51,3 +51,13 @@ public class ConstrainedPingedHandler<TNotification> : INotificationHandler<TNot
 		return Task.CompletedTask;
 	}
 }
+
+public class GenericHandler : INotificationHandler<INotification>
+{
+
+	public Task Handle(INotification notification, CancellationToken cancellationToken)
+	{
+		"Got notified.".Dump();
+		return Task.CompletedTask;
+	}
+}
