@@ -3,6 +3,7 @@
 
 using System.IO;
 using IdentitySample.Models;
+using IdentitySample.Mvc.Services;
 using IdentitySample.Services;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
@@ -47,6 +48,7 @@ builder.Services.AddAuthentication(o =>
 // Add application services.
 builder.Services.AddTransient<IEmailSender, AuthMessageSender>();
 builder.Services.AddTransient<ISmsSender, AuthMessageSender>();
+builder.Services.Configure<AuthMessageSenderOptions>(builder.Configuration);
 
 builder.Services.AddDatabaseDeveloperPageExceptionFilter();
 
