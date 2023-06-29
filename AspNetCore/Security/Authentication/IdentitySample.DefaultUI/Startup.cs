@@ -48,7 +48,6 @@ namespace IdentitySample.DefaultUI
                 x => x.MigrationsAssembly("IdentitySample.DefaultUI")));
 
             services.AddMvc().AddNewtonsoftJson();
-            services.AddIdentity
             services.AddDefaultIdentity<ApplicationUser>(o => {
                 o.SignIn.RequireConfirmedAccount = false; //是否需要电子邮件确认。 默认为 false。
                 o.Password.RequireNonAlphanumeric = false; //密码是否必须包含非字母数字字符。 默认为 true。

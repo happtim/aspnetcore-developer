@@ -1,6 +1,7 @@
 // Licensed to the .NET Foundation under one or more agreements.
 // The .NET Foundation licenses this file to you under the MIT license.
 
+using System;
 using System.IO;
 using IdentitySample.Models;
 using IdentitySample.Mvc.Services;
@@ -27,7 +28,7 @@ builder.Services.AddMvc();
 
 builder.Services.AddIdentityCore<ApplicationUser>(o => 
     {
-        o.SignIn.RequireConfirmedAccount = false; 
+        o.SignIn.RequireConfirmedAccount = true; 
         o.Password.RequireNonAlphanumeric = false; 
         o.Password.RequireUppercase = false;
         o.Password.RequireDigit = false;
@@ -49,6 +50,15 @@ builder.Services.AddAuthentication(o =>
 builder.Services.AddTransient<IEmailSender, AuthMessageSender>();
 builder.Services.AddTransient<ISmsSender, AuthMessageSender>();
 builder.Services.Configure<AuthMessageSenderOptions>(builder.Configuration);
+
+builder.Services.ConfigureApplicationCookie(o => {
+    o.ExpireTimeSpan = TimeSpan.FromDays(5);
+    o.SlidingExpiration = true;
+});
+
+builder.Services.Configure<DataProtectionTokenProviderOptions>(o =>
+    o.TokenLifespan = TimeSpan.FromHours(3));
+
 
 builder.Services.AddDatabaseDeveloperPageExceptionFilter();
 

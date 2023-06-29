@@ -85,6 +85,7 @@ namespace IdentitySample.Services
 
         public Task SendSmsAsync(string number, string message)
         {
+            _logger.LogDebug($"SMS: {message} sent to {number}");
             // Plug in your SMS service here to send a text message.
             return Task.FromResult(0);
         }
