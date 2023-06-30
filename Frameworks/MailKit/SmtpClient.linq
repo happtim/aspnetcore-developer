@@ -19,7 +19,7 @@ string password = "password";
 // 创建邮件对象
 var message = new MimeMessage();
 message.From.Add(new MailboxAddress("deng-shen", fromAddress));
-message.To.Add(new MailboxAddress("收件人", toAddress));
+message.To.Add(new MailboxAddress("用户名称", toAddress));
 message.Subject = subject;
 
 // 创建邮件正文
