@@ -19,21 +19,14 @@
 
 #load ".\UserService"
 
-//basic身份验证是 HTTP 协议中内置的身份验证方案，它使用简单的用户名和密码来访问受限资源。
-//这些用户名和密码使用 Bas64 编码转换为标准“授权”标头。
-
-//Header 命令
-//Authorization: Basic <credentials(base64)> 
-
-//如果你有用户名密码 “Test“, “Password”，Base64编码后，header命令如下：
-//Authorization: Basic VGVzdDpQYXNzd29yZA===
 var builder = WebApplication.CreateBuilder(new WebApplicationOptions
 {
 	EnvironmentName = Environments.Development
 });
 
 builder.Services
-    .AddAuthentication("BasicAuthentication")
+	.AddAuthentication("BasicAuthentication")
+	.AddCookie(s => {})
     .AddScheme<AuthenticationSchemeOptions, BasicAuthenticationHandler>("BasicAuthentication", null);
 
 builder.Services.AddScoped<IUserService,UserService>();

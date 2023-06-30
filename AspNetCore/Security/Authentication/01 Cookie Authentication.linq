@@ -21,12 +21,7 @@ var builder = WebApplication.CreateBuilder(new WebApplicationOptions
 });
 
 builder.Services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme)
-	.AddCookie(options =>
-	{
-		options.LoginPath = "/login";
-		options.AccessDeniedPath = "/denied";
-	})
-	;
+	.AddCookie();
 builder.Services.AddAuthorization();
 
 builder.Services.AddEndpointsApiExplorer();
@@ -43,7 +38,7 @@ app.UseAuthentication();
 app.UseAuthorization();
 
 app.MapGet("/", () => "Hello World!");
-app.MapGet("/home", [Authorize] async (HttpContext context) =>
+app.MapGet("Account/Home", [Authorize(AuthenticationSchemes = CookieAuthenticationDefaults.AuthenticationScheme)] async (HttpContext context) =>
 {
 	var result = "";
 	var user = context.User;
@@ -61,12 +56,12 @@ app.MapGet("/home", [Authorize] async (HttpContext context) =>
 	
 	return result;
 });
-app.MapGet("/login", async (HttpContext context) =>
+app.MapGet("Account/Login", async (string ReturnUrl, HttpContext context) =>
 {
-	return new { message = "Logging page." };
+	return new { message = "It's logging page. Please fill in your account and password." };
 });
 
-app.MapPost("/login", async (LoginModel login ,HttpContext context,IUserService userService) =>
+app.MapPost("Account/Login", async (LoginModel login ,HttpContext context,IUserService userService) =>
 {
 	var user = await userService.Authenticate(login.Username,login.Password);
 	
@@ -86,7 +81,7 @@ app.MapPost("/login", async (LoginModel login ,HttpContext context,IUserService 
 	return new { message = $"Logged in {login.Username}" };
 });
 
-app.MapPost("/logout", async (HttpContext context) => 
+app.MapPost("Account/Logout", async (HttpContext context) => 
 {
   await context.SignOutAsync(CookieAuthenticationDefaults.AuthenticationScheme);
   return new { message = $"Logged out" };
