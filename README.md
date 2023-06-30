@@ -54,3 +54,4 @@
 
 ## 交流群
 <img src="https://assets.happtim.com/image/qrcode/aspnetcore.jpg" width=300px >
+![](https://assets.happtim.com/image/qrcode/aspnetcore.jpg)
