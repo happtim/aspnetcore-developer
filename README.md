@@ -1,4 +1,4 @@
-# DotNet Developer Roadmap
+# AspNetCore Developer Roadmap
 
 参照 https://github.com/MoienTajik/AspNetCore-Developer-Roadmap 系统学习必须掌握技能
 
@@ -51,3 +51,4 @@
 
 - Rider -  JetBrains 高速跨平台.NET IDE
 [购买地址](https://store.lizhi.io/site/products/id/425?cid=wj2xml1d)
+
