@@ -1,6 +1,6 @@
 <Query Kind="Statements">
-  <NuGetReference>DotNetty.Handlers</NuGetReference>
-  <NuGetReference>DotNetty.Transport</NuGetReference>
+  <NuGetReference Version="0.7.5">DotNetty.Handlers</NuGetReference>
+  <NuGetReference Version="0.7.5">DotNetty.Transport</NuGetReference>
   <NuGetReference Version="6.0.0">Microsoft.Extensions.Logging.Console</NuGetReference>
   <Namespace>DotNetty.Common.Internal.Logging</Namespace>
   <Namespace>DotNetty.Transport.Channels</Namespace>

@@ -1,7 +1,7 @@
 <Query Kind="Statements">
-  <NuGetReference>DotNetty.Buffers</NuGetReference>
-  <NuGetReference>DotNetty.Codecs</NuGetReference>
-  <NuGetReference>DotNetty.Handlers</NuGetReference>
+  <NuGetReference Version="0.7.5">DotNetty.Buffers</NuGetReference>
+  <NuGetReference Version="0.7.5">DotNetty.Codecs</NuGetReference>
+  <NuGetReference Version="0.7.5">DotNetty.Handlers</NuGetReference>
   <Namespace>DotNetty.Buffers</Namespace>
   <Namespace>DotNetty.Handlers.Timeout</Namespace>
 </Query>

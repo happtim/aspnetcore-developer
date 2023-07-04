@@ -1,7 +1,7 @@
 <Query Kind="Statements">
-  <NuGetReference>DotNetty.Codecs.Http</NuGetReference>
-  <NuGetReference>DotNetty.Handlers</NuGetReference>
-  <NuGetReference>DotNetty.Transport</NuGetReference>
+  <NuGetReference Version="0.7.5">DotNetty.Codecs.Http</NuGetReference>
+  <NuGetReference Version="0.7.5">DotNetty.Handlers</NuGetReference>
+  <NuGetReference Version="0.7.5">DotNetty.Transport</NuGetReference>
   <NuGetReference Version="6.0.0">Microsoft.Extensions.Logging.Console</NuGetReference>
   <Namespace>DotNetty.Buffers</Namespace>
   <Namespace>DotNetty.Common.Internal.Logging</Namespace>

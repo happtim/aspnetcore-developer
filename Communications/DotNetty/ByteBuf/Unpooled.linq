@@ -1,5 +1,5 @@
 <Query Kind="Statements">
-  <NuGetReference>DotNetty.Buffers</NuGetReference>
+  <NuGetReference Version="0.7.5">DotNetty.Buffers</NuGetReference>
   <Namespace>DotNetty.Buffers</Namespace>
 </Query>
 
