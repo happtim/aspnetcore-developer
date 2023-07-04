@@ -44,6 +44,9 @@
      - MassTransit
    - 容器化
      - Docker
+- Good to Know
+    - Fluentvalidation 11.5.2
+    - MailKit 4.1.0
 
 ## 代码库用到开发工具
 - LINQPad 7 - LINQ 调试工具  支持 .NET6 及 C#10 开发
