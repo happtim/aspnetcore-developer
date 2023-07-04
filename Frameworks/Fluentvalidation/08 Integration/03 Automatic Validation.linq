@@ -1,17 +1,17 @@
 <Query Kind="Statements">
-  <NuGetReference>FluentValidation</NuGetReference>
-  <NuGetReference>FluentValidation.AspNetCore</NuGetReference>
+  <NuGetReference Version="11.5.2">FluentValidation</NuGetReference>
+  <NuGetReference Version="11.3.0">FluentValidation.AspNetCore</NuGetReference>
   <NuGetReference>Swashbuckle.AspNetCore.Swagger</NuGetReference>
   <NuGetReference>Swashbuckle.AspNetCore.SwaggerGen</NuGetReference>
   <NuGetReference>Swashbuckle.AspNetCore.SwaggerUI</NuGetReference>
   <Namespace>FluentValidation</Namespace>
+  <Namespace>FluentValidation.AspNetCore</Namespace>
   <Namespace>FluentValidation.Results</Namespace>
   <Namespace>Microsoft.AspNetCore.Builder</Namespace>
   <Namespace>Microsoft.AspNetCore.Http</Namespace>
   <Namespace>Microsoft.AspNetCore.Mvc</Namespace>
   <Namespace>Microsoft.Extensions.DependencyInjection</Namespace>
   <Namespace>System.Threading.Tasks</Namespace>
-  <Namespace>FluentValidation.AspNetCore</Namespace>
   <IncludeAspNet>true</IncludeAspNet>
 </Query>
 

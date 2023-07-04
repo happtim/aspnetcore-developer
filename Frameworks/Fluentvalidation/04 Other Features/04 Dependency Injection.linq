@@ -1,6 +1,6 @@
 <Query Kind="Statements">
-  <NuGetReference>FluentValidation</NuGetReference>
-  <NuGetReference>FluentValidation.DependencyInjectionExtensions</NuGetReference>
+  <NuGetReference Version="11.5.2">FluentValidation</NuGetReference>
+  <NuGetReference Version="11.5.2">FluentValidation.DependencyInjectionExtensions</NuGetReference>
   <Namespace>FluentValidation</Namespace>
   <Namespace>Microsoft.AspNetCore.Builder</Namespace>
   <Namespace>Microsoft.Extensions.DependencyInjection</Namespace>

@@ -1,5 +1,5 @@
 <Query Kind="Statements">
-  <NuGetReference>FluentValidation</NuGetReference>
+  <<NuGetReference Version="11.5.2">FluentValidation</NuGetReference>
   <Namespace>FluentValidation</Namespace>
   <Namespace>FluentValidation.Results</Namespace>
 </Query>

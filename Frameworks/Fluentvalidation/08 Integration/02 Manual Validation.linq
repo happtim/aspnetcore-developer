@@ -1,5 +1,5 @@
 <Query Kind="Statements">
-  <NuGetReference>FluentValidation</NuGetReference>
+  <NuGetReference Version="11.5.2">FluentValidation</NuGetReference>
   <NuGetReference>Swashbuckle.AspNetCore.Swagger</NuGetReference>
   <NuGetReference>Swashbuckle.AspNetCore.SwaggerGen</NuGetReference>
   <NuGetReference>Swashbuckle.AspNetCore.SwaggerUI</NuGetReference>
