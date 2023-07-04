@@ -1,7 +1,7 @@
 <Query Kind="Statements">
-  <NuGetReference>MailKit</NuGetReference>
-  <Namespace>MimeKit</Namespace>
+  <NuGetReference Version="4.1.0">MailKit</NuGetReference>
   <Namespace>MailKit.Net.Smtp</Namespace>
+  <Namespace>MimeKit</Namespace>
 </Query>
 
 string smtpServer = "gz-smtp.qcloudmail.com";
