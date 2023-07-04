@@ -44,6 +44,8 @@
      - MassTransit
    - 容器化
      - Docker
+- 通信
+  - DotNetty 0.7.5
 - Good to Know
     - Fluentvalidation 11.5.2
     - MailKit 4.1.0
