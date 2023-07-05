@@ -1,5 +1,5 @@
 <Query Kind="Statements">
-  <NuGetReference>Castle.Core</NuGetReference>
+  <NuGetReference Version="5.1.1">Castle.Core</NuGetReference>
   <Namespace>Castle.DynamicProxy</Namespace>
 </Query>
 
