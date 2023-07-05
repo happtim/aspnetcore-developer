@@ -9,7 +9,8 @@
   - .Net7
 - 通用开发技能
   - Git
-  - 通过搜索引擎/ChatGPT解决问题
+  - 通过搜索引擎
+  - ChatGPT
 - ASP.Net Core 基础
   - Authentication
   - Authorization
@@ -17,7 +18,7 @@
 - SOLID
 - ORM
   - Entity Framework Core
-- 依赖注入(DI) & 面向切面编程(AOP)
+- 依赖注入 & 面向切面编程
   - Microsoft.Extensions.DependencyInject
   - AutoFac
   - Castle.Core 5.1.1
@@ -38,7 +39,7 @@
   - 原生后台服务
   - HangFire
 - 对象映射
-  - AutoMapper
+  - AutoMapper 12.0.1
 - 微服务
    - 消息中间件
      - RabbitMQ
