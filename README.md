@@ -59,3 +59,5 @@
 - Rider -  JetBrains 高速跨平台.NET IDE
 [购买地址](https://store.lizhi.io/site/products/id/425?cid=wj2xml1d)
 
+## 交流群
+![qrcode](https://assets-1302088688.cos.ap-nanjing.myqcloud.com/image/qrcode/aspnetcore.jpg)
