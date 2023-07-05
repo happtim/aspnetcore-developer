@@ -30,9 +30,10 @@
   - 内存缓存
   - 分布式缓存
 - 日志
-  - Serilog
+  - Serilog 3.0.1
 - API 客户端 & 通信
-    -REST
+    - REST
+   - DotNetty 0.7.5
 - 后台任务调度
   - 原生后台服务
   - HangFire
@@ -45,8 +46,6 @@
      - MassTransit
    - 容器化
      - Docker
-- 通信
-  - DotNetty 0.7.5
 - 加分项
     - Fluentvalidation 11.5.2
     - MailKit 4.1.0
