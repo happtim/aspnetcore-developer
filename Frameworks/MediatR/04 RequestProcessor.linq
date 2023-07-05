@@ -1,5 +1,5 @@
 <Query Kind="Statements">
-  <NuGetReference>MediatR</NuGetReference>
+   <NuGetReference Version="12.0.1">MediatR</NuGetReference>
   <NuGetReference Version="6.0.1">Microsoft.Extensions.DependencyInjection</NuGetReference>
   <Namespace>Microsoft.Extensions.DependencyInjection</Namespace>
   <Namespace>MediatR</Namespace>
