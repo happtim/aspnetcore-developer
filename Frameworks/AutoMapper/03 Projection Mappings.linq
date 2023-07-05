@@ -1,5 +1,5 @@
 <Query Kind="Program">
-  <NuGetReference>AutoMapper</NuGetReference>
+  <NuGetReference Version="12.0.1">AutoMapper</NuGetReference>
   <Namespace>AutoMapper</Namespace>
 </Query>
 

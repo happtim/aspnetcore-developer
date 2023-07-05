@@ -1,5 +1,5 @@
 <Query Kind="Program">
-  <NuGetReference>AutoMapper.Contrib.Autofac.DependencyInjection</NuGetReference>
+  <NuGetReference Version="7.1.0">AutoMapper.Contrib.Autofac.DependencyInjection</NuGetReference>
   <Namespace>Autofac</Namespace>
   <Namespace>AutoMapper</Namespace>
   <Namespace>AutoMapper.Contrib.Autofac.DependencyInjection</Namespace>
