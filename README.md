@@ -9,7 +9,8 @@
   - .Net7
 - 通用开发技能
   - Git
-  - 通过搜索引擎/ChatGPT解决问题
+  - 通过搜索引擎
+  - ChatGPT
 - ASP.Net Core 基础
   - Authentication
   - Authorization
@@ -17,9 +18,10 @@
 - SOLID
 - ORM
   - Entity Framework Core
-- 依赖注入
+- 依赖注入 & 面向切面编程
   - Microsoft.Extensions.DependencyInject
   - AutoFac
+  - Castle.Core 5.1.1
 - 数据库
   - 关系型
     - SQL Server
@@ -29,14 +31,15 @@
   - 内存缓存
   - 分布式缓存
 - 日志
-  - Serilog
+  - Serilog 3.0.1
 - API 客户端 & 通信
-    -REST
+    - REST
+   - DotNetty 0.7.5
 - 后台任务调度
   - 原生后台服务
   - HangFire
 - 对象映射
-  - AutoMapper
+  - AutoMapper 12.0.1
 - 微服务
    - 消息中间件
      - RabbitMQ
@@ -44,9 +47,10 @@
      - MassTransit
    - 容器化
      - Docker
-- Good to Know
+- 加分项
     - Fluentvalidation 11.5.2
     - MailKit 4.1.0
+    - MediatR 12.0.1
 
 ## 代码库用到开发工具
 - LINQPad 7 - LINQ 调试工具  支持 .NET6 及 C#10 开发
