@@ -47,7 +47,7 @@
      - Docker
 - 通信
   - DotNetty 0.7.5
-- Good to Know
+- 加分项
     - Fluentvalidation 11.5.2
     - MailKit 4.1.0
     - MediatR 12.0.1
