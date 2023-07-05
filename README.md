@@ -17,9 +17,10 @@
 - SOLID
 - ORM
   - Entity Framework Core
-- 依赖注入
+- 依赖注入(DI) & 面向切面编程(AOP)
   - Microsoft.Extensions.DependencyInject
   - AutoFac
+  - Castle.Core 5.1.1
 - 数据库
   - 关系型
     - SQL Server
