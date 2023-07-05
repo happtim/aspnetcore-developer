@@ -1,5 +1,5 @@
 <Query Kind="Statements">
-  <NuGetReference>Serilog</NuGetReference>
+  <NuGetReference Version="3.0.1">Serilog</NuGetReference>
   <NuGetReference>Serilog.Sinks.Console</NuGetReference>
   <Namespace>Serilog</Namespace>
 </Query>

@@ -1,10 +1,10 @@
 <Query Kind="Program">
-  <NuGetReference>Serilog</NuGetReference>
-  <NuGetReference>Serilog.Sinks.Console</NuGetReference>
-  <NuGetReference>Serilog.Sinks.File</NuGetReference>
+  <NuGetReference Version="3.0.1">Serilog</NuGetReference>
+  <NuGetReference Version="4.1.0">Serilog.Sinks.Console</NuGetReference>
+  <NuGetReference Version="5.0.0">Serilog.Sinks.File</NuGetReference>
   <Namespace>Serilog</Namespace>
-  <Namespace>Serilog.Events</Namespace>
   <Namespace>Serilog.Core</Namespace>
+  <Namespace>Serilog.Events</Namespace>
   <Namespace>Serilog.Filters</Namespace>
 </Query>
 

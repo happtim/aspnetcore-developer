@@ -1,7 +1,7 @@
 <Query Kind="Statements">
-  <NuGetReference>Serilog</NuGetReference>
-  <NuGetReference>Serilog.Enrichers.Thread</NuGetReference>
-  <NuGetReference>Serilog.Sinks.Console</NuGetReference>
+  <NuGetReference Version="3.0.1">Serilog</NuGetReference>
+  <NuGetReference Version="3.1.0">Serilog.Enrichers.Thread</NuGetReference>
+  <NuGetReference Version="4.1.0">Serilog.Sinks.Console</NuGetReference>
   <Namespace>Serilog</Namespace>
   <Namespace>Serilog.Context</Namespace>
 </Query>
