@@ -1,3 +1,4 @@
+using Duende.Bff.Yarp;
 using Serilog;
 using Serilog.Events;
 using Serilog.Sinks.SystemConsole.Themes;
@@ -27,7 +28,9 @@ try
     
     builder.Services.AddControllers();
     builder.Services.AddRazorPages();
-    builder.Services.AddBff();
+    builder.Services
+        .AddBff()
+        .AddRemoteApis();
     
     builder.Services.AddAuthentication(options =>
         {
@@ -42,10 +45,10 @@ try
         })
         .AddOpenIdConnect("oidc", options =>
         {
-            options.Authority = "https://demo.duendesoftware.com";
+            options.Authority = "https://localhost:5001";
     
             // confidential client using code flow + PKCE
-            options.ClientId = "interactive.confidential";
+            options.ClientId = "bff";
             options.ClientSecret = "secret";
             options.ResponseType = "code";
             options.ResponseMode = "query";
@@ -58,7 +61,7 @@ try
             options.Scope.Clear();
             options.Scope.Add("openid");
             options.Scope.Add("profile");
-            options.Scope.Add("api");
+            options.Scope.Add("api1");
             options.Scope.Add("offline_access");
         });
     
@@ -90,6 +93,9 @@ try
         .RequireAuthorization()
         .AsBffApiEndpoint();
     
+    app.MapRemoteBffApiEndpoint("/remote", "https://localhost:6001")
+        .RequireAccessToken(Duende.Bff.TokenType.User);
+
     app.MapFallbackToFile("index.html");
     
     app.Run();
