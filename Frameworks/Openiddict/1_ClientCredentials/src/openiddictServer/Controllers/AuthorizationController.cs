@@ -65,7 +65,8 @@ public class AuthorizationController : Controller
 
             // Set the list of scopes granted to the client application in access_token.
             identity.SetScopes(request.GetScopes());
-            identity.SetResources(await _scopeManager.ListResourcesAsync(identity.GetScopes()).ToListAsync());
+            
+            //identity.SetResources(await _scopeManager.ListResourcesAsync(identity.GetScopes()).ToListAsync());
             identity.SetDestinations(GetDestinations);
 
             return SignIn(new ClaimsPrincipal(identity), OpenIddictServerAspNetCoreDefaults.AuthenticationScheme);

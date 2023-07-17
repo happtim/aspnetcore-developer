@@ -14,20 +14,20 @@ builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
- builder.Services.AddOpenIddict()
-     .AddValidation(options =>
-     {
-         // Note: the validation handler uses OpenID Connect discovery
-         // to retrieve the address of the introspection endpoint.
-         options.SetIssuer("https://localhost:5001/");
-         options.AddAudiences("resource_server_1");
+builder.Services.AddOpenIddict()
+    .AddValidation(options =>
+    {
+     // Note: the validation handler uses OpenID Connect discovery
+     // to retrieve the address of the introspection endpoint.
+     options.SetIssuer("https://localhost:5001/");
+     //options.AddAudiences("resource_server_1");
 
-         // Register the System.Net.Http integration.
-         options.UseSystemNetHttp();
+     // Register the System.Net.Http integration.
+     options.UseSystemNetHttp();
 
-         // Register the ASP.NET Core host.
-         options.UseAspNetCore();
-     });
+     // Register the ASP.NET Core host.
+     options.UseAspNetCore();
+    });
 
 builder.Services.AddAuthentication(OpenIddictValidationAspNetCoreDefaults.AuthenticationScheme);
 

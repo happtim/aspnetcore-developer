@@ -8,7 +8,6 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using OpenIddict.Abstractions;
 using openiddictServer.Models;
-using Quartz;
 using static OpenIddict.Abstractions.OpenIddictConstants;
 
 namespace openiddictServer;
@@ -53,7 +52,6 @@ public class Startup
                 // Enable the token endpoint.
                 options
                     .SetTokenEndpointUris("connect/token");
-                    //.SetIntrospectionEndpointUris("connect/introspect");
 
                 // Enable the client credentials flow.
                 options.AllowClientCredentialsFlow();
@@ -63,6 +61,9 @@ public class Startup
                     .AddEphemeralEncryptionKey()
                     .AddEphemeralSigningKey()
                     .DisableAccessTokenEncryption();
+                
+                // Register scopes (permissions)
+                options.RegisterScopes("api1");
 
                 // Register the ASP.NET Core host and configure the ASP.NET Core-specific options.
                 options.UseAspNetCore()
@@ -99,7 +100,7 @@ public class Startup
         await context.Database.EnsureCreatedAsync();
         
         await RegisterApplicationsAsync(scope.ServiceProvider);
-        await RegisterScopesAsync(scope.ServiceProvider);
+        //await RegisterScopesAsync(scope.ServiceProvider);
 
         static async Task RegisterApplicationsAsync(IServiceProvider provider)
         {
@@ -145,8 +146,5 @@ public class Startup
                 });
             }
         }
-
-
-        
     }
 }

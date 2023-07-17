@@ -16,8 +16,8 @@ builder.Services.AddAuthentication("Bearer")
     .AddJwtBearer(options =>
     {
         options.Authority = "https://localhost:5001";
-        //options.TokenValidationParameters.ValidateAudience = false;
-        options.Audience = "resource_server_1";
+        options.TokenValidationParameters.ValidateAudience = false;
+        //options.Audience = "resource_server_1";
     });
 builder.Services.AddAuthorization(options =>
     options.AddPolicy("ApiScope", policy =>

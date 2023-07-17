@@ -15,8 +15,6 @@
     <PackageReference Include="Microsoft.EntityFrameworkCore.Sqlite" Version="7.0.5" />
     <PackageReference Include="OpenIddict.AspNetCore" Version="4.5.0" />
     <PackageReference Include="OpenIddict.EntityFrameworkCore" Version="4.5.0" />
-    <PackageReference Include="OpenIddict.Quartz" Version="4.5.0" />
-    <PackageReference Include="Quartz.Extensions.Hosting" Version="3.5.0" />
   </ItemGroup>
 
 </Project>
