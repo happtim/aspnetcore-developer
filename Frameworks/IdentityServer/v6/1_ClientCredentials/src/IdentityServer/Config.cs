@@ -29,7 +29,7 @@ public static class Config
                 {
                     new Secret("secret".Sha256())
                 },
-
+                //AccessTokenLifetime = 60,
                 // scopes that client has access to
                 AllowedScopes = { "api1" }
             }
