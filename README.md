@@ -15,6 +15,9 @@
   - Authentication
   - Authorization
   - identity
+  - identityServer 6.1.2
+  - openiddict 4.5.0
+  - identityModel 6.1.0
 - SOLID
 - ORM
   - Entity Framework Core
