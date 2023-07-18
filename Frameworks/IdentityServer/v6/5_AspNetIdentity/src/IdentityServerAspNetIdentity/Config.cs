@@ -28,6 +28,8 @@ public static class Config
             {
                 ClientId = "client",
                 ClientSecrets = { new Secret("secret".Sha256()) },
+                
+                //AccessTokenLifetime = 60,
 
                 AllowedGrantTypes = GrantTypes.ClientCredentials,
                 // scopes that client has access to
