@@ -57,8 +57,7 @@ await httpClient.GetStringAsync("https://api.github.com/").Dump("way1");
 //	- 封装处理终端点的所有逻辑。
 //- 与依赖注入(DI)一起使用，可以在应用程序中需要时进行注入。
 httpClient =  httpClientFactory.CreateClient("myClient");
-string url = null ;
-await httpClient.GetStringAsync(url).Dump("way2");
+await httpClient.GetStringAsync("").Dump("way2");
 
 
 //方法3 使用Typed HttpClient： 
