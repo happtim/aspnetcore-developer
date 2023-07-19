@@ -1,6 +1,6 @@
 <Query Kind="Program">
   <NuGetReference Version="3.0.1">Serilog</NuGetReference>
-  <NuGetReference Version="4.1.0">Serilog.Sinks.Console</NuGetReference>
+  <NuGetReference>Serilog.Sinks.Console</NuGetReference>
   <Namespace>Serilog</Namespace>
   <Namespace>Serilog.Core</Namespace>
   <Namespace>Serilog.Events</Namespace>
