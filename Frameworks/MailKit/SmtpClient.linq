@@ -9,6 +9,7 @@
 </Query>
 
 
+//%APPDATA%\Microsoft\UserSecrets\<user_secrets_id>\secrets.json
 var config  = new ConfigurationBuilder()
 	.AddUserSecrets("linqpad-9013DB32-D1F9-400A-9057-4CFF2B283D2D")
 	.Build();
