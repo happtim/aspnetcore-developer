@@ -1,8 +1,17 @@
 <Query Kind="Statements">
   <NuGetReference Version="4.1.0">MailKit</NuGetReference>
+  <NuGetReference>Microsoft.Extensions.Configuration.UserSecrets</NuGetReference>
+  <NuGetReference>Microsoft.Extensions.DependencyInjection</NuGetReference>
   <Namespace>MailKit.Net.Smtp</Namespace>
+  <Namespace>Microsoft.Extensions.Configuration</Namespace>
+  <Namespace>Microsoft.Extensions.DependencyInjection</Namespace>
   <Namespace>MimeKit</Namespace>
 </Query>
+
+
+var config  = new ConfigurationBuilder()
+	.AddUserSecrets("linqpad-9013DB32-D1F9-400A-9057-4CFF2B283D2D")
+	.Build();
 
 string smtpServer = "gz-smtp.qcloudmail.com";
 int smtpPort = 465;
@@ -13,8 +22,7 @@ string subject = "Hello, World!";
 string body = "This is the body of the email.";
 
 string username = "no-reply@mail.deng-shen.com";
-string password = "password";
-
+string password = config["SMTPPassword"];
 
 // 创建邮件对象
 var message = new MimeMessage();
