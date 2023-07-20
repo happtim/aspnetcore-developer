@@ -74,7 +74,7 @@ var httpClient =  httpClientFactory.CreateClient("wenxinworkshop");
 var response = await httpClient.PostAsJsonAsync("v1/wenxinworkshop/chat/completions", 
 	new ChatRequest { 
 		Messages = new List<ChatRequestMessage >() { 
-			new ChatRequestMessage  {Role = ChatRole.ChatRoleUser , Content = "吃了过期的东西，肚子难受，想吐怎么办"}}
+			new ChatRequestMessage  {Role = ChatRole.ChatRoleUser , Content = "介绍一下你自己"}}
 		});
 
 var reply = await response.Content.ReadAsStringAsync();
@@ -107,7 +107,7 @@ public class ChatRequestMessage
 {
 	[JsonPropertyName("role")]
 	public string Role { get; set; } //当前支持以下： user: 表示用户 assistant: 表示对话助手
-	[JsonPropertyName("content1")]
+	[JsonPropertyName("content")]
 	public string Content {get;set;} //对话内容，不能为空
 }
 
@@ -122,9 +122,9 @@ public class ChatResponse
 	[JsonPropertyName("sentence_id")]
 	public int SentenceID {get;set;} //表示当前子句的序号。只有在流式接口模式下会返回该字段
 	[JsonPropertyName("is_end")]
-	public int IsEnd {get;set; } //表示当前子句是否是最后一句。只有在流式接口模式下会返回该字段
+	public bool IsEnd {get;set; } //表示当前子句是否是最后一句。只有在流式接口模式下会返回该字段
 	[JsonPropertyName("is_truncated")]
-	public int IsTruncated {get;set;}//当前生成的结果是否被截断
+	public bool IsTruncated {get;set;}//当前生成的结果是否被截断
 	[JsonPropertyName("result")]
 	public string Result { get; set; } //对话返回结果
 	[JsonPropertyName("need_clear_history")]
