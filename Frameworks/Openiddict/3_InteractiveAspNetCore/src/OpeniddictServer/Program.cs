@@ -66,8 +66,8 @@ builder.Services.AddOpenIddict()
 
         // Register the signing and encryption credentials.
         options
-            .AddEphemeralEncryptionKey()
-            .AddEphemeralSigningKey()
+            .AddDevelopmentEncryptionCertificate()
+            .AddDevelopmentSigningCertificate()
             .DisableAccessTokenEncryption();
 
         // Register the ASP.NET Core host and configure the ASP.NET Core-specific options.

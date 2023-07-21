@@ -41,6 +41,16 @@ public class UserinfoController : Controller
             [Claims.Subject] = await _userManager.GetUserIdAsync(user)
         };
 
+        if (User.HasScope(Scopes.Profile))
+        {
+            var userClaims =await _userManager.GetClaimsAsync(user);
+            claims[Claims.Name] = await _userManager.GetUserNameAsync(user);
+            claims[Claims.GivenName] = userClaims.FirstOrDefault(c => c.Type == Claims.GivenName)?.Value;
+            claims[Claims.FamilyName] = userClaims.FirstOrDefault(c => c.Type == Claims.FamilyName)?.Value;
+            claims[Claims.Website] = userClaims.FirstOrDefault(c => c.Type == Claims.Website)?.Value;
+            claims["location"] = userClaims.FirstOrDefault(c => c.Type == "location")?.Value;
+        }
+
         if (User.HasScope(Scopes.Email))
         {
             claims[Claims.Email] = await _userManager.GetEmailAsync(user);

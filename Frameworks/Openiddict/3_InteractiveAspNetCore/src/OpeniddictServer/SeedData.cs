@@ -69,7 +69,7 @@ public class SeedData
                     Permissions =
                     {
                         Permissions.Endpoints.Token,
-                        //Permissions.Endpoints.Logout,
+                        Permissions.Endpoints.Logout,
                         Permissions.Endpoints.Authorization,
                         
                         Permissions.GrantTypes.AuthorizationCode,

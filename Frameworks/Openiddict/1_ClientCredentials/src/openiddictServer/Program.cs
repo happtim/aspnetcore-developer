@@ -39,8 +39,8 @@ builder.Services.AddOpenIddict()
 
         // Register the signing and encryption credentials.
         options
-            .AddEphemeralEncryptionKey()
-            .AddEphemeralSigningKey()
+            .AddDevelopmentEncryptionCertificate()
+            .AddDevelopmentSigningCertificate()
             .DisableAccessTokenEncryption();
         
         // Register scopes (permissions)

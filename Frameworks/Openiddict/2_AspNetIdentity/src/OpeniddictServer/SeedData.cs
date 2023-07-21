@@ -44,40 +44,6 @@ public class SeedData
                     }
                 });
             }
-            
-            // interactive ASP.NET Core Web App
-            if (await manager.FindByClientIdAsync("web") == null)
-            {
-                await manager.CreateAsync(new OpenIddictApplicationDescriptor
-                {
-                    ClientId = "web",
-                    ClientSecret = "secret",
-                    DisplayName = "My web application",
-                    
-                    RedirectUris =
-                    {
-                        new Uri("https://localhost:5002/signin-oidc")
-                    },
-                    
-                    PostLogoutRedirectUris =
-                    {
-                        new Uri("https://localhost:5002/signout-callback-oidc")
-                    },
-                    
-                    Permissions =
-                    {
-                        Permissions.Endpoints.Token,
-                        //Permissions.Endpoints.Logout,
-                        Permissions.Endpoints.Authorization,
-                        
-                        Permissions.GrantTypes.AuthorizationCode,
-                        //ResponseTypes.Code,
-                        
-                        Permissions.Scopes.Profile,
-                        Permissions.Prefixes.Scope + "verification"
-                    }
-                });
-            }
         }
         
         static async Task RegisterScopesAsync(IServiceProvider provider)

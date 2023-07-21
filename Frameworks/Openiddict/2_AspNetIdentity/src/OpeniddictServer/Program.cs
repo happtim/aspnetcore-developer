@@ -49,34 +49,26 @@ builder.Services.AddOpenIddict()
     // Register the OpenIddict server components.
     .AddServer(options =>
     {
-        // Enable the authorization, logout, token and userinfo endpoints.
-        options
-            //.SetAuthorizationEndpointUris("connect/authorize")
-            //.SetLogoutEndpointUris("connect/logout")
-            .SetTokenEndpointUris("connect/token");
-            //.SetUserinfoEndpointUris("connect/userinfo");
+        // Enable the token  endpoints.
+        options.SetTokenEndpointUris("connect/token");
         
         // Mark the "email", "profile" and "roles" scopes as supported scopes.
         //options.RegisterScopes(Scopes.Email, Scopes.Profile, Scopes.Roles);
+
+        // Register scopes (permissions)
+        options.RegisterScopes("api1");
 
         // Enable the client credentials flow.
         options.AllowClientCredentialsFlow();
 
         // Register the signing and encryption credentials.
         options
-            .AddEphemeralEncryptionKey()
-            .AddEphemeralSigningKey()
+            .AddDevelopmentEncryptionCertificate()
+            .AddDevelopmentSigningCertificate()
             .DisableAccessTokenEncryption();
         
-        // Register scopes (permissions)
-        options.RegisterScopes("api1");
-
         // Register the ASP.NET Core host and configure the ASP.NET Core-specific options.
-        options.UseAspNetCore()
-            .EnableAuthorizationEndpointPassthrough()
-            .EnableLogoutEndpointPassthrough()
-            .EnableTokenEndpointPassthrough()
-            .EnableUserinfoEndpointPassthrough();
+        options.UseAspNetCore().EnableTokenEndpointPassthrough();
     });
 ;
 

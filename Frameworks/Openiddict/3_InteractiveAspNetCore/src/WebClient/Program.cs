@@ -28,6 +28,8 @@ builder.Services.AddAuthentication(options =>
         options.Scope.Add("profile");
         options.Scope.Add("verification");
         options.ClaimActions.MapJsonKey("email_verified", "email_verified");
+        options.ClaimActions.MapJsonKey("location","location");
+        options.ClaimActions.MapJsonKey("website","website");
         options.GetClaimsFromUserInfoEndpoint = true;
         
         options.SaveTokens = true;
