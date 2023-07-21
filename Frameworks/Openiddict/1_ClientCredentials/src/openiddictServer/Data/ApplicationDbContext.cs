@@ -1,6 +1,6 @@
 ﻿using Microsoft.EntityFrameworkCore;
 
-namespace openiddictServer.Models;
+namespace OpeniddictServer.Data;
 
 public class ApplicationDbContext : DbContext
 {
