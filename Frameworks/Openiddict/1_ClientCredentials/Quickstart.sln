@@ -7,7 +7,7 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "OpeniddictServer", "src\Ope
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Api", "src\Api\Api.csproj", "{DFAB9F4C-75CC-43E1-BAC6-0ABFC8CDBC01}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Api2", "src\Api2\Api2.csproj", "{DBBDE389-523F-4F8D-875B-BF074413BDA7}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ApiOpenIddict", "src\ApiOpenIddict\ApiOpenIddict.csproj", "{DBBDE389-523F-4F8D-875B-BF074413BDA7}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Client", "src\Client\Client.csproj", "{C89F0C59-9D23-40D6-BA6B-4F062DCD92BE}"
 EndProject

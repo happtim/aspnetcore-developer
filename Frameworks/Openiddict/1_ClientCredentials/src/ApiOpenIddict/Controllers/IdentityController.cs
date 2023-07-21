@@ -4,7 +4,7 @@
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Authorization;
 
-namespace Api2.Controllers;
+namespace ApiOpenIddict.Controllers;
 
 [Route("identity")]
 [Authorize]
