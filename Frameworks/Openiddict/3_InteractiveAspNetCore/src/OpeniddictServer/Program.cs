@@ -58,7 +58,7 @@ builder.Services.AddOpenIddict()
             .SetUserinfoEndpointUris("connect/userinfo");
         
         // Mark the "email", "profile" and "roles" scopes as supported scopes.
-        options.RegisterScopes(Scopes.Email, Scopes.Profile,"api1","verification");
+        options.RegisterScopes(Scopes.Email, Scopes.Profile, "api1","verification" );
 
         // Enable the client credentials and authorization code flow.
         options.AllowClientCredentialsFlow()

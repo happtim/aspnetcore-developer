@@ -67,6 +67,12 @@ public class UserinfoController : Controller
         {
             claims[Claims.Role] = await _userManager.GetRolesAsync(user);
         }
+        
+        if(User.HasScope("verification"))
+        {
+            claims[Claims.Email] = await _userManager.GetEmailAsync(user);
+            claims[Claims.EmailVerified] = await _userManager.IsEmailConfirmedAsync(user);
+        }
 
         // Note: the complete list of standard claims supported by the OpenID Connect specification
         // can be found here: http://openid.net/specs/openid-connect-core-1_0.html#StandardClaims
