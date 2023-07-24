@@ -3,6 +3,8 @@
 
 //using OpenIddict.Validation.AspNetCore;
 
+using IdentityModel.AspNetCore.AccessTokenValidation;
+
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
@@ -20,12 +22,14 @@ builder.Services.AddAuthentication("Bearer")
         //options.Audience = "resource_server_1";
     });
 builder.Services.AddAuthorization(options =>
-    options.AddPolicy("ApiResource", policy =>
+    options.AddPolicy("ApiScope", policy =>
     {
         policy.RequireAuthenticatedUser();
-        policy.RequireClaim("aud", "resource_server_1");
+        policy.RequireClaim("scope", "api1");
     })
 );
+
+builder.Services.AddScopeTransformation();
 
 var app = builder.Build();
 
@@ -41,6 +45,6 @@ app.UseHttpsRedirection();
 app.UseAuthentication();
 app.UseAuthorization();
 
-app.MapControllers().RequireAuthorization("ApiResource");
+app.MapControllers().RequireAuthorization("ApiScope");
 
 app.Run();

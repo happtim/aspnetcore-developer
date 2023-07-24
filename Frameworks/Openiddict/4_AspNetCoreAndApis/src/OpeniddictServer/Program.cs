@@ -1,3 +1,4 @@
+using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using OpenIddict.Server;
@@ -56,10 +57,11 @@ builder.Services.AddOpenIddict()
             .SetAuthorizationEndpointUris("connect/authorize")
             .SetLogoutEndpointUris("connect/logout")
             .SetTokenEndpointUris("connect/token")
+            .SetIntrospectionEndpointUris("connect/introspect")
             .SetUserinfoEndpointUris("connect/userinfo");
         
         // Mark the "email", "profile" and "roles" scopes as supported scopes.
-        options.RegisterScopes(Scopes.Email, Scopes.Profile, "api1","verification" );
+        options.RegisterScopes(Scopes.Email, Scopes.Profile, "api1", "verification" );
 
         // Enable the client credentials and authorization code flow.
         options.AllowClientCredentialsFlow()
@@ -77,7 +79,8 @@ builder.Services.AddOpenIddict()
             .EnableAuthorizationEndpointPassthrough()
             .EnableLogoutEndpointPassthrough()
             .EnableTokenEndpointPassthrough()
-            .EnableUserinfoEndpointPassthrough();
+            .EnableUserinfoEndpointPassthrough()
+            .EnableStatusCodePagesIntegration();
     });
 ;
 

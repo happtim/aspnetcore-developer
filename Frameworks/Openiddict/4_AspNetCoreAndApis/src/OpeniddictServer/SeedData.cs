@@ -55,7 +55,7 @@ public class SeedData
                     DisplayName = "My web application",
                     
                     ConsentType = ConsentTypes.Implicit,
-                    
+
                     RedirectUris =
                     {
                         new Uri("https://localhost:5002/signin-oidc")
@@ -71,6 +71,7 @@ public class SeedData
                         Permissions.Endpoints.Token,
                         Permissions.Endpoints.Logout,
                         Permissions.Endpoints.Authorization,
+                        Permissions.Endpoints.Introspection,
                         
                         Permissions.GrantTypes.AuthorizationCode,
                         Permissions.GrantTypes.RefreshToken,
@@ -103,7 +104,7 @@ public class SeedData
                     {
                         //Assign the aud value to the resource parameter.
                         "resource_server_1",
-                        "resource_server_2"
+                        "web"
                     }
                 });
             }

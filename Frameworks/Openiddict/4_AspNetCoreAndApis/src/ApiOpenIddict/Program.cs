@@ -3,6 +3,7 @@
 
 //using OpenIddict.Validation.AspNetCore;
 
+using IdentityModel.AspNetCore.AccessTokenValidation;
 using OpenIddict.Validation.AspNetCore;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -20,13 +21,14 @@ builder.Services.AddOpenIddict()
      // Note: the validation handler uses OpenID Connect discovery
      // to retrieve the address of the introspection endpoint.
      options.SetIssuer("https://localhost:5001/");
+     options.AddAudiences("web");
      
-     // options.UseIntrospection()
-     //     .SetClientId("web")
-     //     .SetClientSecret("secret");
+     // Configure the validation handler to use introspection and register the client
+     // credentials used when communicating with the remote introspection endpoint.
+     options.UseIntrospection()
+         .SetClientId("web")
+         .SetClientSecret("secret");
      
-     options.AddAudiences("resource_server_2");
-
      // Register the System.Net.Http integration.
      options.UseSystemNetHttp();
 
@@ -37,12 +39,14 @@ builder.Services.AddOpenIddict()
 builder.Services.AddAuthentication(OpenIddictValidationAspNetCoreDefaults.AuthenticationScheme);
 
 builder.Services.AddAuthorization(options =>
-    options.AddPolicy("ApiResource", policy =>
+    options.AddPolicy("ApiScope", policy =>
     {
         policy.RequireAuthenticatedUser();
-        policy.RequireClaim("aud", "resource_server_2");
+        policy.RequireClaim("scope", "api1");
     })
 );
+
+builder.Services.AddScopeTransformation();
 
 var app = builder.Build();
 
@@ -58,6 +62,6 @@ app.UseHttpsRedirection();
 app.UseAuthentication();
 app.UseAuthorization();
 
-app.MapControllers().RequireAuthorization("ApiResource");
+app.MapControllers().RequireAuthorization("ApiScope");
 
 app.Run();
