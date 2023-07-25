@@ -10,7 +10,7 @@
             <AuthorizeView>
                 <Authorized>
                     <strong>Hello, @context.User.Identity.Name!</strong>
-                    <form method="post" action="logout">
+                    <form method="get" action="logout">
                         <AntiForgeryTokenInput/>
                         <button class="btn btn-link" type="submit">Sign out</button>
                     </form>

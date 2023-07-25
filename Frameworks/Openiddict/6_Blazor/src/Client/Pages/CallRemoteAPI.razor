@@ -1,5 +1,6 @@
 ﻿@page "/callremoteapi"
 @inject HttpClient Http
+@inject IHttpClientFactory httpClientFactory
 @using System.Text.Json;
 
 @if (@_json == string.Empty)
@@ -17,7 +18,8 @@ else{
 
     protected override async Task OnInitializedAsync()
     {
-        var content = await Http.GetStringAsync("/remote/identity");
+        var client = httpClientFactory.CreateClient("authorizedClient");
+        var content = await client.GetStringAsync("/remote/identity");
         var parsed = JsonDocument.Parse(content);
         
         var formatted = JsonSerializer.Serialize(parsed, new JsonSerializerOptions { WriteIndented = true });

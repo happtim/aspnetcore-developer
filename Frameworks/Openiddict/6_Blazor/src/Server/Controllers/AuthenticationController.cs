@@ -20,7 +20,7 @@ public class AuthenticationController : Controller
         return Challenge(properties);
     }
 
-    [HttpPost("~/logout"), ValidateAntiForgeryToken]
+    [HttpGet("~/logout")/*ValidateAntiForgeryToken*/]
     public async Task<ActionResult> LogOut(string returnUrl)
     {
         // Retrieve the identity stored in the local authentication cookie. If it's not available,

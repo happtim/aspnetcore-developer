@@ -1,6 +1,7 @@
 ﻿@page "/fetchdata"
 @using BlazorClient.Shared
 @inject HttpClient Http
+@inject IHttpClientFactory httpClientFactory
 
 <PageTitle>Weather forecast</PageTitle>
 
@@ -42,6 +43,7 @@ else
 
     protected override async Task OnInitializedAsync()
     {
-        forecasts = await Http.GetFromJsonAsync<WeatherForecast[]>("WeatherForecast");
+        var client = httpClientFactory.CreateClient("authorizedClient");
+        forecasts = await client.GetFromJsonAsync<WeatherForecast[]>("WeatherForecast");
     }
 }
