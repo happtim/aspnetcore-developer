@@ -18,8 +18,9 @@ else{
 
     protected override async Task OnInitializedAsync()
     {
-        var client = httpClientFactory.CreateClient("authorizedClient");
-        var content = await client.GetStringAsync("/remote/identity");
+        var publicApiClient = httpClientFactory.CreateClient();
+        var protectedApiClient = httpClientFactory.CreateClient("authorizedClient");
+        var content = await protectedApiClient.GetStringAsync("/remote/identity");
         var parsed = JsonDocument.Parse(content);
         
         var formatted = JsonSerializer.Serialize(parsed, new JsonSerializerOptions { WriteIndented = true });

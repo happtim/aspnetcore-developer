@@ -43,7 +43,8 @@ else
 
     protected override async Task OnInitializedAsync()
     {
-        var client = httpClientFactory.CreateClient("authorizedClient");
-        forecasts = await client.GetFromJsonAsync<WeatherForecast[]>("WeatherForecast");
+        var publicApiClient = httpClientFactory.CreateClient();
+        var protectedApiClient = httpClientFactory.CreateClient("authorizedClient");
+        forecasts = await protectedApiClient.GetFromJsonAsync<WeatherForecast[]>("WeatherForecast");
     }
 }
