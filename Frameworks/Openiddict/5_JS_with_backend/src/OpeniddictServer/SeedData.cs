@@ -85,7 +85,7 @@ public class SeedData
                 });
             }
             
-            // JavaScript BFF client
+            // BFF client
             if (await manager.FindByClientIdAsync("bff") == null)
             {
                 await manager.CreateAsync(new OpenIddictApplicationDescriptor

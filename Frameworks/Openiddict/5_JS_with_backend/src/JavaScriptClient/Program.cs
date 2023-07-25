@@ -4,16 +4,13 @@ using System.Security.Claims;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Authorization;
-using OpenIddict.Abstractions;
 using Yarp.ReverseProxy.Transforms;
 
 var builder = WebApplication.CreateBuilder(args);
 
-var configuration = builder.Configuration;
 JwtSecurityTokenHandler.DefaultMapInboundClaims = false;
-builder.Services.AddAuthorization();
-builder.Services.AddControllers();
 
+builder.Services.AddControllers();
 builder.Services
     .AddAuthentication(options =>
     {
@@ -42,7 +39,7 @@ builder.Services.AddAuthorization(options => options.AddPolicy("CookieAuthentica
 }));
 
 builder.Services.AddReverseProxy()
-    .LoadFromConfig(configuration.GetSection("ReverseProxy"))
+    .LoadFromConfig(builder.Configuration.GetSection("ReverseProxy"))
     .AddTransforms(builder => builder.AddRequestTransform(async context =>
     {
         // Attach the access token retrieved from the authentication cookie.
@@ -55,7 +52,7 @@ builder.Services.AddReverseProxy()
             scheme: CookieAuthenticationDefaults.AuthenticationScheme,
             tokenName: "access_token");
 
-        context.ProxyRequest.Headers.Authorization = new AuthenticationHeaderValue(OpenIddictConstants.Schemes.Bearer, token);
+        context.ProxyRequest.Headers.Authorization = new AuthenticationHeaderValue("Bearer", token);
     }));
 
 var app = builder.Build();
