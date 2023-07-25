@@ -1,0 +1,28 @@
+﻿@page "/callremoteapi"
+@inject HttpClient Http
+@using System.Text.Json;
+
+@if (@_json == string.Empty)
+{
+    <p><em>Loading...</em></p>
+}
+else{
+    <pre>@_json</pre>
+}
+
+
+@code{
+    
+    private string _json = string.Empty;
+
+    protected override async Task OnInitializedAsync()
+    {
+        var content = await Http.GetStringAsync("/remote/identity");
+        var parsed = JsonDocument.Parse(content);
+        
+        var formatted = JsonSerializer.Serialize(parsed, new JsonSerializerOptions { WriteIndented = true });
+
+        _json = formatted;
+    }
+
+}
