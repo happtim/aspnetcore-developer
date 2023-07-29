@@ -1,0 +1,11 @@
+﻿GET https://localhost:5001/run-workflow
+
+### 
+
+GET https://localhost:5001/run-workflow2
+
+
+###
+
+
+GET https://localhost:5001/workflows/run-workflow3

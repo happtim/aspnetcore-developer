@@ -1,0 +1,2 @@
+﻿GET https://localhost:5001/elsa/api/workflow-definitions
+Authorization: ApiKey 00000000-0000-0000-0000-000000000000
