@@ -1,5 +1,5 @@
 <Query Kind="Statements">
-  <NuGetReference>UiPath.Workflow</NuGetReference>
+  <NuGetReference Version="6.0.3">UiPath.Workflow</NuGetReference>
   <Namespace>System.Activities</Namespace>
   <Namespace>System.Activities.Statements</Namespace>
   <Namespace>System.Activities.Expressions</Namespace>
