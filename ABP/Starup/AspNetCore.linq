@@ -1,13 +1,13 @@
 <Query Kind="Statements">
-  <NuGetReference>Volo.Abp.AspNetCore</NuGetReference>
-  <NuGetReference>Volo.Abp.Autofac</NuGetReference>
+  <NuGetReference Version="6.0.3">Volo.Abp.AspNetCore</NuGetReference>
+  <NuGetReference Version="6.0.3">Volo.Abp.Autofac</NuGetReference>
   <Namespace>Microsoft.AspNetCore.Builder</Namespace>
+  <Namespace>Microsoft.Extensions.DependencyInjection</Namespace>
   <Namespace>Microsoft.Extensions.Hosting</Namespace>
   <Namespace>Volo.Abp</Namespace>
-  <Namespace>Volo.Abp.Autofac</Namespace>
-  <Namespace>Volo.Abp.Modularity</Namespace>
   <Namespace>Volo.Abp.AspNetCore</Namespace>
-  <Namespace>Microsoft.Extensions.DependencyInjection</Namespace>
+  <Namespace>Volo.Abp.Modularity</Namespace>
+  <Namespace>Volo.Abp.Autofac</Namespace>
   <IncludeAspNet>true</IncludeAspNet>
 </Query>
 
