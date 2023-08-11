@@ -29,6 +29,16 @@ myDelegate = name => Console.WriteLine(name);
 myDelegate("hello world 4");
 
 
+//5. Refect
+var methodInfo = typeof(SampleClass).GetMethod(nameof(SampleClass.InstanceMethod));
+myDelegate = (MyDelegate)Delegate.CreateDelegate(typeof(MyDelegate),new SampleClass(),methodInfo);
+myDelegate("hello world 5");
+
+methodInfo = typeof(SampleClass).GetMethod(nameof(SampleClass.StaticMethod));
+myDelegate = (MyDelegate)Delegate.CreateDelegate(typeof(MyDelegate), methodInfo);
+myDelegate("hello world 5-1");
+
+
 static void MyMethod(string message)
 {
 	Console.WriteLine(message);
