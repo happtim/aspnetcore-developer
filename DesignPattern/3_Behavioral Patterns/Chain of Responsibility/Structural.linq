@@ -1,6 +1,7 @@
 <Query Kind="Statements" />
 
 //DotNetty PipeLine
+//AspNetCore PipeLine
 
 Handler h1 = new ConcreteHandler1();
 Handler h2 = new ConcreteHandler2();
