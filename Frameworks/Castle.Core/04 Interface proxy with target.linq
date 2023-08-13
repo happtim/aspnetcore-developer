@@ -9,7 +9,6 @@
 var rocket = new Rocket();
 
 var proxy = new ProxyGenerator().CreateInterfaceProxyWithTarget<IRocket>(rocket, new LoggingInterceptor());
-new ProxyGenerator().CreateInterfaceProxyWithTargetInterface
 proxy.Launch(5);
 
 public interface IRocket
