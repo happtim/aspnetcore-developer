@@ -37,7 +37,20 @@ using (var channel = connection.CreateModel())
 
 		// Note: it is possible to access the channel via
 		//       ((EventingBasicConsumer)sender).Model here
+		
+		//multiple: 一个布尔值，表示是否拒绝多个消息。
+		//	如果设置为true，那么将拒绝该交付标签之前收到的所有未确认消息。
+		//	如果设置为false，那么只拒绝该交付标签对应的消息。
+		
+		//确认接受消息
 		channel.BasicAck(deliveryTag: ea.DeliveryTag, multiple: false);
+		
+		//要使用Channel.BasicNack方法进行消息重新投递和拒绝 
+		
+		//requeue: 一个布尔值，表示是否重新将消息放回队列。
+		//	如果设置为true，那么消息将被重新投递到队列中。
+		//	如果设置为false，那么消息将从队列中删除。
+		//channel.BasicNack( ea.DeliveryTag, multiple:false, requeue:false);
 	};
 	
 	//如果一个Worker正在执行，结果程序挂了，那么正在执行的任务就丢失了。
