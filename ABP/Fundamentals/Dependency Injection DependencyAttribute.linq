@@ -50,6 +50,7 @@ public class Demo2Module : AbpModule
 	}
 }
 
+//ExposeServices 是类本身他的暴露接口类型
 [Dependency(TryRegister = true)]
 [ExposeServices(typeof(IHelloWorldService), typeof(HelloWorldService))]
 public class HelloWorldService: IHelloWorldService,ITransientDependency
