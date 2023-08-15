@@ -1,5 +1,5 @@
 <Query Kind="Statements">
-  <NuGetReference>RabbitMQ.Client</NuGetReference>
+  <NuGetReference Version="6.5.0">RabbitMQ.Client</NuGetReference>
   <Namespace>RabbitMQ.Client</Namespace>
   <Namespace>System.Collections.Concurrent</Namespace>
 </Query>

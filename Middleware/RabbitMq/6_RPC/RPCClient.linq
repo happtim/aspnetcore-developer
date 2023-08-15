@@ -1,5 +1,5 @@
 <Query Kind="Program">
-  <NuGetReference>RabbitMQ.Client</NuGetReference>
+  <NuGetReference Version="6.5.0">RabbitMQ.Client</NuGetReference>
   <Namespace>RabbitMQ.Client</Namespace>
   <Namespace>RabbitMQ.Client.Events</Namespace>
   <Namespace>System.Collections.Concurrent</Namespace>
