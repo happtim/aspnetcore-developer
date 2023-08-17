@@ -47,11 +47,6 @@ public class Pipeline
 		});
 	}
 	
-	public Pipeline Use(Func<RequestDelegate, RequestDelegate> middleware)
-	{
-		_middlewares.Add(middleware);
-		return this;
-	}
 
 	public async Task Run(HttpContext context)
 	{
