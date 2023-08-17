@@ -14,15 +14,31 @@ serviceCollection.AddTransient<IOtherService, OtherService>();
 
 // Build the service provider and get an instance of the service
 var serviceProvider = serviceCollection.BuildServiceProvider();
+
+//如果没有注册会返回null
 var myService = serviceProvider.GetService<IMyService>();
+
+//如果没有注册会抛异常
+try
+{
+	var myService2 = serviceProvider.GetRequiredService<IMyService2>();
+	
+}catch(Exception ex)
+{
+	ex.Message.Dump();
+}
+
 
 // Use the service
 myService.DoSomething();
 
-
 public interface IMyService
 {
 	void DoSomething();
+}
+
+public interface IMyService2 : IMyService
+{
 }
 
 public class MyService : IMyService
