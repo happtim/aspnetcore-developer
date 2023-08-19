@@ -40,7 +40,7 @@
    - DotNetty 0.7.5
 - 后台任务调度
   - 原生后台服务
-  - HangFire
+  - HangFire 1.8.5
 - 对象映射
   - AutoMapper 12.0.1
 - 微服务
@@ -50,7 +50,7 @@
      - MassTransit
    - 容器化
      - Docker
-- 加分项
+- 其他
     - Fluentvalidation 11.5.2
     - MailKit 4.1.0
     - MediatR 12.0.1
