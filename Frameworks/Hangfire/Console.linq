@@ -1,6 +1,6 @@
 <Query Kind="Statements">
   <NuGetReference Version="1.8.5">Hangfire</NuGetReference>
-  <NuGetReference Version="0.5.1">Hangfire.InMemory</NuGetReference>
+  <NuGetReference>Hangfire.InMemory</NuGetReference>
   <Namespace>Hangfire</Namespace>
 </Query>
 

@@ -1,0 +1,19 @@
+<Query Kind="Statements">
+  <NuGetReference Version="1.8.5">Hangfire</NuGetReference>
+  <NuGetReference>Hangfire.InMemory</NuGetReference>
+  <Namespace>Hangfire</Namespace>
+</Query>
+
+GlobalConfiguration.Configuration
+			   .SetDataCompatibilityLevel(CompatibilityLevel.Version_180)
+			   .UseColouredConsoleLogProvider()
+			   .UseSimpleAssemblyNameTypeSerializer()
+			   .UseRecommendedSerializerSettings()
+			   .UseInMemoryStorage();
+
+BackgroundJob.Enqueue(() => Console.WriteLine("Hello, {0}!", "world"));
+
+using (var server = new BackgroundJobServer())
+{
+	Console.ReadLine();
+}

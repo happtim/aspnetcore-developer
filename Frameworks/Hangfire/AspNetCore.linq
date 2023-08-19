@@ -1,6 +1,6 @@
 <Query Kind="Statements">
   <NuGetReference Version="1.8.5">Hangfire.AspNetCore</NuGetReference>
-  <NuGetReference Version="0.5.1">Hangfire.InMemory</NuGetReference>
+  <NuGetReference>Hangfire.InMemory</NuGetReference>
   <Namespace>Hangfire</Namespace>
   <Namespace>Microsoft.AspNetCore.Builder</Namespace>
   <Namespace>Microsoft.Extensions.DependencyInjection</Namespace>
