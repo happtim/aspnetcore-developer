@@ -1,0 +1,14 @@
+Include.linq
+Case-Insensitive.linq
+Customize_Individual_Property.linq
+Camel_Case.linq
+Custom_Property_Naming_Policy.linq
+Camel_Case_Dictionary_Keys.linq
+Enums_As_Strings.linq
+Order_Of_Serialized_Properties.linq
+Ignore_Individual_Properties.linq
+Ignore_Properties_Condition.linq
+Ignore_Readonly_Properties.linq
+Ignore_Null_Value_Properties.linq
+Ignore_Default_Value_Properties.linq
+WeatherForecast.linq
