@@ -1,29 +1,10 @@
 <Query Kind="Statements">
   <NuGetReference Version="6.0.3">Volo.Abp.Core</NuGetReference>
-  <Namespace>Volo.Abp</Namespace>
+  <Namespace>Microsoft.Extensions.DependencyInjection</Namespace>
   <Namespace>Volo.Abp.Modularity</Namespace>
   <Namespace>System.Threading.Tasks</Namespace>
-  <Namespace>Microsoft.Extensions.DependencyInjection</Namespace>
+  <Namespace>Volo.Abp</Namespace>
 </Query>
-
-// 1: Create the ABP application container
-using var application = await AbpApplicationFactory.CreateAsync<DemoModule>();
-
-// 2: Initialize/start the ABP Framework (and all the modules)
-await application.InitializeAsync();
-
-Console.WriteLine("ABP Framework has been started...");
-
-// 3: Stop the ABP Framework (and all the modules)
-await application.ShutdownAsync();
-
-public class DemoModule : AbpModule
-{
-	public override void ConfigureServices(ServiceConfigurationContext context)
-	{
-		Console.WriteLine("DemoModule Configuring");
-	}
-}
 
 public abstract class AbpApplicationBase : IAbpApplication
 {
@@ -50,7 +31,7 @@ public abstract class AbpApplicationBase : IAbpApplication
 		//PreConfigureServices
 		foreach (var module in Modules.Where(m => m.Instance is IPreConfigureServices))
 		{
-			await((IPreConfigureServices)module.Instance).PreConfigureServicesAsync(context);
+			await ((IPreConfigureServices)module.Instance).PreConfigureServicesAsync(context);
 		}
 
 		var assemblies = new HashSet<Assembly>();
@@ -78,7 +59,7 @@ public abstract class AbpApplicationBase : IAbpApplication
 		//PostConfigureServices
 		foreach (var module in Modules.Where(m => m.Instance is IPostConfigureServices))
 		{
-			await((IPostConfigureServices)module.Instance).PostConfigureServicesAsync(context);
+			await ((IPostConfigureServices)module.Instance).PostConfigureServicesAsync(context);
 		}
 	}
 
