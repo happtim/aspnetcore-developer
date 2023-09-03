@@ -1,0 +1,19 @@
+﻿@namespace MudTheme.Pages.Dashboard.Analysis
+@inherits MudComponentBase
+
+<div class="d-inline-block">
+    <span>@ChildContent</span>
+
+    <span class="" >
+        @if (Flag == "up")
+        {
+            <MudIcon Style="@($"color:{Colors.Red.Default};font-size:14px;")" ViewBox="0 -5 24 24" Icon="@Icons.Material.Filled.ArrowDropUp" />
+        }
+        else
+        {
+            <MudIcon Style="@($"color:{Colors.Green.Default};font-size:14px;")" ViewBox="0 -5 24 24" Icon="@Icons.Material.Filled.ArrowDropDown" />
+        }
+    </span>
+
+
+</div>

@@ -1,0 +1,69 @@
+﻿@page "/"
+
+<MudGrid>
+
+    <MudItem xs="3">
+        <ChartCard Title="Total Sales"
+                   Total="$ 126,560"
+                   ContentHeight="46">
+            <ChildContent>
+                <Trend Flag="up">
+                    Wow Change
+                    <span class="ml-2">12%</span>
+                </Trend>
+                <Trend Flag="down">
+                    DoD Change
+                    <span class="ml-2">11%</span>
+                </Trend>
+            </ChildContent>
+            <Footer>
+                <Field Label="Daily Sale" Value="$12,423" />
+            </Footer>
+        </ChartCard>
+    </MudItem>
+
+    <MudItem xs="3">
+        <ChartCard Title="Visits"
+                    Total="8846"
+                    ContentHeight="46">
+            <ChildContent>
+                <MiniArea />
+            </ChildContent>
+            <Footer>
+                <Field Label="Daily Visits" Value="1243" />
+            </Footer>
+        </ChartCard>
+    </MudItem>
+
+    <MudItem xs="3">
+        <ChartCard Title="Payments"
+                Total="6560"
+                ContentHeight="46">
+            <ChildContent>
+                <MiniBar />
+            </ChildContent>
+            <Footer>
+                <Field Label="Conversion Rate" Value="60%" />
+            </Footer>
+        </ChartCard>
+    </MudItem>
+
+    <MudItem xs="3">
+        <ChartCard Title="Operational Effect"
+            Total="78%"
+            ContentHeight="46">
+            <ChildContent>
+                <MiniProgress 
+                Percent="78" 
+                StrokeWidth="8" 
+                Target="80" 
+                Color="#13C2C2" />
+            </ChildContent>
+            <Footer>
+                <Field Label="Conversion Rate" Value="60%" />
+            </Footer>
+        </ChartCard>
+    </MudItem>
+
+
+</MudGrid>
