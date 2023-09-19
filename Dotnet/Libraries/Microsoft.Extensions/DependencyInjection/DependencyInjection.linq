@@ -3,8 +3,6 @@
   <Namespace>Microsoft.Extensions.DependencyInjection</Namespace>
 </Query>
 
-
-
 // Create a new instance of the service collection
 var serviceCollection = new ServiceCollection();
 
