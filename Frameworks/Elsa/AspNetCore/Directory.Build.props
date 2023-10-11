@@ -1,0 +1,20 @@
+<Project>
+
+  <PropertyGroup>
+    
+    <!-- All Microsoft AspNetCore packages -->
+    <MicrosoftAspNetCorePackageVersion>7.0.5</MicrosoftAspNetCorePackageVersion>
+    
+    <!-- All Microsoft EntityFrameworkCore packages -->
+    <MicrosoftEntityFrameworkCorePackageVersion>7.0.1</MicrosoftEntityFrameworkCorePackageVersion>
+    
+    <!-- All Microsoft packages -->
+    <MicrosoftPackageVersion>7.0.0</MicrosoftPackageVersion>
+	
+	<!-- Elsa packages -->
+	<ElsaPackageVersion>3.0.0-preview.727</ElsaPackageVersion>
+	
+	
+  </PropertyGroup>
+
+</Project>

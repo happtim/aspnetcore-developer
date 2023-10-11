@@ -1,0 +1,12 @@
+.idea
+AspNetCore
+HelloWorld.linq
+Variable.linq
+Decision.linq
+Loops_For.linq
+Loops_Foreach.linq
+Loops_HelloWorld.linq
+Loops_While.linq
+Function_Advanced.linq
+Function.linq
+Bookmark.linq

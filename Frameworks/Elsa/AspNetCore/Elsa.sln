@@ -3,11 +3,17 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 17
 VisualStudioVersion = 17.0.31903.59
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "AspNetCore", "AspNetCore", "{9A0EFB77-5C74-4BA5-847D-8BF499E3B3F8}"
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "aspnetcore", "aspnetcore", "{9A0EFB77-5C74-4BA5-847D-8BF499E3B3F8}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AspNetCoreApp", "AspNetCoreApp\AspNetCoreApp.csproj", "{81B8CD5C-93DA-404D-9250-86E8B1572563}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AspNetCoreApp", "aspnetcore\AspNetCoreApp\AspNetCoreApp.csproj", "{81B8CD5C-93DA-404D-9250-86E8B1572563}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AspNetCoreDesigner", "AspNetCoreDesigner\AspNetCoreDesigner.csproj", "{BF07F7F9-BD32-4DC4-BB13-5D0059B02C41}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AspNetCoreDesigner", "aspnetcore\AspNetCoreDesigner\AspNetCoreDesigner.csproj", "{BF07F7F9-BD32-4DC4-BB13-5D0059B02C41}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Workflows.Core.WorkflowRunner", "console\Workflows.Core.WorkflowRunner\Workflows.Core.WorkflowRunner.csproj", "{E68109A5-1150-4242-8713-E50478512ABC}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "console", "console", "{4BEB62CE-B286-42BB-9D2E-CEB838760C70}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Workflows.Runtime.WorkflowHost", "console\Workflows.Runtime.WorkflowHost\Workflows.Runtime.WorkflowHost.csproj", "{5709C59A-A38C-41EC-9415-11287378518E}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -26,9 +32,19 @@ Global
 		{BF07F7F9-BD32-4DC4-BB13-5D0059B02C41}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{BF07F7F9-BD32-4DC4-BB13-5D0059B02C41}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{BF07F7F9-BD32-4DC4-BB13-5D0059B02C41}.Release|Any CPU.Build.0 = Release|Any CPU
+		{E68109A5-1150-4242-8713-E50478512ABC}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{E68109A5-1150-4242-8713-E50478512ABC}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{E68109A5-1150-4242-8713-E50478512ABC}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{E68109A5-1150-4242-8713-E50478512ABC}.Release|Any CPU.Build.0 = Release|Any CPU
+		{5709C59A-A38C-41EC-9415-11287378518E}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{5709C59A-A38C-41EC-9415-11287378518E}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{5709C59A-A38C-41EC-9415-11287378518E}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{5709C59A-A38C-41EC-9415-11287378518E}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(NestedProjects) = preSolution
 		{81B8CD5C-93DA-404D-9250-86E8B1572563} = {9A0EFB77-5C74-4BA5-847D-8BF499E3B3F8}
 		{BF07F7F9-BD32-4DC4-BB13-5D0059B02C41} = {9A0EFB77-5C74-4BA5-847D-8BF499E3B3F8}
+		{E68109A5-1150-4242-8713-E50478512ABC} = {4BEB62CE-B286-42BB-9D2E-CEB838760C70}
+		{5709C59A-A38C-41EC-9415-11287378518E} = {4BEB62CE-B286-42BB-9D2E-CEB838760C70}
 	EndGlobalSection
 EndGlobal
