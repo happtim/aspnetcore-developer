@@ -12,6 +12,8 @@ var button2 = new System.Windows.Controls.Button() { Content = "Async",Margin = 
 var button3 = new System.Windows.Controls.Button() { Content = "Concurrency", Margin = margin };
 var button4 = new System.Windows.Controls.Button() { Content = "ContinueWith", Margin = margin };
 var button5 = new System.Windows.Controls.Button() { Content = "ConfigureAwait", Margin = margin };
+var button6 = new System.Windows.Controls.Button() { Content = "Wait", Margin = margin };
+var button7 = new System.Windows.Controls.Button() { Content = "Deadlock", Margin = margin };
 var text = new System.Windows.Controls.TextBox() { Height = 200};
 
 stack.Children.Add(button1);
@@ -19,6 +21,8 @@ stack.Children.Add(button2);
 stack.Children.Add(button3);
 stack.Children.Add(button4);
 stack.Children.Add(button5);
+stack.Children.Add(button6);
+stack.Children.Add(button7);
 stack.Children.Add(text);
 
 
@@ -29,7 +33,7 @@ button1.Click += (sender, args) =>
 {
 	foreach (var element in Enumerable.Range(0,5))
 	{
-		var result =  fun();
+		var result =  Fun();
 		text.AppendText( result + "\r\n");
 	} 
 };
@@ -38,7 +42,9 @@ button2.Click += async (sender, args) =>
 {
 	foreach (var element in Enumerable.Range(0, 5))
 	{
-		var result  =  await Task.Run(() =>  fun());
+		var result = await Task.Run(() =>  Fun());
+		
+		//var result = await FunAsync();
 		
 		text.AppendText( result + "\r\n");
 	}
@@ -46,7 +52,7 @@ button2.Click += async (sender, args) =>
 
 button3.Click += async(sender, args) =>
 {
-	var tasks =  Enumerable.Range(0, 5).Select(t => Task.Run(() => fun())).ToList();
+	var tasks =  Enumerable.Range(0, 5).Select(t => Task.Run(() => Fun())).ToList();
 	var results =  await Task.WhenAll(tasks);
 	
 	foreach (var result in results)
@@ -59,7 +65,7 @@ button4.Click += async (sender, args) =>
 {
 	foreach (var element in Enumerable.Range(0, 5))
 	{
-		await Task.Run(() => fun()).ContinueWith(t =>
+		await Task.Run(() => Fun()).ContinueWith(t =>
 		{
 			//如果直接返回出现异常， 需要切换成UI线程去执行。
 			//text.AppendText( t.Result + "\r\n");
@@ -85,13 +91,56 @@ button5.Click += async (sender, args) =>
 	
 	foreach (var element in Enumerable.Range(0, 5))
 	{
-		var result = await Task.Run(() => fun()).ConfigureAwait(true);
+		var result = await Task.Run(() => Fun()).ConfigureAwait(true);
 		int threadId = Thread.CurrentThread.ManagedThreadId;
 		panel.GetControl().Invoke(() => {text.AppendText(result + " ThreadId: " + threadId + "\r\n");});
 	}
 };
 
-string fun()
+button6.Click += (sender, args) =>
+{
+	foreach (var element in Enumerable.Range(0, 5))
+	{
+		var task = Task.Run(() => Fun());
+		
+		//调用线程阻塞在Wait处，当任务完成，取消或者异常
+		//task.Wait();
+		text.AppendText(task.Result + "\r\n");
+	}
+};
+
+button7.Click += (sender, args) =>
+{
+	foreach (var element in Enumerable.Range(0, 5))
+	{
+		//而 async 函数并不会启动新线程，它仅仅是一种编写和管理异步代码的语法糖，并使用现有的线程池线程或 UI 线程来执行异步操作。
+		var task = FunAsync();
+		
+		//Task.Run 会在 ThreadPool 中启动一个新的线程，将指定的方法作为一个新的工作项进行执行。这会导致异步操作在一个不同的线程上执行。
+		//var task = Task.Run( async () =>
+		//{
+		//	await Task.Delay(1000);
+		//	return "死锁了";
+		//});
+		
+		//task.Wait();
+		text.AppendText(task.Result + "\r\n");
+	}
+};
+
+async Task<string> DeadlockAsync()
+{
+	await Task.Delay(1000);
+	return "死锁了";
+}
+
+async Task<string> FunAsync()
+{
+	await Task.Delay(1000);
+	return "call function";
+}
+
+string Fun()
 {
 	Thread.Sleep(1000);
 	return "call function";
