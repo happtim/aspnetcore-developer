@@ -1,31 +1,24 @@
 <Query Kind="Statements">
   <NuGetReference Version="6.0.3">Volo.Abp.Autofac</NuGetReference>
+  <NuGetReference Version="6.0.3">Volo.Abp.Core</NuGetReference>
   <NuGetReference Version="6.0.3">Volo.Abp.EntityFrameworkCore.Sqlite</NuGetReference>
-  <NuGetReference Version="6.0.3">Volo.Abp.SettingManagement.EntityFrameworkCore</NuGetReference>
+  <NuGetReference Version="6.0.3">Volo.Abp.Uow</NuGetReference>
+  <Namespace>Microsoft.Data.Sqlite</Namespace>
   <Namespace>Microsoft.Extensions.DependencyInjection</Namespace>
   <Namespace>System.Threading.Tasks</Namespace>
   <Namespace>Volo.Abp</Namespace>
-  <Namespace>Volo.Abp.Autofac</Namespace>
-  <Namespace>Volo.Abp.Modularity</Namespace>
-  <Namespace>Volo.Abp.Settings</Namespace>
-  <Namespace>Microsoft.Data.Sqlite</Namespace>
-  <Namespace>Microsoft.EntityFrameworkCore</Namespace>
-  <Namespace>Microsoft.EntityFrameworkCore.Storage</Namespace>
-  <Namespace>Volo.Abp.EntityFrameworkCore</Namespace>
-  <Namespace>Microsoft.EntityFrameworkCore.Infrastructure</Namespace>
-  <Namespace>Volo.Abp.Domain.Entities.Auditing</Namespace>
-  <Namespace>Volo.Abp.EntityFrameworkCore.Modeling</Namespace>
-  <Namespace>Volo.Abp.Data</Namespace>
-  <Namespace>Volo.Abp.DependencyInjection</Namespace>
   <Namespace>Volo.Abp.Domain.Repositories</Namespace>
+  <Namespace>Volo.Abp.EntityFrameworkCore</Namespace>
   <Namespace>Volo.Abp.EntityFrameworkCore.Sqlite</Namespace>
+  <Namespace>Volo.Abp.Modularity</Namespace>
+  <Namespace>Volo.Abp.Uow</Namespace>
+  <Namespace>Volo.Abp.Autofac</Namespace>
 </Query>
 
-#load ".\BookStoreDbContext"
-
+#load "..\DataAccess\BookStoreDbContext"
 
 // 1: Create the ABP application container
-using var application = await AbpApplicationFactory.CreateAsync<DemoModule>(options =>
+using var application = await AbpApplicationFactory.CreateAsync<UowModule>(options =>
 {
 	options.UseAutofac();
 });
@@ -40,18 +33,19 @@ await application.ShutdownAsync();
 
 [DependsOn(
 	typeof(AbpAutofacModule),
+	typeof(AbpUnitOfWorkModule),
 	typeof(AbpEntityFrameworkCoreSqliteModule)
 )]
-public class DemoModule : AbpModule
+public class UowModule: AbpModule
 {
 	
 	private SqliteConnection _sqliteConnection;
-	
+
 	public override void ConfigureServices(ServiceConfigurationContext context)
 	{
 
 		ConfigureInMemorySqlite(context.Services);
-		
+
 		Console.WriteLine("DemoModule Configuring");
 	}
 
@@ -94,42 +88,48 @@ public class DemoModule : AbpModule
 		return connection;
 	}
 
-
 	public override async Task OnApplicationInitializationAsync(ApplicationInitializationContext context)
 	{
-		var bookRepository =  context.ServiceProvider.GetRequiredService<IRepository<Book,Guid>>();
-		var authorRepository = context.ServiceProvider.GetRequiredService<IRepository<Author,Guid>>();
-
-		var orwell = await authorRepository.InsertAsync(
-			new Author()
-			{
-				Name = "George Orwell",
-				BirthDate = new DateTime(1903, 06, 25),
-				ShortBio = "Orwell produced literary criticism and poetry, fiction and polemical journalism; and is best known for the allegorical novella Animal Farm (1945) and the dystopian novel Nineteen Eighty-Four (1949)."
-			}
-		);
+		IUnitOfWorkManager unitOfWorkManager = context.ServiceProvider.GetRequiredService<IUnitOfWorkManager>();
 		
-		await bookRepository.InsertAsync(
-			new Book
+		using(var uow1 = unitOfWorkManager.Begin())
+		{
+			(uow1 == unitOfWorkManager.Current).Dump("当前uow == uow1");
+
+			var authorRepository = unitOfWorkManager.Current.ServiceProvider.GetRequiredService<IRepository<Author, Guid>>();
+
+			var orwell = await authorRepository.InsertAsync(
+				new Author()
+				{
+					Name = "George Orwell",
+					BirthDate = new DateTime(1903, 06, 25),
+					ShortBio = "Orwell produced literary criticism and poetry, fiction and polemical journalism; and is best known for the allegorical novella Animal Farm (1945) and the dystopian novel Nineteen Eighty-Four (1949)."
+				},true
+			);
+
+			using (var uow2 = unitOfWorkManager.Begin())
 			{
-				AuthorId = orwell.Id, // SET THE AUTHOR
-				Name = "1984",
-				Type = Book.BookType.Dystopia,
-				PublishDate = new DateTime(1949, 6, 8),
-				Price = 19.84f
-			},
-			autoSave: true
-		);
+				(uow1 == unitOfWorkManager.Current).Dump("当前uow == uow1");
 
-		await bookRepository.GetListAsync().Dump();
+				var authorRepository2 = unitOfWorkManager.Current.ServiceProvider.GetRequiredService<IRepository<Author, Guid>>();
+				var author = await authorRepository2.GetAsync(r => r.Name == "George Orwell");
+				author.BirthDate = new DateTime(1903, 06, 26);
+				
+				await authorRepository2.UpdateAsync(author);
+				
+				(await authorRepository.GetDbContextAsync() == await authorRepository2.GetDbContextAsync())
+				.Dump("resp == resp2");
+				
+				await uow2.CompleteAsync();
+			}
+			
+			await uow1.CompleteAsync();
+		}
 	}
-
 
 	public override void OnApplicationShutdown(ApplicationShutdownContext context)
 	{
 		_sqliteConnection.Dispose();
 	}
-
 }
-
 
