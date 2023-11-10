@@ -1,39 +1,35 @@
 <Query Kind="Statements">
-  <NuGetReference Version="6.0.0">Microsoft.Extensions.Hosting</NuGetReference>
-  <NuGetReference>Serilog.Extensions.Logging</NuGetReference>
-  <NuGetReference>Serilog.Sinks.Console</NuGetReference>
-  <Namespace>Microsoft.Extensions.Hosting</Namespace>
-  <Namespace>Microsoft.Extensions.DependencyInjection</Namespace>
-  <Namespace>Serilog</Namespace>
+  <NuGetReference>Microsoft.Extensions.Logging</NuGetReference>
   <Namespace>Microsoft.Extensions.Logging</Namespace>
-  <Namespace>System.Threading.Tasks</Namespace>
+  <Namespace>Microsoft.Extensions.DependencyInjection</Namespace>
 </Query>
 
-var builder = Host.CreateDefaultBuilder();
+#load ".\MyLoggerProvider"
 
-builder.ConfigureServices((hostBuilderContext, services) =>
-{
-	services.AddLogging(loggingBuilder => loggingBuilder.AddSerilog(dispose: true));
-	services.AddHostedService<Worker>();
-});
 
-var app = builder.Build();
+//在.NET Core中，抽象类 LoggingProvider 是所有日志提供程序的基类，它定义了一个抽象方法 CreateLogger，
+//用于创建日志记录器实例。LoggingProvider 类的主要作用是充当所有日志提供程序的统一入口点，用于创建和管理日志记录器。
 
-await app.RunAsync();
+//日志记录器是通过 CreateLogger 方法创建的，每个日志提供程序的实现都需要实现该方法。
+//创建的日志记录器用于实际记录日志消息，通过调用 Log 方法将日志消息传递给具体的目标（比如控制台、文件、数据库等）。
 
-public sealed class Worker : BackgroundService
-{
-	private readonly ILogger<Worker> _logger;
-
-	public Worker(ILogger<Worker> logger) =>
-		_logger = logger;
-
-	protected override async Task ExecuteAsync(CancellationToken stoppingToken)
+// 创建一个新的.NET Core的DI容器
+var serviceProvider = new ServiceCollection()
+	.AddLogging(builder =>
 	{
-		while (!stoppingToken.IsCancellationRequested)
-		{
-			_logger.LogInformation("Worker running at: {time}", DateTimeOffset.UtcNow);
-			await Task.Delay(1_000, stoppingToken);
-		}
-	}
-}
+				// 注册自定义的LoggerProvider
+		builder.AddProvider(new MyLoggerProvider());
+				// 设置最低的日志记录级别
+		builder.SetMinimumLevel(LogLevel.Debug);
+	})
+	.BuildServiceProvider();
+
+// 从容器中获取ILogger<T>实例,  Logger<T>构造函数中，获取ILoggerFactory获取Logger
+var logger = serviceProvider.GetRequiredService<ILogger<Person>>();
+
+// 使用ILogger记录日志
+logger.LogInformation("这是一个信息日志");
+logger.LogWarning("这是一个警告日志");
+logger.LogError("这是一个错误日志");
+
+class Person{}
