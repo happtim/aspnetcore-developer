@@ -39,6 +39,14 @@ await app.RunAsync();
 [DependsOn(typeof(AbpAutofacModule))] //Add dependency to ABP Autofac module
 public class AppModule : AbpModule
 {
+	public override void PreConfigureServices(ServiceConfigurationContext context)
+	{
+		PreConfigure<IMvcBuilder>(mvcBuilder =>
+		{
+			mvcBuilder.AddApplicationPartIfNotExists(typeof(AppModule).Assembly);
+		});
+	}
+
 	public override void ConfigureServices(ServiceConfigurationContext context)
 	{ 
 		var services = context.Services;
@@ -52,15 +60,6 @@ public class AppModule : AbpModule
 			}
 		);
 		
-		//services.AddControllers();
-
-//		Configure<AbpAspNetCoreMvcOptions>(options =>
-//	   {
-//		   options
-//			   .ConventionalControllers
-//			   .Create(typeof(AppModule).Assembly);
-//	   });
-
 		//Create dynamic client proxies
 		context.Services.AddHttpClientProxies(
 			typeof(AppModule).Assembly
@@ -90,11 +89,6 @@ public class AppModule : AbpModule
 		{
 			options.SwaggerEndpoint("/swagger/v1/swagger.json", "Support APP API");
 		});
-
-		//app.UseEndpoints(options => 
-		//{
-		//	options.MapControllers();
-		//});
 
 		app.UseConfiguredEndpoints();
 	}
