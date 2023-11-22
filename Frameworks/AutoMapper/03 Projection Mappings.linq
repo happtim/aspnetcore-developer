@@ -1,6 +1,7 @@
 <Query Kind="Program">
   <NuGetReference Version="12.0.1">AutoMapper</NuGetReference>
   <Namespace>AutoMapper</Namespace>
+  <Namespace>System.Text.Json</Namespace>
 </Query>
 
 // Projection (投影映射)
@@ -20,6 +21,8 @@ void Main()
 	var configuration = new MapperConfiguration(cfg =>
 	  cfg.CreateMap<CalendarEvent, CalendarEventForm>()
 		.ForMember(dest => dest.EventDate, opt => opt.MapFrom(src => src.Date.Date))
+		//使用两个参数的重载 而不是使用一个参数的解决 n expression tree lambda may not 问题
+		.ForMember(dest => dest.Title, opt => opt.MapFrom( (src,dest) =>  JsonSerializer.Serialize(src.Date)))
 		.ForMember(dest => dest.EventHour, opt => opt.MapFrom(src => src.Date.Hour))
 		.ForMember(dest => dest.EventMinute, opt => opt.MapFrom(src => src.Date.Minute)));
 		
