@@ -17,6 +17,9 @@
 
 #load "..\DataAccess\BookStoreDbContext"
 
+//对于没有UOW注入的方法，如一些handle，worker，如果时间repository，那么每个仓库就会有个一独立的uow。
+//要使得他们用一个uow，入口方法就要加[UninOfWorkd] ，然后必须virtual方法
+
 // 1: Create the ABP application container
 using var application = await AbpApplicationFactory.CreateAsync<UowModule>(options =>
 {

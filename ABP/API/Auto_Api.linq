@@ -73,13 +73,16 @@ public class AppModule : AbpModule
 		app.UseHttpsRedirection();
 		app.UseStaticFiles();
 		app.UseRouting();
-		app.UseConfiguredEndpoints();
-
+		
 		app.UseSwagger();
 		app.UseAbpSwaggerUI(options =>
 		{
 			options.SwaggerEndpoint("/swagger/v1/swagger.json", "Support APP API");
 		});
+		
+		app.UseConfiguredEndpoints();
+
+
 	}
 }
 
