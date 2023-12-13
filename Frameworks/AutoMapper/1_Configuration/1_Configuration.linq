@@ -1,0 +1,27 @@
+<Query Kind="Statements">
+  <NuGetReference Version="12.0.1">AutoMapper</NuGetReference>
+  <Namespace>AutoMapper</Namespace>
+</Query>
+
+//MapperConfiguration 创建一个实例并通过构造函数初始化配置
+//MapperConfiguration 实例可以静态存储在静态字段或依赖项注入容器中。一旦创建，就无法更改/修改。
+var foo = new Foo() { Name = "Foo" };
+
+var config = new MapperConfiguration(cfg =>
+{
+		// 直接设置配置。
+	cfg.CreateMap<Foo, FooDto>();
+});
+
+var mapper = config.CreateMapper();
+mapper.Map<FooDto>(foo).Dump();
+
+class Foo
+{
+	public string Name { get; set; }
+
+}
+
+class FooDto : Foo
+{
+}
