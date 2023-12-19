@@ -1,0 +1,9 @@
+Configuration.linq
+ProfileConfiguration.linq
+ConfiguringVisibility.linq
+MapExistObject.linq
+AssemblyScaningForAutoConfiguration.linq
+NamingConvention.linq
+ReplacingCharacters.linq
+RecognizingPrePostfixes.linq
+GlobalPropertyFieldFiltering.linq
