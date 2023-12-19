@@ -5,10 +5,10 @@
 
 // Construction （构造函数）
 
-//var dto =  new SourceDto(10);
 // 如果目标构造函数参数名称不匹配，可以在配置时修改它们：
 var configuration = new MapperConfiguration(cfg =>
   cfg.CreateMap<Source, SourceDto>()
+	//没有该代码 找构造函数失败，报错
 	.ForCtorParam("valueParamSomeOtherName", opt => opt.MapFrom(src => src.Value))
 );
 var mapper = configuration.CreateMapper();
