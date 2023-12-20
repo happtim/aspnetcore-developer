@@ -22,7 +22,7 @@ var connection = CreateDatabaseAndGetConnection();
 
 using(var context = new MyContext(connection))
 {
-	context.Blogs.Add(new Blog(1,"123"));
+	context.Blogs.Add(new Blog(1,"123","Tim"));
 	context.SaveChanges();
 }
 
