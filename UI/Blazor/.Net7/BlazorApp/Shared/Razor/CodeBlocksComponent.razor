@@ -1,0 +1,59 @@
+﻿@{
+    var quote = "The future depends on what you do today. - Mahatma Gandhi";
+}
+
+<p>@quote</p>
+
+@{
+    quote = "Hate cannot drive out hate, only love can do that. - Martin Luther King, Jr.";
+}
+
+<p>@quote</p>
+
+
+@{
+    void RenderName(string name)
+    {
+        <p>Name: <strong>@name</strong></p>
+    }
+
+    RenderName("Mahatma Gandhi");
+    RenderName("Martin Luther King, Jr.");
+}
+
+
+@{
+    var inCSharp = true;
+    <p>Now in HTML, was in C# @inCSharp</p>
+}
+
+@* 
+代码块默认认为C#    
+@if (true)
+{
+    Some content
+} *@
+
+
+@{
+    var personName =  new string[] { "Tim", "Bob" };
+    for(var i = 0; i< personName.Count(); i++)
+    {
+        var item = personName[i];
+
+        <label>
+
+        if(item == "Tim")
+        {
+            Name: Tim
+        }
+        
+        @if(@item == "Tim")
+        {
+            @:Name: @item (Tim)
+        }
+
+        </label>
+    }
+
+}

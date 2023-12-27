@@ -1,0 +1,17 @@
+﻿@page "/parameters/parameter-parent-3"
+
+@* 参数不支持 字符串和Blazor 表达式混合使用，编译失败 *@
+@* <ParameterChild Title="Set by @(panelData.Title)" /> *@
+
+<ParameterChild Title="@GetTitle()" />
+
+@code {
+    private PanelData panelData = new();
+
+    private string GetTitle() => $"Set by {panelData.Title}";
+
+    private class PanelData
+    {
+        public string Title { get; set; } = "Parent";
+    }
+}

@@ -1,0 +1,35 @@
+﻿@page "/parameters/parameter-parent-2"
+
+@* 根据 HTML5 规范，参数属性值的引号是可选的 *@
+@* 支持 Title=@title，但是，我们建议使用引号，并且在基于 Web 的技术中被广泛采用。 *@
+
+
+@* 组件的参数是string类型时，属性值默认视为字符串字面量，而不是表达式。
+如果要将属性值视为表达式，请使用@符号将其括在括号中。 *@
+
+<ParameterChild Title="@title" Body="new PanelBody(){ Text = 1.ToString()}" />
+
+<ParameterChild Title="@GetTitle()" />
+
+<ParameterChild Title="@DateTime.Now.ToLongDateString()" />
+
+<ParameterChild Title="@panelData.Title" />
+
+@code {
+
+    //字段
+    private string title = "From Parent field";
+    private PanelData panelData = new();
+
+    //方法
+    private string GetTitle()
+    {
+        return "From Parent method";
+    }
+
+    private class PanelData
+    {
+        //属性
+        public string Title { get; set; } = "From Parent object";
+    }
+}

@@ -1,0 +1,20 @@
+﻿
+@* 默认html内容 *@
+<p>hello world</p>
+
+@* 隐式表达式 *@
+<p>@DateTime.Now</p>
+<p>@DateTime.IsLeapYear(2016)</p>
+
+@* 显示表达式 *@
+<p>Last week this time: @(DateTime.Now - TimeSpan.FromDays(7))</p>
+
+@* 不带括号的表达式 *@
+<p>Last week: @DateTime.Now - TimeSpan.FromDays(7)</p>
+
+@* 表达式编码 *@
+@("<span>Hello World</span>")
+
+@code {
+
+}
