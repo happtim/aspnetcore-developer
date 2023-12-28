@@ -1,0 +1,27 @@
+@page "/event-handling/event-callback"
+@attribute [RoutePriority(5)]
+
+@* 嵌套组件的常见情况是在子组件事件发生时执行父组件中一个方法。 *@
+@* 为了在组件之间暴露事件，可以使用EventCallback。父组件可以将回调方法分配给子组件的EventCallback。 *@
+<h1>Parent-child example</h1>
+
+<Child Title="Panel Title from Parent" OnClickCallback="@ShowMessage">
+    Content of the child component is supplied by the parent component.
+</Child>
+
+@* EventCallback是弱类型的，允许在 InvokeAsync(Object) 中传递任何类型的参数。
+EventCallback<TValue>是强类型的，要求在 InvokeAsync(T) 中传递一个 T 参数， *@
+
+<Child2 OnClickCallback="@(async (value) => { await Task.Yield(); message = value; })" />
+
+
+<p>@message</p>
+
+@code {
+    private string? message;
+
+    private void ShowMessage(MouseEventArgs e)
+    {
+        message = $"Blaze a new trail with Blazor! ({e.ScreenX}:{e.ScreenY})";
+    }
+}
