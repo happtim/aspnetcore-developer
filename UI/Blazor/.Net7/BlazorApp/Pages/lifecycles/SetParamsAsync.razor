@@ -1,0 +1,40 @@
+@page "/lifecycles/set-params-async/{Param?}"
+
+@attribute [RoutePriority(1)]
+
+@* SetParametersAsync在渲染树中设置由组件的父组件提供的参数，或者从路由参数中设置参数。 *@
+
+@* SetParametersAsync的默认实现将具有ParameterView中相应值的每个带有 
+[Parameter] 或 [CascadingParameter] 属性的属性的值设置为该值。 *@
+
+<p>@message</p>
+
+@code {
+    private string message = "Not set";
+
+    //虽然路由参数匹配是不区分大小写的，但 TryGetValue 会在路由模板中匹配大小写敏感的参数名。
+    [Parameter]
+    public string? Param { get; set; }
+
+    public override async Task SetParametersAsync(ParameterView parameters)
+    {
+        if (parameters.TryGetValue<string>(nameof(Param), out var value))
+        {
+            if (value is null)
+            {
+                message = "The value of 'Param' is null.";
+            }
+            else
+            {
+                message = $"The value of 'Param' is {value}.";
+            }
+        }
+
+        await base.SetParametersAsync(parameters);
+    }
+
+    public virtual string GetParam()
+    {
+        return "123";
+    }
+}

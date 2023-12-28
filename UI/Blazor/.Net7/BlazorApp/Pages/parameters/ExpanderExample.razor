@@ -1,0 +1,29 @@
+﻿@page "/parameters/expander-example"
+
+@attribute [RoutePriority(4)]
+
+@* 第一个 Expander 组件在可能可变的 RenderFragment 中设置子内容，因此在父组件中调用 StateHasChanged 
+会自动重新呈现组件，并可能将 的值 Expanded 覆盖到其初始值 true 。 *@
+
+<ExpanderBad Expanded="true">
+    ExpanderBad 2 content
+</ExpanderBad>
+
+@* 第二个 Expander 组件不设置子内容。因此，不存在可能可变的 RenderFragment。
+在父组件中调用 StateHasChanged 不会自动重新呈现子组件（值未发生变化），因此不会覆盖组件 Expanded 的值。 *@
+<ExpanderBad Expanded="true" />
+
+
+<Expander Expanded="true">
+    Expander 1 content
+</Expander>
+
+<Expander Expanded="true" />
+
+@* 如果在父组件中调用 StateHasChanged，则 Blazor 框架会重新呈现子组件（如果其参数可能已更改）： *@
+@* * 对于 Blazor 显式检查的一组参数类型，如果 Blazor 检测到任何参数已更改，则会重新呈现子组件。 *@
+@* * 对于RenderFragment，Blazor 会重新呈现子组件，而不考虑参数是否已更改。 *@
+
+<button @onclick="StateHasChanged">
+    Call StateHasChanged
+</button>

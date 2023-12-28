@@ -1,6 +1,5 @@
 ﻿using Microsoft.AspNetCore.Components;
 using System.Reflection;
-using System.Reflection.Metadata.Ecma335;
 
 namespace BlazorApp.Pages
 {
@@ -16,25 +15,38 @@ namespace BlazorApp.Pages
             var types = assembly.GetTypes();
             var pageTypes = types.Where(type => type.BaseType == typeof(ComponentBase));
 
+            pageTypes = pageTypes.Where(type => type.GetCustomAttributes<RouteAttribute>().Count() > 0)
+                .OrderBy(type => type.GetCustomAttribute<RoutePriorityAttribute>()?.Priority ?? 999)
+                .ToList();
+
             foreach (var pageType in pageTypes)
             {
-                var routeAttribute = pageType.GetCustomAttribute<RouteAttribute>();
+                var routeAttributes = pageType.GetCustomAttributes<RouteAttribute>();
 
-                if (routeAttribute != null)
+                foreach (var routeAttribute in routeAttributes)
                 {
                     string[] segments = routeAttribute.Template.Split('/');
-                    string group = segments[segments.Length - 2];
-                   
+                    string group = segments[1];
+
                     if (!pageUrls.ContainsKey(group))
                     {
                         pageUrls.Add(group, new List<string>());
                     }
-                    else
+
+                    var template = routeAttribute.Template;
+
+                    //"/lifecycles/set-params-async/{Param?}"
+                    if (routeAttribute.Template.EndsWith("{Param?}"))
                     {
-                        pageUrls[group].Add(routeAttribute.Template);
+                        template = template.Replace("{Param?}", "123");
+                    }
+                    //"/lifecycles/on-params-set/{StartDate:datetime}"
+                    if (routeAttribute.Template.EndsWith("{StartDate:datetime}")) 
+                    {
+                        template = template.Replace("{StartDate:datetime}", new DateTime(2008,08,08).ToString("yyyy-MM-dd"));
                     }
 
-
+                    pageUrls[group].Add(template);
                 }
             }
 

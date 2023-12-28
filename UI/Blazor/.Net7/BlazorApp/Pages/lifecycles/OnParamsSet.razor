@@ -1,0 +1,34 @@
+@page "/lifecycles/on-params-set"
+@page "/lifecycles/on-params-set/{StartDate:datetime}"
+
+@attribute [RoutePriority(3)]
+
+@* 调用OnParametersSet或OnParametersSetAsync *@
+@* * 在OnInitialized或OnInitializedAsync中初始化组件之后。 *@
+@* * 当父组件重新渲染并提供： *@
+@*    * 已知或原始的不可变类型，当至少有一个参数发生变化时。 *@
+@*    * 复杂类型参数。框架无法知道复杂类型参数的值是否在内部发生了变化，
+因此当存在一个或多个复杂类型参数时，框架总是将参数集视为已更改。 *@
+
+<p>@message</p>
+
+@code {
+    private string? message;
+
+    [Parameter]
+    public DateTime StartDate { get; set; }
+
+    protected override void OnParametersSet()
+    {
+        if (StartDate == default)
+        {
+            StartDate = DateTime.Now;
+
+            message = $"No start date in URL. Default value applied (StartDate: {StartDate}).";
+        }
+        else
+        {
+            message = $"The start date in the URL was used (StartDate: {StartDate}).";
+        }
+    }
+}

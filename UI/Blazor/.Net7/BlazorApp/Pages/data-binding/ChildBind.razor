@@ -1,0 +1,50 @@
+<div class="card bg-light mt-3" style="width:18rem ">
+    <div class="card-body">
+        <h3 class="card-title">ChildBind Component</h3>
+        <p class="card-text">
+            Child <code>Year</code>: @Year
+        </p>
+        <input value="@Year" @onchange="@((e) => {Year = int.Parse(e?.Value?.ToString()??"0"); YearChanged.InvokeAsync(Year); })" />
+        <button @onclick="UpdateYearFromChild">Update Year from Child</button>
+    </div>
+</div>
+
+@* 以下 ChildBind 组件具有 Year 组件参数和EventCallback。 *@
+
+@* 按照惯例，参数的EventCallback必须以组件参数名称加上“ Changed ”后缀的方式命名。 *@
+
+@* 命名语法为 {PARAMETER NAME}Changed ，其中 {PARAMETER NAME} 占位符是参数名称。 *@
+
+@* EventCallback.InvokeAsync调用与绑定关联的委托，并使用提供的参数分派更改属性的事件通知。 *@
+
+@code {
+    private Random r = new();
+
+    [Parameter]
+    public int Year { get; set; }
+
+    [Parameter]
+    public EventCallback<int> YearChanged { get; set; }
+
+    [Inject] protected ILogger<ChildBind> Logger { get; set; } 
+
+    public override Task SetParametersAsync(ParameterView parameters)
+    {
+        if(parameters.TryGetValue<int>(nameof(Year), out var year))
+        {
+            Logger.LogInformation("收到了参数Year:" + year);
+        }
+
+        if (parameters.TryGetValue<EventCallback<int>>("YearChanged", out var yearChanged))
+        {
+            Logger.LogInformation("收到了参数YearChanged");
+        }
+
+        return base.SetParametersAsync(parameters);
+    }
+
+    private async Task UpdateYearFromChild()
+    {
+        await YearChanged.InvokeAsync(r.Next(1950, 2021));
+    }
+}

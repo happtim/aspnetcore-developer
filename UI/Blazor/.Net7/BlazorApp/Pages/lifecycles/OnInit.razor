@@ -1,0 +1,28 @@
+@page "/lifecycles/on-init"
+
+@attribute [RoutePriority(2)]
+
+@* 在SetParametersAsync中接收到初始参数后，将调用OnInitialized和OnInitializedAsync来初始化组件。 *@
+
+
+@* 在生命周期事件中执行的异步操作可能在组件渲染之前尚未完成。在生命周期方法执行时，对象可能是 null 或者数据填充不完整。
+提供渲染逻辑来确认对象已经初始化。在对象 null 时，渲染占位的UI元素（例如加载消息）。 *@
+
+@if (message == null)
+{
+    <p><em>Loading...</em></p>
+}
+else
+{
+    <p>@message</p>
+}
+
+@code {
+    private string? message;
+
+    protected override async Task OnInitializedAsync()
+    {
+        await Task.Delay(3000);
+        message = $"Initialized at {DateTime.Now}";
+    }
+}

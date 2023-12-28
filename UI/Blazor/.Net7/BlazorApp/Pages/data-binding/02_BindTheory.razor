@@ -1,0 +1,29 @@
+@page "/data-binding/bind-theory"
+
+@attribute [RoutePriority(2)]
+
+<p>
+    <label>
+        Normal Blazor binding: 
+        <input @bind="InputValue" />
+    </label>
+</p>
+
+@* 作为展示数据绑定在HTML中如何组合的示例，以下示例将 InputValue 属性绑定到第二个
+<input> 元素的 value 和 onchange 属性（ change ）。 *@
+
+<p>
+    <label>
+        Demonstration of equivalent HTML binding: 
+        <input value="@InputValue"
+            @onchange="@((ChangeEventArgs __e) => InputValue = __e?.Value?.ToString())" />
+    </label>
+</p>
+
+<p>
+    <code>InputValue</code>: @InputValue
+</p>
+
+@code {
+    private string? InputValue { get; set; }
+}

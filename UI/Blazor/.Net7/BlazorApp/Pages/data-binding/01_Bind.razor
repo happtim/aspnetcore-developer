@@ -1,0 +1,56 @@
+@page "/data-binding/bind"
+@using System.Timers
+@attribute [RoutePriority(1)]
+
+@* Razor组件使用 @bind Razor指令属性提供数据绑定功能，可以绑定到字段、属性或Razor表达式的值。 *@
+
+
+@* 绑定字段 *@
+<p>
+    <input @bind="inputValue" />
+</p>
+
+@* 绑定属性 *@
+<p>
+    <input @bind="InputValue" />
+</p>
+
+@* 文本框在界面中只有在组件渲染时才会更新，而不是响应字段或属性的值的变化。 *@
+
+@* 由于组件在事件处理程序代码执行后自行渲染，因此字段和属性的更新通常会在事件处理程序触发后立即反映在界面上。 *@
+
+<p>
+    <input @bind="currentCount" />
+</p>
+
+<ul>
+    <li><code>inputValue</code>: @inputValue</li>
+    <li><code>InputValue</code>: @InputValue</li>
+</ul>
+
+@code {
+    private string? inputValue;
+
+    private string? InputValue { get; set; }
+
+    private Timer timer = new(1000);
+
+    private int currentCount = 0;
+
+    protected override void OnInitialized()
+    {
+        timer.Elapsed += (sender, eventArgs) => OnTimerCallback();
+        timer.Start();
+    }
+
+    private void OnTimerCallback()
+    {
+        _ = InvokeAsync(() =>
+        {
+            currentCount++;
+            //StateHasChanged();
+        });
+    }
+
+    public void Dispose() => timer.Dispose();
+}

@@ -1,0 +1,34 @@
+@page "/data-binding/parent-1"
+@attribute [RoutePriority(8)]
+
+@* 组件参数绑定 *@
+
+<h1>Parent Component</h1>
+
+@* 常见的情况是将子组件的属性绑定到父组件的属性。如下ChildBind： @bind-Year="year" 这种情况被称为链式绑定，因为多个级别的绑定同时发生。 *@
+
+@* 组件参数允许使用 @bind-{PROPERTY} 语法将父组件的属性与占位符 {PROPERTY} 绑定。 *@
+
+@* 在子组件中，无法使用 @bind 语法实现链式绑定。必须分别指定事件处理程序（EventCallback）和值，以支持从子组件更新父组件的属性 *@。
+
+<p>Parent <code>year</code>: @year</p>
+
+<button @onclick="UpdateYear">Update Parent <code>year</code></button>
+
+<ChildBind @bind-Year="year"/>
+
+@* 可以通过将属性绑定到相应的事件处理程序 @bind-{PROPERTY}:event，其中 {PROPERTY} 占位符是属性。 *@
+
+@* 如下方法等同于上面的方法： year传给子组件的Year，将Blazor生成的事件给YearChanged *@
+<ChildBind @bind-Year="year" @bind-Year:event="YearChanged" />
+
+@code {
+    private Random r = new();
+
+    private int year = 1979;
+
+    private void UpdateYear()
+    {
+        year = r.Next(1950, 2021);
+    }
+}
