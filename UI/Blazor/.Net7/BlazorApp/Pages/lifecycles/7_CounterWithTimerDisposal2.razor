@@ -1,6 +1,7 @@
 @page "/lifecycles/counter-with-timer-disposal-2"
 @using System.Timers
 @implements IDisposable
+@attribute [RoutePriority(7)]
 
 @* 如果对象是在生命周期方法中创建的，例如 OnInitialized{Async} ，在调用 Dispose 之前检查 null 。 *@
 

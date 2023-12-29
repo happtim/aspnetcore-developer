@@ -1,0 +1,86 @@
+﻿@page "/lifecycles/all-lifecycles"
+
+@using Microsoft.Extensions.Logging
+@using System.Diagnostics;
+
+@attribute [RoutePriority(8)]
+
+<h3>_8_AllLifecycles</h3>
+
+<button @onclick="StateHasChanged" class="btn btn-primary">
+    Call StateHasChanged
+</button>
+
+<div>
+    @CreateComponent()
+</div>
+
+@code {
+
+    public _8_AllLifecycles()
+    {
+        Debug.WriteLine("ctor");
+    }
+
+    public override Task SetParametersAsync(ParameterView parameters)
+    {
+        Debug.WriteLine("SetParametersAsync");
+        return base.SetParametersAsync(parameters);
+    }
+
+    protected override void OnInitialized()
+    {
+        Debug.WriteLine("OnInitialized");
+        base.OnInitialized();
+    }
+
+    protected override Task OnInitializedAsync()
+    {
+        Debug.WriteLine("OnInitializedAsync");
+        return base.OnInitializedAsync();
+    }
+
+    protected override void OnParametersSet()
+    {
+        Debug.WriteLine("OnParametersSet");
+        base.OnParametersSet();
+    }
+
+    protected override Task OnParametersSetAsync()
+    {
+        Debug.WriteLine("OnParametersSetAsync");
+        return base.OnParametersSetAsync();
+    }
+
+    protected override void OnAfterRender(bool firstRender)
+    {
+        Debug.WriteLine($"OnAfterRender(firstRender:{firstRender})");
+        base.OnAfterRender(firstRender);
+    }
+
+    protected override Task OnAfterRenderAsync(bool firstRender)
+    {
+        Debug.WriteLine($"OnAfterRenderAsync(firstRender:{firstRender})");
+        return base.OnAfterRenderAsync(firstRender);
+    }
+
+    protected override bool ShouldRender()
+    {
+        bool result = base.ShouldRender();
+        Debug.WriteLine("ShouldRender:" + result);
+        return result;
+    }
+
+    private RenderFragment CreateComponent() => builder =>
+    {
+        Debug.WriteLine("BuildRenderTree");
+        for (var i = 0; i < 3; i++)
+        {
+            builder.OpenComponent(0, typeof(PetDetails));
+            builder.AddAttribute(1, "PetDetailsQuote", "Someone's best friend!");
+            builder.CloseComponent();
+        }
+    };
+
+
+}
