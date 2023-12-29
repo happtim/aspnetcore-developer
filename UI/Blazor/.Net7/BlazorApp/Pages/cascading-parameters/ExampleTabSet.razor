@@ -1,0 +1,30 @@
+﻿@page "/cascading-parameters/example-tab-set"
+
+@* 级联参数还可以使组件(TabSet)在组件层次(TabSet-Tab)结构中传递数据。 *@
+
+<TabSet>
+    <Tab Title="First tab">
+        <h4>Greetings from the first tab!</h4>
+
+        <label>
+            <input type="checkbox" @bind="showThirdTab" />
+            Toggle third tab
+        </label>
+    </Tab>
+
+    <Tab Title="Second tab">
+        <h4>Hello from the second tab!</h4>
+    </Tab>
+
+    @if (showThirdTab)
+    {
+        <Tab Title="Third tab">
+            <h4>Welcome to the disappearing third tab!</h4>
+            <p>Toggle this tab from the first tab.</p>
+        </Tab>
+    }
+</TabSet>
+
+@code {
+    private bool showThirdTab;
+}

@@ -12,8 +12,18 @@
             <a href="https://docs.microsoft.com/aspnet/" target="_blank">About</a>
         </div>
 
-        <article class="content px-4">
-            @Body
-        </article>
+        @* 祖先组件使用Blazor框架的 CascadingValue 组件提供级联值，该组件包装了组件层次结构的子树，并为其子树中的所有组件提供单个值。 *@
+
+        @* 组件层次结构中的任何后代组件都可以通过 ThemeInfo 级联值使用 ButtonClass 属性。 *@
+
+        <CascadingValue Value="@theme">
+            <article class="content px-4">
+                @Body
+            </article>
+        </CascadingValue>
     </main>
 </div>
+
+@code {
+    private ThemeInfo theme = new() { ButtonClass = "btn-success" };
+}
