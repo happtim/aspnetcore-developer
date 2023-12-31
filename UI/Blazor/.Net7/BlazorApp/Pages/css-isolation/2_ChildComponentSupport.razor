@@ -1,0 +1,30 @@
+﻿@page "/css-isolation/child-component-support"
+
+@attribute [RoutePriority(2)]
+
+@* 默认情况下，CSS隔离仅适用于与格式 {COMPONENT NAME}.razor.css 相关联的组件，其中占位符 {COMPONENT NAME} 通常是组件名称。
+要对子组件应用更改，请在父组件的 .razor.css 文件中使用 ::deep 伪元素来选择任何后代元素。
+伪元素 ::deep 选择的是元素生成的作用域标识符的后代元素。 *@
+
+
+@* 使用 ::deep 伪元素更新 Parent.razor.css 中的 h1 声明，以表示 h1 样式声明必须应用于父组件及其子组件。 *@
+
+@* 现在， h1 样式适用于 Parent 和 Child 组件，无需为子组件创建单独的作用域CSS文件。 *@
+
+@* ::deep 伪元素只能与后代元素一起使用。以下标记将预期地将 h1 样式应用于组件。
+父组件的作用域标识符应用于 div 元素，因此浏览器知道要从父组件继承样式。 *@
+
+<div>
+    <h1>Parent component</h1>
+
+    <Child />
+</div>
+
+@* 然而，排除 div 元素会移除后代关系。在下面的示例中，样式不会应用于子组件。 *@
+
+<h1>Parent</h1>
+
+<Child />
+
+@* ::deep 伪元素影响作用域属性应用于规则的位置。当您在作用域CSS文件中定义CSS规则时，
+默认情况下，作用域应用于最右边的元素。 *@

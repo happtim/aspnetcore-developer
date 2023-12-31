@@ -1,0 +1,18 @@
+﻿@page "/css-isolation/example"
+
+@attribute [RoutePriority(1)]
+
+@* CSS隔离可以简化CSS并避免与其他组件或库发生冲突。 *@
+@* 将CSS样式隔离到各个页面、视图和组件中，以减少 *@
+@* 1. 依赖全局样式可能难以维护。 *@
+@* 2. 嵌套内容中的样式冲突。 *@
+
+
+@* CSS隔离发生在构建时。Blazor会重写CSS选择器以匹配组件渲染的标记。重写后的CSS样式被捆绑并生成为静态资源。在<head>标签内加载 *@
+@* 格式为：<link href="{ASSEMBLY NAME}.styles.css" rel="stylesheet"> *@
+@* 本项目为：<link href="BlazorApp.styles.css" rel="stylesheet" /> *@
+
+@* 在捆绑文件中，每个组件都与一个作用域标识符相关联。对于每个样式化组件，都会附加一个HTML属性，格式为 b-{STRING} ，
+其中 {STRING} 占位符是由框架生成的十个字符的字符串。 *@
+
+<h1>Scoped CSS Example</h1>
