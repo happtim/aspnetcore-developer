@@ -6,4 +6,12 @@
     <ImplicitUsings>enable</ImplicitUsings>
   </PropertyGroup>
 
+  <ItemGroup>
+    <Content Remove="wwwroot\js\CallJsExample2.js" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Include="wwwroot\js\CallJsExample2.js" />
+  </ItemGroup>
+
 </Project>

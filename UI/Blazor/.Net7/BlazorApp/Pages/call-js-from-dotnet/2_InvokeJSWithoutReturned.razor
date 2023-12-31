@@ -1,0 +1,82 @@
+@page "/call-js-from-dotnet/invoke-js-without-returned"
+
+@attribute [RoutePriority(2)]
+@inject IJSRuntime JS
+
+<h1>Call JS Example 2</h1>
+
+<p>
+    <button @onclick="SetStock">Load a script in body</button>
+</p>
+
+<p>
+    <button @onclick="SetStock2">Load a script from an external js</button>
+</p>
+
+<p>
+    <button @onclick="SetStock3">Load a script from an external js collocated with a component</button>
+</p>
+
+<p>
+    <button @onclick="SetStock4">Invoke JS Warp a CSharp Class</button>
+</p>
+
+
+@if (stockSymbol is not null)
+{
+    <p>@stockSymbol price: @price.ToString("c")</p>
+}
+
+@code {
+    private Random r = new();
+    private string? stockSymbol;
+    private decimal price;
+    private JsInteropClasses1? jsClass;
+
+    protected override void OnInitialized()
+    {
+        jsClass = new(JS);
+    }
+
+    private async Task SetStock()
+    {
+        stockSymbol = 
+            $"{(char)('A' + r.Next(0, 26))}{(char)('A' + r.Next(0, 26))}";
+        price = r.Next(1, 101);
+
+        await JS.InvokeVoidAsync("displayTickerAlert1",  stockSymbol, price);
+    }
+
+    private async Task SetStock2()
+    {
+        stockSymbol =
+            $"{(char)('A' + r.Next(0, 26))}{(char)('A' + r.Next(0, 26))}";
+        price = r.Next(1, 101);
+
+        await JS.InvokeVoidAsync("displayTickerAlert2", stockSymbol, price);
+    }
+
+    private async Task SetStock3()
+    {
+        stockSymbol =
+            $"{(char)('A' + r.Next(0, 26))}{(char)('A' + r.Next(0, 26))}";
+        price = r.Next(1, 101);
+
+        var module = await JS.InvokeAsync<IJSObjectReference>("import", "./Pages/call-js-from-dotnet/2_InvokeJSWithoutReturned.razor.js");
+
+        await module.InvokeVoidAsync("displayTickerAlert3", stockSymbol, price);
+    }
+
+    private async Task SetStock4()
+    {
+        if (jsClass is not null)
+        {
+            stockSymbol =
+                $"{(char)('A' + r.Next(0, 26))}{(char)('A' + r.Next(0, 26))}";
+            price = r.Next(1, 101);
+            await jsClass.TickerChanged(stockSymbol, price);
+        }
+    }
+
+    public void Dispose() => jsClass?.Dispose();
+}

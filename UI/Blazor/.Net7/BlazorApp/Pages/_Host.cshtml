@@ -29,6 +29,24 @@
         <a class="dismiss">🗙</a>
     </div>
 
+    @* _framework/blazor.server.js 是Blazor脚本的路径和文件名。 *@
     <script src="_framework/blazor.server.js"></script>
+
+    <script>
+        window.convertArray = (win1251Array) => {
+            var win1251decoder = new TextDecoder('windows-1251');
+            var bytes = new Uint8Array(win1251Array);
+            var decodedArray = win1251decoder.decode(bytes);
+            console.log(decodedArray);
+            return decodedArray;
+        };
+
+        window.displayTickerAlert1 = (symbol, price) => {
+            alert(`${symbol}: $${price}!`);
+        };
+    </script>
+
+    @* js/CallJsExample2.js 是 wwwroot 下的路径和脚本文件名。 *@
+    <script src="js/CallJsExample2.js"></script>
 </body>
 </html>
