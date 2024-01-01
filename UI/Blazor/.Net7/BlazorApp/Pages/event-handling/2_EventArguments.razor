@@ -10,6 +10,13 @@
             Where's my mouse pointer for this button?
         </button>
     </p>
+
+    <p>
+        @* 向事件处理程序传递附加参数 *@
+        <button @onclick="@((e) => ReportPointerLocation2(e,i))">
+            Where's my mouse pointer for this button?
+        </button>
+    </p>
 }
 
 <p>@mousePointerMessage</p>
@@ -20,5 +27,10 @@
     private void ReportPointerLocation(MouseEventArgs e)
     {
         mousePointerMessage = $"Mouse coordinates: {e.ScreenX}:{e.ScreenY}";
+    }
+
+    private void ReportPointerLocation2(MouseEventArgs e,int i)
+    {
+        mousePointerMessage = $"index: {i} Mouse coordinates: {e.ScreenX}:{e.ScreenY}";
     }
 }
