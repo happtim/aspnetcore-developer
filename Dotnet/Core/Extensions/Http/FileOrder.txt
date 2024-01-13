@@ -1,0 +1,5 @@
+HttpClient.linq
+HttpClientFactroy_Pool.linq
+HttpClientFactory_Basic.linq
+HttpClientFactory_Named.linq
+HttpClientFactory_Typed.linq
