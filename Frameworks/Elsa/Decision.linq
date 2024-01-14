@@ -1,11 +1,11 @@
 <Query Kind="Statements">
- <NuGetReference Version="3.0.0-preview.604" Prerelease="true">Elsa</NuGetReference>
-  <Namespace>Elsa.Extensions</Namespace>
-  <Namespace>Elsa.Workflows.Core.Activities</Namespace>
-  <Namespace>Elsa.Workflows.Core.Contracts</Namespace>
-  <Namespace>Elsa.Workflows.Core.Memory</Namespace>
-  <Namespace>Microsoft.Extensions.DependencyInjection</Namespace>
+  <NuGetReference Version="3.0.0">Elsa</NuGetReference>
   <Namespace>Elsa.Expressions.Models</Namespace>
+  <Namespace>Elsa.Extensions</Namespace>
+  <Namespace>Elsa.Workflows.Activities</Namespace>
+  <Namespace>Elsa.Workflows.Contracts</Namespace>
+  <Namespace>Elsa.Workflows.Memory</Namespace>
+  <Namespace>Microsoft.Extensions.DependencyInjection</Namespace>
   <RemoveNamespace>System.Diagnostics</RemoveNamespace>
   <RemoveNamespace>System.Linq.Expressions</RemoveNamespace>
 </Query>

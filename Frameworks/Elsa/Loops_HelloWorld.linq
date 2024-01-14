@@ -1,11 +1,10 @@
 <Query Kind="Statements">
-  <NuGetReference Version="3.0.0-preview.604" Prerelease="true">Elsa</NuGetReference>
-  <Namespace>Microsoft.Extensions.DependencyInjection</Namespace>
+  <NuGetReference Version="3.0.0">Elsa</NuGetReference>
   <Namespace>Elsa.Extensions</Namespace>
-  <Namespace>Elsa.Workflows.Core.Contracts</Namespace>
-  <Namespace>Elsa.Workflows.Core.Activities</Namespace>
-  <Namespace>Elsa.Workflows.Core.Memory</Namespace>
-  <Namespace>Elsa.Workflows.Core.Models</Namespace>
+  <Namespace>Elsa.Workflows.Activities</Namespace>
+  <Namespace>Elsa.Workflows.Contracts</Namespace>
+  <Namespace>Elsa.Workflows.Memory</Namespace>
+  <Namespace>Microsoft.Extensions.DependencyInjection</Namespace>
 </Query>
 
 // Setup service container.

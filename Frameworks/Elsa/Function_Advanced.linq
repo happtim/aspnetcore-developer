@@ -1,13 +1,14 @@
 <Query Kind="Statements">
-  <NuGetReference Version="3.0.0-preview.604" Prerelease="true">Elsa</NuGetReference>
-  <Namespace>Microsoft.Extensions.DependencyInjection</Namespace>
-  <Namespace>Elsa.Extensions</Namespace>
-  <Namespace>Elsa.Workflows.Core.Contracts</Namespace>
-  <Namespace>Elsa.Workflows.Core.Activities</Namespace>
-  <Namespace>Elsa.Workflows.Core.Memory</Namespace>
-  <Namespace>Elsa.Workflows.Core.Models</Namespace>
-  <Namespace>Elsa.Workflows.Core</Namespace>
+  <NuGetReference Version="3.0.0">Elsa</NuGetReference>
   <Namespace>Elsa.Expressions.Models</Namespace>
+  <Namespace>Elsa.Extensions</Namespace>
+  <Namespace>Elsa.Workflows</Namespace>
+  <Namespace>Elsa.Workflows.Activities</Namespace>
+  <Namespace>Elsa.Workflows.Contracts</Namespace>
+  <Namespace>Elsa.Workflows.Memory</Namespace>
+  <Namespace>Elsa.Workflows.Models</Namespace>
+  <Namespace>Microsoft.Extensions.DependencyInjection</Namespace>
+  <Namespace>System.Threading.Tasks</Namespace>
 </Query>
 
 // Setup service container.
@@ -87,16 +88,16 @@ public class AskDetails : Composite<Person>
 		};
 	}
 
-	protected override void OnCompleted(ActivityExecutionContext context, ActivityExecutionContext childContext)
+	protected override void OnCompleted(ActivityCompletedContext context)
 	{
 		//var name = _name.Get<string>(childContext)!;
 		//var age = _age.Get<int>(childContext);
-		
-		var name = _name.Get<string>(context)!;
-		var age = _age.Get<int>(context);
+
+		var name = _name.Get<string>(context.TargetContext)!;
+		var age = _age.Get<int>(context.TargetContext);
 		var person = new Person(name, age);
 
-		context.Set(Result, person);
+		context.TargetContext.Set(Result, person);
 	}
 }
 
@@ -119,10 +120,11 @@ public class AskAge : Composite<int>
 		};
 	}
 
-	protected override void OnCompleted(ActivityExecutionContext context, ActivityExecutionContext childContext)
+
+	protected override void OnCompleted(ActivityCompletedContext context)
 	{
-		var age = _age.Get<int>(context);
-		context.Set(Result, age);
+		var age = _age.Get<int>(context.TargetContext);
+		context.TargetContext.Set(Result, age);
 	}
 }
 
@@ -145,10 +147,10 @@ public class AskName : Composite<string>
 		};
 	}
 
-	protected override void OnCompleted(ActivityExecutionContext context, ActivityExecutionContext childContext)
+	protected override void OnCompleted(ActivityCompletedContext context)
 	{
-		var name = _name.Get<string>(context);
-		context.Set(Result, name);
+		var name = _name.Get<string>(context.TargetContext);
+		context.TargetContext.Set(Result, name);
 	}
 }
 
@@ -157,7 +159,7 @@ public class SetResult<T> : CodeActivity<T>
 	/// <summary>
 	/// The value to assign.
 	/// </summary>
-	[Elsa.Workflows.Core.Attributes.Input(Description = "The value to assign.")]
+	[Elsa.Workflows.Attributes.Input(Description = "The value to assign.")]
 	public Input<T> Value { get; set; } = new(new Literal<T>());
 
 	protected override void Execute(ActivityExecutionContext context)

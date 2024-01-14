@@ -1,11 +1,12 @@
 <Query Kind="Statements">
-  <NuGetReference Version="3.0.0-preview.604" Prerelease="true">Elsa</NuGetReference>
+  <NuGetReference Version="3.0.0">Elsa</NuGetReference>
   <Namespace>Elsa.Extensions</Namespace>
-  <Namespace>Elsa.Workflows.Core</Namespace>
-  <Namespace>Elsa.Workflows.Core.Activities</Namespace>
-  <Namespace>Elsa.Workflows.Core.Contracts</Namespace>
+  <Namespace>Elsa.Workflows</Namespace>
+  <Namespace>Elsa.Workflows.Activities</Namespace>
+  <Namespace>Elsa.Workflows.Contracts</Namespace>
+  <Namespace>Elsa.Workflows.Models</Namespace>
+  <Namespace>Elsa.Workflows.Options</Namespace>
   <Namespace>Microsoft.Extensions.DependencyInjection</Namespace>
-  <Namespace>Elsa.Workflows.Core.Models</Namespace>
   <RemoveNamespace>System.Diagnostics</RemoveNamespace>
   <RemoveNamespace>System.Linq.Expressions</RemoveNamespace>
 </Query>
@@ -45,7 +46,7 @@ var result = await workflowRunner.RunAsync(workflow);
 // Resume the workflow using te created bookmark.
 var bookmark = result.WorkflowState.Bookmarks.Single();
 var workflowState = result.WorkflowState;
-await workflowRunner.RunAsync(workflow, workflowState, new RunWorkflowOptions(bookmarkId: bookmark.Id));
+await workflowRunner.RunAsync(workflow, workflowState, new RunWorkflowOptions { BookmarkId = bookmark.Id});
 
 
 public class MyEvent : Activity

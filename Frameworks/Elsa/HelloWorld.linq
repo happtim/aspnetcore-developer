@@ -1,8 +1,8 @@
 <Query Kind="Statements">
-  <NuGetReference Version="3.0.0-preview.604" Prerelease="true">Elsa</NuGetReference>
+  <NuGetReference Version="3.0.0">Elsa</NuGetReference>
   <Namespace>Elsa.Extensions</Namespace>
-  <Namespace>Elsa.Workflows.Core.Activities</Namespace>
-  <Namespace>Elsa.Workflows.Core.Contracts</Namespace>
+  <Namespace>Elsa.Workflows.Activities</Namespace>
+  <Namespace>Elsa.Workflows.Contracts</Namespace>
   <Namespace>Microsoft.Extensions.DependencyInjection</Namespace>
 </Query>
 
