@@ -34,6 +34,7 @@ createStream.Seek(0, SeekOrigin.Begin);
 
 streamReader.ReadToEnd().Dump();
 
+//序列化为格式化 JSON
 jsonString = JsonSerializer.Serialize<WeatherForecast>(weatherForecast, new JsonSerializerOptions { WriteIndented = true});
 
 jsonString.Dump();

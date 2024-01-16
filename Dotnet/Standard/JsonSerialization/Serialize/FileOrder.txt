@@ -1,4 +1,4 @@
 CustomizeProperties
 IgnoreProperties
+Fields
 Serialize.linq
-Deserialize.linq
