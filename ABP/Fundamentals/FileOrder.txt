@@ -6,3 +6,4 @@ Dependency_Injection_Repeat.linq
 Dependency_Injection.linq
 Depencency_Injection_Autofac.linq
 Settting.linq
+ObjectExtensions.linq
