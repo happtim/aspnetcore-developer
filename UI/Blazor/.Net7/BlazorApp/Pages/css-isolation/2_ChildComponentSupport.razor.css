@@ -1,4 +1,8 @@
-﻿::deep h1 {
+﻿/*h1{
+    color: red;
+}*/
+
+::deep h1 {
     color: red;
 }
 
