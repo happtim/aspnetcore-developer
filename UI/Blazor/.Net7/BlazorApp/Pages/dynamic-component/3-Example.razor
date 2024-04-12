@@ -4,6 +4,7 @@
 
 @* 传递事件回调（Event callbacks） *@
 @* 事件回调（EventCallback）可以通过参数字典传递给DynamicComponent。 *@
+@* MyDynamicComponent 是自己实现动态代理方式 *@
 
 <h1><code>DynamicComponent</code> Component Example 3</h1>
 
@@ -24,6 +25,11 @@
 {
     <div class="border border-primary my-1 p-1">
         <DynamicComponent Type="@selectedType"
+            Parameters="@Components[selectedType.Name].Parameters" />
+    </div>
+
+    <div class="border border-primary my-1 p-1">
+        <MyDynamicComponent Type="@selectedType"
             Parameters="@Components[selectedType.Name].Parameters" />
     </div>
 }
