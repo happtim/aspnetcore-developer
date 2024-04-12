@@ -1,0 +1,21 @@
+﻿@page "/lifecycles/all-lifecycles-2"
+
+@using Microsoft.Extensions.Logging
+@using System.Diagnostics;
+
+@attribute [RoutePriority(9)]
+
+<h3>_9_AllLifecycles</h3>
+
+<button class="btn btn-warning" @onclick="ChangeParamter">ChangeParamter</button>
+<LifecycleTest Title="@title"></LifecycleTest>
+
+@code
+{
+    string title = "here is the title parameter";
+
+    void ChangeParamter()
+    {
+        title = DateTime.Now.ToString("o");
+    }
+}
