@@ -8,7 +8,11 @@
 <h3>_9_AllLifecycles</h3>
 
 <button class="btn btn-warning" @onclick="ChangeParamter">ChangeParamter</button>
-<LifecycleTest Title="@title"></LifecycleTest>
+
+<LifecycleTest Title="@title" TitleChanged="ChildCalled"></LifecycleTest>
+
+@* 双向绑定@bind语法 *@
+@* <LifecycleTest @bind-Title="title"></LifecycleTest> *@
 
 @code
 {
@@ -18,4 +22,66 @@
     {
         title = DateTime.Now.ToString("o");
     }
+
+    void ChildCalled(string title)
+    {
+        this.title = title;
+        Debug.WriteLine("Child componet called. Title:" + title);
+    }
+
+    //设置参数前
+    public override Task SetParametersAsync(ParameterView parameters)
+    {
+        Debug.WriteLine("Parent-SetParametersAsync");
+        return base.SetParametersAsync(parameters);
+    }
+
+    //初始化
+    protected override void OnInitialized()
+    {
+        Debug.WriteLine("Parent-OnInitialized");
+        base.OnInitialized();
+    }
+
+    protected override Task OnInitializedAsync()
+    {
+        Debug.WriteLine("Parent-OnInitializedAsync");
+        return base.OnInitializedAsync();
+    }
+
+    //设置参数之后
+    protected override void OnParametersSet()
+    {
+        Debug.WriteLine("Parent-OnParametersSet");
+        base.OnParametersSet();
+    }
+
+    protected override Task OnParametersSetAsync()
+    {
+        Debug.WriteLine("Parent-OnParametersSetAsync");
+        return base.OnParametersSetAsync();
+    }
+
+    //组件呈现之后
+    protected override void OnAfterRender(bool firstRender)
+    {
+        Debug.WriteLine($"Parent-OnAfterRender, firstRender:{firstRender}");
+        base.OnAfterRender(firstRender);
+    }
+
+    protected override Task OnAfterRenderAsync(bool firstRender)
+    {
+        Debug.WriteLine($"Parent-OnAfterRenderAsync, firstRender:{firstRender}");
+        return base.OnAfterRenderAsync(firstRender);
+    }
+
+    //是否组件渲染
+    protected override bool ShouldRender()
+    {
+        Debug.WriteLine("Parent-ShouldRender");
+        return true;
+    }
+
+
+    
 }

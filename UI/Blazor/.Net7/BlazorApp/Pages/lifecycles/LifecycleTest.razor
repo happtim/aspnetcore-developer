@@ -5,12 +5,16 @@
 
 <p>Current count: @currentCount</p>
 <button class="btn btn-primary" @onclick="IncrementCount">Click me</button>
+<botton class="btn btn-primary" @onclick="NotifyParent">NotifyParent</botton>
 <button class="btn btn-secondary" @onclick="NotifyStateHasChanged">NotifyStateHasChanged</button>
 
 @code {
 
     [Parameter]
     public string Title { get; set; }
+
+    [Parameter]
+    public EventCallback<string> TitleChanged { get; set; }
 
     private int currentCount = 0;
 
@@ -19,9 +23,14 @@
         currentCount++;
     }
 
+    private async Task NotifyParent()
+    {
+        await TitleChanged.InvokeAsync(currentCount.ToString());
+    }
+
     void NotifyStateHasChanged()
     {
-        Debug.WriteLine("NotifyStateHasChanged");
+        Debug.WriteLine("Child-NotifyStateHasChanged");
         StateHasChanged();
     }
 
@@ -29,60 +38,60 @@
     //设置参数前
     public override Task SetParametersAsync(ParameterView parameters)
     {
-        Debug.WriteLine("SetParametersAsync");
+        Debug.WriteLine("Child-SetParametersAsync");
         return base.SetParametersAsync(parameters);
     }
 
     //初始化
     protected override void OnInitialized()
     {
-        Debug.WriteLine("OnInitialized");
+        Debug.WriteLine("Child-OnInitialized");
         base.OnInitialized();
     }
 
     protected override Task OnInitializedAsync()
     {
-        Debug.WriteLine("OnInitializedAsync");
+        Debug.WriteLine("Child-OnInitializedAsync");
         return base.OnInitializedAsync();
     }
 
     //设置参数之后
     protected override void OnParametersSet()
     {
-        Debug.WriteLine("OnParametersSet");
+        Debug.WriteLine("Child-OnParametersSet");
         base.OnParametersSet();
     }
 
     protected override Task OnParametersSetAsync()
     {
-        Debug.WriteLine("OnParametersSetAsync");
+        Debug.WriteLine("Child-OnParametersSetAsync");
         return base.OnParametersSetAsync();
     }
 
     //组件呈现之后
     protected override void OnAfterRender(bool firstRender)
     {
-        Debug.WriteLine($"OnAfterRender, firstRender:{firstRender}");
+        Debug.WriteLine($"Child-OnAfterRender, firstRender:{firstRender}");
         base.OnAfterRender(firstRender);
     }
 
     protected override Task OnAfterRenderAsync(bool firstRender)
     {
-        Debug.WriteLine($"OnAfterRenderAsync, firstRender:{firstRender}");
+        Debug.WriteLine($"Child-OnAfterRenderAsync, firstRender:{firstRender}");
         return base.OnAfterRenderAsync(firstRender);
     }
 
     //是否组件渲染
     protected override bool ShouldRender()
     {
-        Debug.WriteLine("ShouldRender");
+        Debug.WriteLine("Child-ShouldRender");
         return true;
     }
 
     //销毁释放
     public void Dispose()
     {
-        Debug.WriteLine("Dispose");
+        Debug.WriteLine("Child-Dispose");
     }
 
 
