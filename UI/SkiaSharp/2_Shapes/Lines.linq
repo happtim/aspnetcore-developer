@@ -28,7 +28,6 @@ using (var fillPaint = new SKPaint())
 		path.MoveTo(25, 25); // 移动到起始点
 		path.LineTo(105, 25); // 绘制第一条线
 		path.LineTo(25, 105); // 绘制第二条线
-		path.Close(); // 关闭路径
 
 		// 绘制填充三角形
 		canvas.DrawPath(path, fillPaint);

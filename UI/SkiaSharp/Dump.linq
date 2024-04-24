@@ -22,3 +22,38 @@ public static class DumpExtensions
 		}
 	}
 }
+
+
+public static class SKPathExtensions
+{
+	//startAngle为零时，起始点位于椭圆的右中边缘
+	public static void Arc(this SKPath path, float x, float y, float radius, float startAngle, float endAngle, bool counterclockwise = true)
+	{
+		//		// Convert angles from radians to degrees
+		float startDegrees = startAngle * 180f / (float)Math.PI;
+		float endDegrees = endAngle * 180f / (float)Math.PI;
+
+		// SkiaSharp uses sweep angles, not end angles, so calculate the sweep
+		float sweepDegrees = endDegrees - startDegrees;
+
+		//负的sweepAngle 逆时针绘制圆弧
+		if (counterclockwise)
+		{
+			if (sweepDegrees > 0)
+				sweepDegrees -= 360;
+		}
+
+		//正的sweepAngle 顺时针绘制圆弧
+		else
+		{
+			if (sweepDegrees < 0)
+				sweepDegrees += 360;
+		}
+
+		// SkiaSharp's ArcTo needs the rectangle that bounds the circle
+		SKRect rect = new SKRect(x - radius, y - radius, x + radius, y + radius);
+
+		// Add the arc to the path
+		path.ArcTo(rect, startDegrees, sweepDegrees, false);
+	}
+}

@@ -18,25 +18,33 @@ SKRect oval = new SKRect(4,4,60,60);
 // 设置背景为白色
 canvas.Clear(SkiaSharp.SKColors.White);
 
-var paint = new SKPaint();
-
-foreach (var userCenter in new bool[] { true, false})
+for (int i = 0; i < 4; i++)
 {
-	foreach (var style in new SKPaintStyle[] { SKPaintStyle.Stroke,SKPaintStyle.Fill})
+	for (int j = 0; j < 3; j++)
 	{
-		paint.Style = style;
-		foreach (var degree in new int[] {45,90,180,360})
+		var x = 25 + j * 50; // x coordinate
+		var y = 25 + i * 50; // y coordinate
+		var radius = 20; // Arc radius
+		var endAngle = Math.PI + (Math.PI * j) / 2; // End point on circle
+		var counterclockwise = i % 2 != 0; // clockwise or counterclockwise
+		
+		using (var paint = new SKPaint())
 		{
-			canvas.DrawArc(oval,0,degree,userCenter,paint);
-			canvas.Translate(64,0);
+			paint.Style = i > 1 ? SKPaintStyle.Fill : SKPaintStyle.Stroke;
+			paint.Color = SKColors.Black;
+			paint.StrokeWidth = 1;
+			paint.IsAntialias = true;
+
+			using (var path = new SKPath())
+			{
+				path.Arc(x, y, radius, 0, (float)(endAngle), counterclockwise);
+				canvas.DrawPath(path, paint);
+			}
 		}
-		canvas.Translate(-256,64);
 	}
 }
 
 var image = surfact.Snapshot();
 
 image.Dump();
-
-
 

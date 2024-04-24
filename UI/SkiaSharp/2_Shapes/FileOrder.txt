@@ -5,3 +5,7 @@ MovingThePen.linq
 Lines.linq
 
 Arcs.linq
+ArcsTo.linq
+QuadraticBezier.linq
+CubicBezier.linq
+Holes.linq
