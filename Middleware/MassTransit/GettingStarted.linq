@@ -16,6 +16,7 @@ var builder = WebApplication.CreateBuilder();
 builder.Services.AddMassTransit(x =>
 {
     x.AddConsumer<GettingStartedConsumer>();
+	//x.AddConsumer<GettingStartedConsumer2>();
 
     x.UsingInMemory((context,cfg) =>
     {
@@ -76,6 +77,26 @@ public class GettingStartedConsumer :
 	{
 		_logger.LogInformation("Received Text: {Text}", context.Message.Value);
 		return Task.CompletedTask;
+	}
+
+}
+
+//测试扇出模式是否线程隔离。
+public class GettingStartedConsumer2 :
+	IConsumer<GettingStarted.Contracts.GettingStarted>
+{
+	readonly ILogger<GettingStartedConsumer> _logger;
+
+	public GettingStartedConsumer2(ILogger<GettingStartedConsumer> logger)
+	{
+		_logger = logger;
+	}
+
+	public async Task Consume(ConsumeContext<GettingStarted.Contracts.GettingStarted> context)
+	{
+		_logger.LogInformation("Received Text 2 Begin: {Text}", context.Message.Value);
+		await Task.Delay(5000);
+		_logger.LogInformation("Received Text 2 End: {Text}", context.Message.Value);
 	}
 
 }
