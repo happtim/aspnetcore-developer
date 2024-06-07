@@ -1,3 +1,11 @@
 GettingStarted.linq
 OneWayClient.linq
 Container.linq
+PubSub_RabbitMq.linq
+PubSub_InMem.linq
+Saga.linq
+Timeouts.linq
+Logging.linq
+Routing_Send.linq
+Routing_PubSub.linq
+MyMessageHandler.linq

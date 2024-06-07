@@ -13,6 +13,8 @@
   <Namespace>Rebus.Bus</Namespace>
 </Query>
 
+#load ".\MyMessageHandler"
+
 //RedBus 支持容器。
 //内容容器 BuiltinHandlerActivator()
 //注册处理程序 activator.Register(() => new SomeHandler(pass, dependencies, into, ctor));
@@ -58,17 +60,3 @@ while (true)
 
 Console.WriteLine("Message sent. Press Enter to quit.");
 Console.ReadLine();
-
-
-public class MyMessage
-{
-	public string Text { get; set; }
-}
-
-public class MyMessageHandler : IHandleMessages<MyMessage>
-{
-	public async Task Handle(MyMessage message)
-	{
-		Console.WriteLine("Received message: " + message.Text);
-	}
-}
