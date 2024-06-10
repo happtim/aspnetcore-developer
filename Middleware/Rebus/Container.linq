@@ -34,8 +34,9 @@ services.AddRebus(configure =>
 );
 
 // 注册消息处理器
-services.AddRebusHandler<MyMessageHandler>();
-//services.AddTransient<IHandleMessages<MyMessage>, MyMessageHandler>();
+//services.AddRebusHandler<MyMessageHandler>();
+services.AddTransient<IHandleMessages<MyMessage>, MyMessageHandler>();
+//services.AddTransient(typeof(IHandleMessages<>), typeof(TMessageHandler<>));
 
 // 构建服务提供者
 var provider = services.BuildServiceProvider();

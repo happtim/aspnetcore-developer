@@ -17,3 +17,12 @@ public class MyMessageHandler : IHandleMessages<MyMessage>
 		Console.WriteLine("Received message: " + message.Text);
 	}
 }
+
+public class TMessageHandler<TMessage> : IHandleMessages<TMessage> 
+	where TMessage : MyMessage
+{
+	public async Task Handle(TMessage message)
+	{
+		Console.WriteLine("Received message: " + message.Text);
+	}
+}
