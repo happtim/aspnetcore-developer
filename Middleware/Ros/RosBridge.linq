@@ -5,6 +5,9 @@
 </Query>
 
 
+//支持哪些功能在如下目录中定义
+//https://github.com/RobotWebTools/rosbridge_suite/rosapi/scripts/rosapi_node 
+
 string uri = "ws://127.0.0.1:9090";
 
 RosSocket rosSocket  = new RosSocket(new RosSharp.RosBridgeClient.Protocols.WebSocketNetProtocol(uri));
