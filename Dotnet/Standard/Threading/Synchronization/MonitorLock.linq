@@ -4,6 +4,7 @@
 
 //Monitor类提供了互斥锁的实现，用于保护共享资源的同步访问。
 //提供进入(Enter)离开(Exit)方法
+//Monitor 是 C# lock 的底层实现 
 
 //创建锁对象
 object oo = new object();
