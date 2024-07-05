@@ -1,0 +1,507 @@
+<?xml version="1.0" encoding="utf-8"?>
+<UANodeSet LastModified="2019-04-30T12:15:41.051Z" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns="http://opcfoundation.org/UA/2011/03/UANodeSet.xsd" xmlns:uax="http://opcfoundation.org/UA/2008/02/Types.xsd" xmlns:si="http://www.siemens.com/OPCUA/2017/SimaticNodeSetExtensions">
+    <NamespaceUris>
+        <Uri>mir:elevator</Uri>
+    </NamespaceUris>
+    <Models>
+        <Model ModelUri="mir:elevator" PublicationDate="2019-04-23T00:00:00Z" Version="1.0.0">
+            <RequiredModel ModelUri="http://opcfoundation.org/UA/" PublicationDate="2018-05-15T00:00:00Z" Version="1.04"/>
+        </Model>
+    </Models>
+    <Aliases>
+        <Alias Alias="Boolean">i=1</Alias>
+        <Alias Alias="Int16">i=4</Alias>
+        <Alias Alias="String">i=12</Alias>
+        <Alias Alias="HasComponent">i=47</Alias>
+        <Alias Alias="HasProperty">i=46</Alias>
+        <Alias Alias="Organizes">i=35</Alias>
+        <Alias Alias="HasTypeDefinition">i=40</Alias>
+        <Alias Alias="HasModellingRule">i=37</Alias>
+    </Aliases>
+    <Extensions>
+        <Extension>
+            <si:Generator Product="SiOME" Edition="Standard" Version="1.7.3"/>
+        </Extension>
+    </Extensions>
+    <UAVariable DataType="Int16" NodeId="ns=1;s=&quot;Elevator&quot;.&quot;status&quot;.&quot;control&quot;" BrowseName="1:control" UserAccessLevel="3" AccessLevel="3">
+        <DisplayName>control</DisplayName>
+        <References>
+            <Reference ReferenceType="HasTypeDefinition">i=63</Reference>
+            <Reference ReferenceType="HasModellingRule">i=78</Reference>
+            <Reference ReferenceType="HasComponent" IsForward="false">ns=1;s="Elevator"."status"</Reference>
+        </References>
+        <Extensions>
+            <Extension>
+                <si:VariableMapping>"Elevator"."status"."control"</si:VariableMapping>
+            </Extension>
+        </Extensions>
+    </UAVariable>
+    <UAVariable DataType="Int16" NodeId="ns=1;s=&quot;Elevator&quot;.&quot;status&quot;.&quot;control_requested&quot;" BrowseName="1:control_requested" UserAccessLevel="3" AccessLevel="3">
+        <DisplayName>control_requested</DisplayName>
+        <References>
+            <Reference ReferenceType="HasTypeDefinition">i=63</Reference>
+            <Reference ReferenceType="HasModellingRule">i=78</Reference>
+            <Reference ReferenceType="HasComponent" IsForward="false">ns=1;s="Elevator"."status"</Reference>
+        </References>
+        <Extensions>
+            <Extension>
+                <si:VariableMapping>"Elevator"."status"."control_requested"</si:VariableMapping>
+            </Extension>
+        </Extensions>
+    </UAVariable>
+    <UAVariable DataType="Int16" NodeId="ns=1;s=&quot;Elevator&quot;.&quot;status&quot;.&quot;floor&quot;" BrowseName="1:floor" UserAccessLevel="3" AccessLevel="3">
+        <DisplayName>floor</DisplayName>
+        <References>
+            <Reference ReferenceType="HasTypeDefinition">i=63</Reference>
+            <Reference ReferenceType="HasModellingRule">i=78</Reference>
+            <Reference ReferenceType="HasComponent" IsForward="false">ns=1;s="Elevator"."status"</Reference>
+        </References>
+        <Extensions>
+            <Extension>
+                <si:VariableMapping>"Elevator"."status"."floor"</si:VariableMapping>
+            </Extension>
+        </Extensions>
+    </UAVariable>
+    <UAVariable DataType="Boolean" NodeId="ns=1;s=&quot;Elevator&quot;.&quot;status&quot;.&quot;is_available&quot;" BrowseName="1:is_available" UserAccessLevel="3" AccessLevel="3">
+        <DisplayName>is_available</DisplayName>
+        <References>
+            <Reference ReferenceType="HasTypeDefinition">i=63</Reference>
+            <Reference ReferenceType="HasModellingRule">i=78</Reference>
+            <Reference ReferenceType="HasComponent" IsForward="false">ns=1;s="Elevator"."status"</Reference>
+        </References>
+        <Extensions>
+            <Extension>
+                <si:VariableMapping>"Elevator"."status"."is_available"</si:VariableMapping>
+            </Extension>
+        </Extensions>
+    </UAVariable>
+    <UAVariable DataType="Int16" NodeId="ns=1;s=&quot;Elevator&quot;.&quot;status&quot;.&quot;requested_floor&quot;" BrowseName="1:requested_floor" UserAccessLevel="3" AccessLevel="3">
+        <DisplayName>requested_floor</DisplayName>
+        <References>
+            <Reference ReferenceType="HasTypeDefinition">i=63</Reference>
+            <Reference ReferenceType="HasModellingRule">i=78</Reference>
+            <Reference ReferenceType="HasComponent" IsForward="false">ns=1;s="Elevator"."status"</Reference>
+        </References>
+        <Extensions>
+            <Extension>
+                <si:VariableMapping>"Elevator"."status"."requested_floor"</si:VariableMapping>
+            </Extension>
+        </Extensions>
+    </UAVariable>
+    <UAVariable DataType="Boolean" NodeId="ns=1;s=&quot;Elevator&quot;.&quot;door&quot;.&quot;front&quot;.&quot;fully_open&quot;" BrowseName="1:fully_open" UserAccessLevel="3" AccessLevel="3">
+        <DisplayName>fully_open</DisplayName>
+        <References>
+            <Reference ReferenceType="HasTypeDefinition">i=63</Reference>
+            <Reference ReferenceType="HasModellingRule">i=78</Reference>
+            <Reference ReferenceType="HasComponent" IsForward="false">ns=1;s="Elevator"."door"."front"</Reference>
+        </References>
+        <Extensions>
+            <Extension>
+                <si:VariableMapping>"Elevator"."door"."front"."fully_open"</si:VariableMapping>
+            </Extension>
+        </Extensions>
+    </UAVariable>
+    <UAVariable DataType="Boolean" NodeId="ns=1;s=&quot;Elevator&quot;.&quot;door&quot;.&quot;front&quot;.&quot;open_request&quot;" BrowseName="1:open_request" UserAccessLevel="3" AccessLevel="3">
+        <DisplayName>open_request</DisplayName>
+        <References>
+            <Reference ReferenceType="HasTypeDefinition">i=63</Reference>
+            <Reference ReferenceType="HasModellingRule">i=78</Reference>
+            <Reference ReferenceType="HasComponent" IsForward="false">ns=1;s="Elevator"."door"."front"</Reference>
+        </References>
+        <Extensions>
+            <Extension>
+                <si:VariableMapping>"Elevator"."door"."front"."open_request"</si:VariableMapping>
+            </Extension>
+        </Extensions>
+    </UAVariable>
+    <UAVariable DataType="Boolean" NodeId="ns=1;s=&quot;Elevator&quot;.&quot;door&quot;.&quot;rear&quot;.&quot;fully_open&quot;" BrowseName="1:fully_open" UserAccessLevel="3" AccessLevel="3">
+        <DisplayName>fully_open</DisplayName>
+        <References>
+            <Reference ReferenceType="HasTypeDefinition">i=63</Reference>
+            <Reference ReferenceType="HasModellingRule">i=78</Reference>
+            <Reference ReferenceType="HasComponent" IsForward="false">ns=1;s="Elevator"."door"."rear"</Reference>
+        </References>
+        <Extensions>
+            <Extension>
+                <si:VariableMapping>"Elevator"."door"."rear"."fully_open"</si:VariableMapping>
+            </Extension>
+        </Extensions>
+    </UAVariable>
+    <UAVariable DataType="Boolean" NodeId="ns=1;s=&quot;Elevator&quot;.&quot;door&quot;.&quot;rear&quot;.&quot;open_request&quot;" BrowseName="1:open_request" UserAccessLevel="3" AccessLevel="3">
+        <DisplayName>open_request</DisplayName>
+        <References>
+            <Reference ReferenceType="HasTypeDefinition">i=63</Reference>
+            <Reference ReferenceType="HasModellingRule">i=78</Reference>
+            <Reference ReferenceType="HasComponent" IsForward="false">ns=1;s="Elevator"."door"."rear"</Reference>
+        </References>
+        <Extensions>
+            <Extension>
+                <si:VariableMapping>"Elevator"."door"."rear"."open_request"</si:VariableMapping>
+            </Extension>
+        </Extensions>
+    </UAVariable>
+    <UAVariable DataType="Boolean" NodeId="ns=1;s=&quot;Elevator&quot;.&quot;status&quot;.&quot;fire_alarm&quot;" BrowseName="1:fire_alarm" UserAccessLevel="3" AccessLevel="3">
+        <DisplayName>fire_alarm</DisplayName>
+        <References>
+            <Reference ReferenceType="HasTypeDefinition">i=63</Reference>
+            <Reference ReferenceType="HasModellingRule">i=78</Reference>
+            <Reference ReferenceType="HasComponent" IsForward="false">ns=1;s="Elevator"."status"</Reference>
+        </References>
+        <Extensions>
+            <Extension>
+                <si:VariableMapping>"Elevator"."status"."fire_alarm"</si:VariableMapping>
+            </Extension>
+        </Extensions>
+    </UAVariable>
+    <UAVariable DataType="i=296" ValueRank="1" NodeId="ns=1;i=1005" ArrayDimensions="1" BrowseName="InputArguments">
+        <DisplayName>InputArguments</DisplayName>
+        <Description>the definition of the input argument of method 1:Elavator.1:OpcMethodRequestControl_DB</Description>
+        <References>
+            <Reference ReferenceType="HasTypeDefinition">i=68</Reference>
+            <Reference ReferenceType="HasModellingRule">i=78</Reference>
+            <Reference ReferenceType="HasProperty" IsForward="false">ns=1;s="Elevator"."OpcMethodRequestControl"</Reference>
+        </References>
+        <Value>
+            <uax:ListOfExtensionObject>
+                <uax:ExtensionObject>
+                    <uax:TypeId>
+                        <uax:Identifier>i=297</uax:Identifier>
+                    </uax:TypeId>
+                    <uax:Body>
+                        <uax:Argument>
+                            <uax:Name>request</uax:Name>
+                            <uax:DataType>
+                                <uax:Identifier>i=1</uax:Identifier>
+                            </uax:DataType>
+                            <uax:ValueRank>-1</uax:ValueRank>
+                            <uax:ArrayDimensions>
+                                <uax:UInt32>0</uax:UInt32>
+                            </uax:ArrayDimensions>
+                            <uax:Description/>
+                        </uax:Argument>
+                    </uax:Body>
+                </uax:ExtensionObject>
+            </uax:ListOfExtensionObject>
+        </Value>
+    </UAVariable>
+    <UAVariable DataType="i=296" ValueRank="1" NodeId="ns=1;i=1006" ArrayDimensions="1" BrowseName="OutputArguments">
+        <DisplayName>OutputArguments</DisplayName>
+        <Description>the definition of the output arguments of method 1:Elavator.1:OpcMethodRequestControl_DB</Description>
+        <References>
+            <Reference ReferenceType="HasTypeDefinition">i=68</Reference>
+            <Reference ReferenceType="HasModellingRule">i=78</Reference>
+            <Reference ReferenceType="HasProperty" IsForward="false">ns=1;s="Elevator"."OpcMethodRequestControl"</Reference>
+        </References>
+        <Value>
+            <uax:ListOfExtensionObject>
+                <uax:ExtensionObject>
+                    <uax:TypeId>
+                        <uax:Identifier>i=297</uax:Identifier>
+                    </uax:TypeId>
+                    <uax:Body>
+                        <uax:Argument>
+                            <uax:Name>response</uax:Name>
+                            <uax:DataType>
+                                <uax:Identifier>i=1</uax:Identifier>
+                            </uax:DataType>
+                            <uax:ValueRank>-1</uax:ValueRank>
+                            <uax:ArrayDimensions>
+                                <uax:UInt32>0</uax:UInt32>
+                            </uax:ArrayDimensions>
+                            <uax:Description/>
+                        </uax:Argument>
+                    </uax:Body>
+                </uax:ExtensionObject>
+            </uax:ListOfExtensionObject>
+        </Value>
+    </UAVariable>
+    <UAVariable DataType="i=296" ValueRank="1" NodeId="ns=1;i=1007" ArrayDimensions="3" BrowseName="InputArguments">
+        <DisplayName>InputArguments</DisplayName>
+        <Description>the definition of the input argument of method 1:Elavator.1:OpcMethodRequestDoor_DB</Description>
+        <References>
+            <Reference ReferenceType="HasTypeDefinition">i=68</Reference>
+            <Reference ReferenceType="HasModellingRule">i=78</Reference>
+            <Reference ReferenceType="HasProperty" IsForward="false">ns=1;s="Elevator"."OpcMethodRequestDoor"</Reference>
+        </References>
+        <Value>
+            <uax:ListOfExtensionObject>
+                <uax:ExtensionObject>
+                    <uax:TypeId>
+                        <uax:Identifier>i=297</uax:Identifier>
+                    </uax:TypeId>
+                    <uax:Body>
+                        <uax:Argument>
+                            <uax:Name>door_front</uax:Name>
+                            <uax:DataType>
+                                <uax:Identifier>i=1</uax:Identifier>
+                            </uax:DataType>
+                            <uax:ValueRank>-1</uax:ValueRank>
+                            <uax:ArrayDimensions>
+                                <uax:UInt32>0</uax:UInt32>
+                            </uax:ArrayDimensions>
+                            <uax:Description/>
+                        </uax:Argument>
+                    </uax:Body>
+                </uax:ExtensionObject>
+                <uax:ExtensionObject>
+                    <uax:TypeId>
+                        <uax:Identifier>i=297</uax:Identifier>
+                    </uax:TypeId>
+                    <uax:Body>
+                        <uax:Argument>
+                            <uax:Name>door_rear</uax:Name>
+                            <uax:DataType>
+                                <uax:Identifier>i=1</uax:Identifier>
+                            </uax:DataType>
+                            <uax:ValueRank>-1</uax:ValueRank>
+                            <uax:ArrayDimensions>
+                                <uax:UInt32>0</uax:UInt32>
+                            </uax:ArrayDimensions>
+                            <uax:Description/>
+                        </uax:Argument>
+                    </uax:Body>
+                </uax:ExtensionObject>
+                <uax:ExtensionObject>
+                    <uax:TypeId>
+                        <uax:Identifier>i=297</uax:Identifier>
+                    </uax:TypeId>
+                    <uax:Body>
+                        <uax:Argument>
+                            <uax:Name>open</uax:Name>
+                            <uax:DataType>
+                                <uax:Identifier>i=1</uax:Identifier>
+                            </uax:DataType>
+                            <uax:ValueRank>-1</uax:ValueRank>
+                            <uax:ArrayDimensions>
+                                <uax:UInt32>0</uax:UInt32>
+                            </uax:ArrayDimensions>
+                            <uax:Description/>
+                        </uax:Argument>
+                    </uax:Body>
+                </uax:ExtensionObject>
+            </uax:ListOfExtensionObject>
+        </Value>
+    </UAVariable>
+    <UAVariable DataType="i=296" ValueRank="1" NodeId="ns=1;i=1008" ArrayDimensions="1" BrowseName="OutputArguments">
+        <DisplayName>OutputArguments</DisplayName>
+        <Description>the definition of the output arguments of method 1:Elavator.1:OpcMethodRequestDoor_DB</Description>
+        <References>
+            <Reference ReferenceType="HasTypeDefinition">i=68</Reference>
+            <Reference ReferenceType="HasModellingRule">i=78</Reference>
+            <Reference ReferenceType="HasProperty" IsForward="false">ns=1;s="Elevator"."OpcMethodRequestDoor"</Reference>
+        </References>
+        <Value>
+            <uax:ListOfExtensionObject>
+                <uax:ExtensionObject>
+                    <uax:TypeId>
+                        <uax:Identifier>i=297</uax:Identifier>
+                    </uax:TypeId>
+                    <uax:Body>
+                        <uax:Argument>
+                            <uax:Name>response</uax:Name>
+                            <uax:DataType>
+                                <uax:Identifier>i=4</uax:Identifier>
+                            </uax:DataType>
+                            <uax:ValueRank>-1</uax:ValueRank>
+                            <uax:ArrayDimensions>
+                                <uax:UInt32>0</uax:UInt32>
+                            </uax:ArrayDimensions>
+                            <uax:Description/>
+                        </uax:Argument>
+                    </uax:Body>
+                </uax:ExtensionObject>
+            </uax:ListOfExtensionObject>
+        </Value>
+    </UAVariable>
+    <UAVariable DataType="i=296" ValueRank="1" NodeId="ns=1;i=1009" ArrayDimensions="4" BrowseName="InputArguments">
+        <DisplayName>InputArguments</DisplayName>
+        <Description>the definition of the input argument of method 1:Elavator.1:OpcMethodRequestFloor_DB</Description>
+        <References>
+            <Reference ReferenceType="HasTypeDefinition">i=68</Reference>
+            <Reference ReferenceType="HasModellingRule">i=78</Reference>
+            <Reference ReferenceType="HasProperty" IsForward="false">ns=1;s="Elevator"."OpcMethodRequestFloor"</Reference>
+        </References>
+        <Value>
+            <uax:ListOfExtensionObject>
+                <uax:ExtensionObject>
+                    <uax:TypeId>
+                        <uax:Identifier>i=297</uax:Identifier>
+                    </uax:TypeId>
+                    <uax:Body>
+                        <uax:Argument>
+                            <uax:Name>door_front</uax:Name>
+                            <uax:DataType>
+                                <uax:Identifier>i=1</uax:Identifier>
+                            </uax:DataType>
+                            <uax:ValueRank>-1</uax:ValueRank>
+                            <uax:ArrayDimensions>
+                                <uax:UInt32>0</uax:UInt32>
+                            </uax:ArrayDimensions>
+                            <uax:Description/>
+                        </uax:Argument>
+                    </uax:Body>
+                </uax:ExtensionObject>
+                <uax:ExtensionObject>
+                    <uax:TypeId>
+                        <uax:Identifier>i=297</uax:Identifier>
+                    </uax:TypeId>
+                    <uax:Body>
+                        <uax:Argument>
+                            <uax:Name>door_rear</uax:Name>
+                            <uax:DataType>
+                                <uax:Identifier>i=1</uax:Identifier>
+                            </uax:DataType>
+                            <uax:ValueRank>-1</uax:ValueRank>
+                            <uax:ArrayDimensions>
+                                <uax:UInt32>0</uax:UInt32>
+                            </uax:ArrayDimensions>
+                            <uax:Description/>
+                        </uax:Argument>
+                    </uax:Body>
+                </uax:ExtensionObject>
+                <uax:ExtensionObject>
+                    <uax:TypeId>
+                        <uax:Identifier>i=297</uax:Identifier>
+                    </uax:TypeId>
+                    <uax:Body>
+                        <uax:Argument>
+                            <uax:Name>floor</uax:Name>
+                            <uax:DataType>
+                                <uax:Identifier>i=4</uax:Identifier>
+                            </uax:DataType>
+                            <uax:ValueRank>-1</uax:ValueRank>
+                            <uax:ArrayDimensions>
+                                <uax:UInt32>0</uax:UInt32>
+                            </uax:ArrayDimensions>
+                            <uax:Description/>
+                        </uax:Argument>
+                    </uax:Body>
+                </uax:ExtensionObject>
+                <uax:ExtensionObject>
+                    <uax:TypeId>
+                        <uax:Identifier>i=297</uax:Identifier>
+                    </uax:TypeId>
+                    <uax:Body>
+                        <uax:Argument>
+                            <uax:Name>end_floor</uax:Name>
+                            <uax:DataType>
+                                <uax:Identifier>i=4</uax:Identifier>
+                            </uax:DataType>
+                            <uax:ValueRank>-1</uax:ValueRank>
+                            <uax:ArrayDimensions>
+                                <uax:UInt32>0</uax:UInt32>
+                            </uax:ArrayDimensions>
+                            <uax:Description/>
+                        </uax:Argument>
+                    </uax:Body>
+                </uax:ExtensionObject>
+            </uax:ListOfExtensionObject>
+        </Value>
+    </UAVariable>
+    <UAVariable DataType="i=296" ValueRank="1" NodeId="ns=1;i=1010" ArrayDimensions="1" BrowseName="OutputArguments">
+        <DisplayName>OutputArguments</DisplayName>
+        <Description>the definition of the output arguments of method 1:Elavator.1:OpcMethodRequestFloor_DB</Description>
+        <References>
+            <Reference ReferenceType="HasTypeDefinition">i=68</Reference>
+            <Reference ReferenceType="HasModellingRule">i=78</Reference>
+            <Reference ReferenceType="HasProperty" IsForward="false">ns=1;s="Elevator"."OpcMethodRequestFloor"</Reference>
+        </References>
+        <Value>
+            <uax:ListOfExtensionObject>
+                <uax:ExtensionObject>
+                    <uax:TypeId>
+                        <uax:Identifier>i=297</uax:Identifier>
+                    </uax:TypeId>
+                    <uax:Body>
+                        <uax:Argument>
+                            <uax:Name>response</uax:Name>
+                            <uax:DataType>
+                                <uax:Identifier>i=4</uax:Identifier>
+                            </uax:DataType>
+                            <uax:ValueRank>-1</uax:ValueRank>
+                            <uax:ArrayDimensions>
+                                <uax:UInt32>0</uax:UInt32>
+                            </uax:ArrayDimensions>
+                            <uax:Description/>
+                        </uax:Argument>
+                    </uax:Body>
+                </uax:ExtensionObject>
+            </uax:ListOfExtensionObject>
+        </Value>
+    </UAVariable>
+    <UAObject NodeId="ns=1;s=Elevator" BrowseName="1:Elevator">
+        <DisplayName>Elevator</DisplayName>
+        <References>
+            <Reference ReferenceType="HasTypeDefinition">i=58</Reference>
+            <Reference ReferenceType="Organizes" IsForward="false">i=85</Reference>
+        </References>
+    </UAObject>
+    <UAObject NodeId="ns=1;s=&quot;Elevator&quot;.&quot;door&quot;" BrowseName="1:door">
+        <DisplayName>door</DisplayName>
+        <References>
+            <Reference ReferenceType="HasTypeDefinition">i=58</Reference>
+            <Reference ReferenceType="HasComponent" IsForward="false">ns=1;s=Elevator</Reference>
+        </References>
+    </UAObject>
+    <UAObject NodeId="ns=1;s=&quot;Elevator&quot;.&quot;door&quot;.&quot;front&quot;" BrowseName="1:front">
+        <DisplayName>front</DisplayName>
+        <References>
+            <Reference ReferenceType="HasTypeDefinition">i=58</Reference>
+            <Reference ReferenceType="HasComponent" IsForward="false">ns=1;s="Elevator"."door"</Reference>
+        </References>
+    </UAObject>
+    <UAObject NodeId="ns=1;s=&quot;Elevator&quot;.&quot;door&quot;.&quot;rear&quot;" BrowseName="1:rear">
+        <DisplayName>rear</DisplayName>
+        <References>
+            <Reference ReferenceType="HasTypeDefinition">i=58</Reference>
+            <Reference ReferenceType="HasComponent" IsForward="false">ns=1;s="Elevator"."door"</Reference>
+        </References>
+    </UAObject>
+    <UAMethod NodeId="ns=1;s=&quot;Elevator&quot;.&quot;OpcMethodRequestControl&quot;" BrowseName="1:OpcMethodRequestControl">
+        <DisplayName>OpcMethodRequestControl</DisplayName>
+        <References>
+            <Reference ReferenceType="HasComponent" IsForward="false">ns=1;s=Elevator</Reference>
+        </References>
+        <Extensions>
+            <Extension>
+                <si:MethodMapping>"OpcMethodRequestControl_DB".Method</si:MethodMapping>
+            </Extension>
+        </Extensions>
+    </UAMethod>
+    <UAMethod NodeId="ns=1;s=&quot;Elevator&quot;.&quot;OpcMethodRequestDoor&quot;" BrowseName="1:OpcMethodRequestDoor">
+        <DisplayName>OpcMethodRequestDoor</DisplayName>
+        <References>
+            <Reference ReferenceType="HasComponent" IsForward="false">ns=1;s=Elevator</Reference>
+        </References>
+        <Extensions>
+            <Extension>
+                <si:MethodMapping>"OpcMethodRequestDoor_DB".Method</si:MethodMapping>
+            </Extension>
+        </Extensions>
+    </UAMethod>
+    <UAMethod NodeId="ns=1;s=&quot;Elevator&quot;.&quot;OpcMethodRequestFloor&quot;" BrowseName="1:OpcMethodRequestFloor">
+        <DisplayName>OpcMethodRequestFloor</DisplayName>
+        <References>
+            <Reference ReferenceType="HasComponent" IsForward="false">ns=1;s=Elevator</Reference>
+        </References>
+        <Extensions>
+            <Extension>
+                <si:MethodMapping>"OpcMethodRequestFloor_DB".Method</si:MethodMapping>
+            </Extension>
+        </Extensions>
+    </UAMethod>
+    <UAObject NodeId="ns=1;s=&quot;Elevator&quot;.&quot;status&quot;" BrowseName="1:status">
+        <DisplayName>status</DisplayName>
+        <References>
+            <Reference ReferenceType="HasTypeDefinition">i=58</Reference>
+            <Reference ReferenceType="HasComponent" IsForward="false">ns=1;s=Elevator</Reference>
+        </References>
+    </UAObject>
+    <UAVariable DataType="String" NodeId="ns=1;s=&quot;Elevator&quot;.&quot;version&quot;" BrowseName="1:version" UserAccessLevel="3" AccessLevel="3">
+        <DisplayName>version</DisplayName>
+        <References>
+            <Reference ReferenceType="HasTypeDefinition">i=63</Reference>
+            <Reference ReferenceType="Organizes" IsForward="false">ns=1;s=Elevator</Reference>
+        </References>
+    </UAVariable>
+</UANodeSet>
