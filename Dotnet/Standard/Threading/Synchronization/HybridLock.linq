@@ -15,9 +15,10 @@ for (int i = 0; i < 100; i++)
 
 void AccessSharedResource()
 {
-	hybridLock.Enter();
+	
 	try
-	{
+	{	
+		hybridLock.Enter();
 		// 访问或修改共享资源
 		sharedData++;
 		Console.WriteLine($"Thread {Thread.CurrentThread.ManagedThreadId} accessed shared resource. Value: {sharedData}");

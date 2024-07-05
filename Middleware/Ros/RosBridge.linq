@@ -6,7 +6,7 @@
 
 
 //支持哪些功能在如下目录中定义
-//https://github.com/RobotWebTools/rosbridge_suite/rosapi/scripts/rosapi_node 
+//https://github.com/RobotWebTools/rosbridge_suite/blob/ros2/rosapi/scripts/rosapi_node
 
 string uri = "ws://127.0.0.1:9090";
 
