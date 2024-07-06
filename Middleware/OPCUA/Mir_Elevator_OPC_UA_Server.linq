@@ -7,20 +7,17 @@
 </Query>
 
 
-ElevatorServer server = new ElevatorServer();
 ApplicationInstance application = new ApplicationInstance();
 application.ApplicationName = "Elevator OPC UA Server";
 application.ApplicationType = ApplicationType.Server;
 application.ConfigSectionName = "ElevatorOpcUaServer";
-string directory = Path.GetDirectoryName(Util.CurrentQueryPath);
 
 try
 {
-	//var configPath = Path.Combine(directory ,"Elevator.Config.xml");
 	//// 加载应用程序配置
+	//string directory = Path.GetDirectoryName(Util.CurrentQueryPath);
+	//var configPath = Path.Combine(directory ,"Elevator.Config.xml");
 	//ApplicationConfiguration config = await application.LoadApplicationConfiguration(configPath,false);
-	//config.ServerConfiguration.BaseAddresses = null;
-	//config.ServerConfiguration.BaseAddresses.Add("opc.tcp://10.179.0.242:4840");
 
 	ApplicationConfiguration config = new ApplicationConfiguration
 	{
@@ -88,6 +85,9 @@ try
 		throw new Exception("Application instance certificate invalid!");
 	}
 
+	var server = new StandardServer();
+	var nodeManagerFactory = new NodeManagerFactory();
+	server.AddNodeManager(nodeManagerFactory);
 	// 启动服务器
 	await application.Start(server);
 
@@ -102,31 +102,37 @@ catch (Exception ex)
 	return;
 }
 
-public class ElevatorServer : StandardServer
+public static partial class Namespaces
 {
-	private ElevatorNodeManager m_nodeManager;
+	/// <summary>
+	/// The URI for the Alarms namespace (.NET code namespace is 'Elevator').
+	/// </summary>
+	public const string Elevators = "http://test.org/UA/Elevators/";
+}
 
-	protected override MasterNodeManager CreateMasterNodeManager(IServerInternal server, ApplicationConfiguration configuration)
+class NodeManagerFactory : INodeManagerFactory
+{
+	public ElevatorNodeManager? NodeManager { get; private set; }
+	/// <inheritdoc/>
+	public StringCollection NamespacesUris
 	{
-		List<INodeManager> nodeManagers = new List<INodeManager>();
-		m_nodeManager = new ElevatorNodeManager(server, configuration);
-		nodeManagers.Add(m_nodeManager);
-		return new MasterNodeManager(server, configuration, null, nodeManagers.ToArray());
+		get
+		{
+			var nameSpaces = new StringCollection {
+					Namespaces.Elevators,
+					Namespaces.Elevators + "Instance"
+				};
+			return nameSpaces;
+		}
 	}
 
-	protected override ServerProperties LoadServerProperties()
+	public INodeManager Create(IServerInternal server, ApplicationConfiguration configuration)
 	{
-		ServerProperties properties = new ServerProperties()
-		{
-			ManufacturerName = "Mir",
-			ProductName = "Elevator OPC UA Server",
-			ProductUri = "http://mir.com/ElevatorOpcUaServer",
-			SoftwareVersion = "1.0.0",
-			BuildNumber = "1",
-			BuildDate = DateTime.Now
-		};
+		if (NodeManager != null)
+			return NodeManager;
 
-		return properties;
+		NodeManager = new ElevatorNodeManager(server, configuration);
+		return NodeManager;
 	}
 }
 
@@ -154,8 +160,6 @@ public class ElevatorNodeManager : CustomNodeManager2
 			var nodes = UANodeSet.Read(fs);
 			nodes.Import(context,predefinedNodes);
 		}
-		
-		
 
 		var status_floor = (BaseDataVariableState)predefinedNodes.First(n => (string)n.NodeId.Identifier == "\"Elevator\".\"status\".\"floor\"");
 		status_floor.Value = 0;
