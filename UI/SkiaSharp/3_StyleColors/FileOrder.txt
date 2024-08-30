@@ -1,6 +1,12 @@
-Colors.linq
-Transparency.linq
+Colors_Fill.linq
+Colors_Stroke.linq
+Colors_Transparency.linq
+Colors_Transparency2.linq
 LineWidth.linq
 LineCap.linq
 LineJoin.linq
+LineJoin_StrokeMiter.linq
 LineDashes.linq
+LinearGradient.linq
+RadialGradient.linq
+SweepGradient.linq

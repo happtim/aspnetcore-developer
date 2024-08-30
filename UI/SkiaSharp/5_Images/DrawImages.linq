@@ -37,8 +37,8 @@ using (var path = new SKPath())
 	using (var paint = new SKPaint())
 	{
 		paint.Style = SKPaintStyle.Stroke;
-		paint.Color = SKColors.Red;
-		paint.StrokeWidth = 2;
+		paint.Color = SKColors.Black;
+		paint.StrokeWidth = 1;
 		paint.IsAntialias= true;
 
 		// 绘制路径  
