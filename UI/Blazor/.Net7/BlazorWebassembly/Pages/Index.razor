@@ -1,0 +1,24 @@
+﻿@page "/"
+
+<PageTitle>Index</PageTitle>
+
+<h1>Hello, world!</h1>
+
+Welcome to your new app.
+
+<SurveyPrompt Title="How is Blazor working for you?" />
+
+@if (pageUrls.Count > 0)
+{
+    foreach (var item in pageUrls)
+    {
+        <h3>@item.Key</h3>
+        foreach (var url in item.Value)
+        {
+            <li>
+                <a href="@url">@url</a>
+            </li>
+        }
+    }
+
+}
