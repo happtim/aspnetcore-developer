@@ -24,7 +24,15 @@ canvas.Clear(SkiaSharp.SKColors.White);
 
 // draw a simple rectangle, but scale it.  
 canvas.Save();
+
+//ScaleX = 1 ScaleY = 1
+//canvas.TotalMatrix.Dump();
+
 canvas.Scale(10, 3);
+
+//ScaleX =10 ScaleY = 3
+//canvas.TotalMatrix.Dump();
+
 using (var paint = new SKPaint())
 {
 	canvas.DrawRect(1, 10, 10, 10, paint);
