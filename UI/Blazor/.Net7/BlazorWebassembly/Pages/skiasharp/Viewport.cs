@@ -5,6 +5,9 @@ namespace BlazorWebassembly.Pages.skiasharp
 {
     public class Viewport
     {
+        public SKSize ViewportSize { get; private set; }
+        public SKPoint Center => new SKPoint(ViewportSize.Width/DpiScale / 2, ViewportSize.Height / DpiScale / 2);
+
         public float DpiScale { get; private set; }
 
         public float _scale = 1.0f;
@@ -21,6 +24,7 @@ namespace BlazorWebassembly.Pages.skiasharp
 
         public Viewport(SKSize size,float dpi = 1.0f)
         {
+            ViewportSize = size;
             _scale = 1.0f;
             DpiScale = dpi;
         }
@@ -32,8 +36,8 @@ namespace BlazorWebassembly.Pages.skiasharp
 
             if (delta < 0)
             {
-                // 缩小  
-                this._scale = (float)Math.Round(this.scaleStep + this._scale, 2); // 解决小数点运算丢失精度的问题  
+                // 放大
+                this._scale = (float)Math.Round(this._scale + this.scaleStep , 2); // 解决小数点运算丢失精度的问题  
                 if (this._scale > this.maxScale)
                 {
                     this._scale = this.maxScale;
@@ -42,7 +46,7 @@ namespace BlazorWebassembly.Pages.skiasharp
             }
             else
             {
-                // 放大  
+                // 缩小
                 this._scale = (float)Math.Round(this._scale - this.scaleStep, 2); // 解决小数点运算丢失精度的问题  
                 if (this._scale < this.minScale)
                 {
@@ -60,6 +64,21 @@ namespace BlazorWebassembly.Pages.skiasharp
         {
             translateX += dx;
             translateY += dy;
+        }
+
+        public void FitToScreen(SKRect contentBounds)
+        {
+            // 计算适合的缩放
+            float scaleX = ViewportSize.Width / DpiScale / contentBounds.Width;
+            float scaleY = ViewportSize.Height / DpiScale / contentBounds.Height;
+            _scale = Math.Min(scaleX, scaleY);
+
+            // 确保缩放在允许的范围内  
+            _scale = Math.Max(minScale, Math.Min(_scale, maxScale));
+
+            // 计算居中的平移值  
+            translateX = (ViewportSize.Width / DpiScale - contentBounds.Width * _scale) / 2 - contentBounds.Left * _scale;
+            translateY = (ViewportSize.Height /DpiScale - contentBounds.Height * _scale) / 2 - contentBounds.Top * _scale;
         }
 
         public SKPoint WorldToScreen(SKPoint worldPoint)
