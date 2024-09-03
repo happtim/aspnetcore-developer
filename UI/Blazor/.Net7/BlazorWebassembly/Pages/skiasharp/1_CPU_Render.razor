@@ -1,4 +1,4 @@
-﻿@page "/skiasharp/scale"
+﻿@page "/skiasharp/cpu-render"
 @using SkiaSharp
 @using SkiaSharp.Views.Blazor
 @attribute [RoutePriority(1)]
@@ -23,8 +23,18 @@
     SKCanvasView skiaView = null!;
     SKPoint? touchLocation;
 
+    protected override void OnAfterRender(bool firstRender)
+    {
+        if (!firstRender) return;
+
+        Console.WriteLine("OnAfterRender");
+    }
+
+
     void OnPaintSurface(SKPaintSurfaceEventArgs e)
     {
+        Console.WriteLine("OnPaintSurface");
+
         // the the canvas and properties
         var canvas = e.Surface.Canvas;
 
