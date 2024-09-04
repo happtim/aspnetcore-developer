@@ -38,7 +38,7 @@
 
             Console.WriteLine("Dpi:" + skiaView.Dpi);
 
-            viewport = new Viewport(e.Info.Size, (float)skiaView.Dpi);
+            viewport = new Viewport(e.Info.Size, dpi: (float)skiaView.Dpi);
 
         }
 

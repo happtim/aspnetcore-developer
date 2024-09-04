@@ -1,11 +1,21 @@
 ﻿using SkiaSharp;
+using System.Drawing;
 using static System.Formats.Asn1.AsnWriter;
 
 namespace BlazorWebassembly.Pages.skiasharp
 {
     public class Viewport
     {
+        public enum OriginCoordinate
+        {
+            TopLeft,
+            BottomLeft,
+        }
+
         public SKSize ViewportSize { get; private set; }
+
+        public SKSize MapSize { get; private set; }
+
         public SKPoint Center => new SKPoint(ViewportSize.Width/DpiScale / 2, ViewportSize.Height / DpiScale / 2);
 
         public float DpiScale { get; private set; }
@@ -17,14 +27,18 @@ namespace BlazorWebassembly.Pages.skiasharp
         public float minScale = 0.1f;
         public float maxScale = 5.0f;
 
+        OriginCoordinate Origin { get; set; }
+
         float translateX = 0;
         float translateY = 0;
 
         public float Scale => DpiScale * _scale;
 
-        public Viewport(SKSize size,float dpi = 1.0f)
+        public Viewport(SKSize viewportSize, SKSize? mapSize = null, float dpi = 1.0f,OriginCoordinate origin = OriginCoordinate.TopLeft)
         {
-            ViewportSize = size;
+            MapSize = mapSize ?? new SKSize(viewportSize.Width, viewportSize.Height);
+            Origin = origin;
+            ViewportSize = viewportSize;
             _scale = 1.0f;
             DpiScale = dpi;
         }
@@ -89,6 +103,21 @@ namespace BlazorWebassembly.Pages.skiasharp
         public SKPoint ScreenToWorld(SKPoint screenPoint) 
         {
             return new SKPoint((screenPoint.X - translateX) / _scale, (screenPoint.Y - translateY) / _scale);
+        }
+
+        public SKPoint OriginTransform(SKPoint point) 
+        {
+            if (Origin == OriginCoordinate.TopLeft)
+            {
+                return point;
+            }
+            else if (Origin == OriginCoordinate.BottomLeft) 
+            {
+                return new SKPoint(point.X, MapSize.Height - point.Y);
+            }
+
+            throw new ArgumentException("Unsupported  OriginCoordinate");
+
         }
 
         public SKMatrix GetTransformMatrix()

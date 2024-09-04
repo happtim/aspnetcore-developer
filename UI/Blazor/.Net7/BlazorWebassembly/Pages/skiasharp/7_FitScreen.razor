@@ -1,22 +1,26 @@
-﻿@page "/skiasharp/pan"
+﻿@page "/skiasharp/fit-screen"
 @using SkiaSharp
 @using SkiaSharp.Views.Blazor
-@attribute [RoutePriority(4)]
+@attribute [RoutePriority(7)]
 
 <div class="container">
     <div class="row">
-        <div class="col border rounded p-2 canvas-container">
+        <div class="col border rounded p-2 canvas-container position-relative">
+            <div style="position: absolute;bottom: 10px;left:15%; transform: translateX(-50%);z-index: 10;">
+                <button class="btn btn-secondary" @onclick="HandleFitScreen">Fit Screen</button>
+            </div>
 
             <SKCanvasView @ref="skiaView" OnPaintSurface="OnPaintSurface"
                           IgnorePixelScaling="false"
                           @onmousemove="OnMouseMove"
                           @onmousedown="OnMouseDown"
                           @onmouseup="OnMouseUp"
-                          />
+                          @onwheel="OnWheel" />
 
         </div>
     </div>
 </div>
+
 
 @code
 {
@@ -57,9 +61,21 @@
             paint.Color = new SKColor(255, 0, 0);
 
             canvas.DrawCircle(200, 200, 2, paint);
+
+            canvas.DrawCircle(-200,-300, 2, paint);
         }
 
     }
+    void OnMouseDown(MouseEventArgs e)
+    {
+        touchLocation = new SKPoint((float)e.OffsetX, (float)e.OffsetY);
+    }
+
+    void OnMouseUp(MouseEventArgs e)
+    {
+        touchLocation = null;
+    }
+
 
     void OnMouseMove(MouseEventArgs e)
     {
@@ -73,25 +89,50 @@
         if (touchLocation == null)
             return;
 
-        float dx =(float) e.OffsetX - touchLocation.Value.X;
-        float dy = (float) e.OffsetY - touchLocation.Value.Y;
+        float dx = (float)e.OffsetX - touchLocation.Value.X;
+        float dy = (float)e.OffsetY - touchLocation.Value.Y;
 
         viewport.Pan(dx, dy);
 
         touchLocation = new SKPoint((float)e.OffsetX, (float)e.OffsetY);
 
         skiaView.Invalidate(); // 触发重绘
-
     }
 
-    void OnMouseDown(MouseEventArgs e)
+    void OnWheel(WheelEventArgs e)
     {
-        touchLocation = new SKPoint((float)e.OffsetX, (float)e.OffsetY);
+        viewport.Zoom((float)e.DeltaY, new SKPoint((float)e.OffsetX, (float)e.OffsetY));
+
+        skiaView.Invalidate(); // 触发重绘
     }
 
-    void OnMouseUp(MouseEventArgs e)
+
+
+    void HandleFitScreen(MouseEventArgs e)
     {
-        touchLocation = null;
+        // 处理点击事件的代码
+        var contentBounds =  CalculateContentBounds();
+        viewport.FitToScreen(contentBounds);
+
+        skiaView.Invalidate();
+
     }
 
+    SKRect CalculateContentBounds()
+    {
+        using (SKPath path = new SKPath())
+        {
+            // 模拟绘制圆形
+            path.AddCircle(0, 0, 100);
+            path.AddCircle(200, 200, 2);
+            path.AddCircle(-200, -300, 2);
+
+            // 获取边界矩形
+            path.GetBounds(out SKRect bounds);
+
+            // 返回边界矩形
+            return bounds;
+        }
+    }
+    
 }
