@@ -6,6 +6,12 @@
 <div class="container">
     <div class="row">
         <div class="col border rounded p-2 canvas-container position-relative">
+
+            <div style="position: absolute;bottom: 10px;left:15%; transform: translateX(-50%);z-index: 10;">
+                <button class="btn btn-primary" @onclick="HandleZoomIn">+</button>
+                <button class="btn btn-primary" @onclick="HandleZoomOut">-</button>
+            </div>
+
             <SKCanvasView @ref="skiaView" OnPaintSurface="OnPaintSurface" 
                           IgnorePixelScaling="false"
                           @onmousemove="OnMouseMove"
@@ -75,5 +81,17 @@
         viewport.Zoom((float)e.DeltaY, new SKPoint((float)e.OffsetX, (float)e.OffsetY));
 
         skiaView.Invalidate(); // 触发重绘
+    }
+
+    void HandleZoomIn(MouseEventArgs e)
+    {
+        viewport.Zoom(-100, viewport.Center);
+        skiaView.Invalidate();
+    }
+
+    void HandleZoomOut(MouseEventArgs e)
+    {
+        viewport.Zoom(100, viewport.Center);
+        skiaView.Invalidate();
     }
 }
