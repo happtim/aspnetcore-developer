@@ -13,6 +13,8 @@
 
             <div style="position: absolute;bottom: 10px;left:15%; transform: translateX(-50%);z-index: 10;">
                 <button class="btn btn-primary" @onclick="DrawLine">Line</button>
+                <button class="btn btn-primary" @onclick="Undo">Undo</button>
+                <button class="btn btn-primary" @onclick="Redo">Redo</button>
             </div>
 
             <SKCanvasView @ref="skiaView" OnPaintSurface="OnPaintSurface"
@@ -119,6 +121,13 @@
         {
             _drawManager.CurrentTool.MouseDown(worldPoint);
         }
+        else
+        {
+            if( _drawManager.HitTest(worldPoint) != null)
+            {
+                new MoveTool(_drawManager).MouseDown(worldPoint);
+            }
+        }
     }
 
     void OnMouseUp(MouseEventArgs e)
@@ -140,9 +149,21 @@
         skiaView.Invalidate(); // 触发重绘
     }
 
-    void DrawLine(MouseEventArgs e)
+    async Task DrawLine(MouseEventArgs e)
     {
+        await JSRuntime.InvokeVoidAsync("changeCursor", "crosshair");
         new LineTool(_drawManager);
+       
+    }
+
+    public void Undo()
+    {
+        _drawManager.Undo();
+    }
+
+    public void Redo()
+    {
+        _drawManager.Redo();
     }
 
 }

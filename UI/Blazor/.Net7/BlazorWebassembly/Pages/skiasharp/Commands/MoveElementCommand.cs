@@ -17,12 +17,12 @@ namespace BlazorWebassembly.Pages.skiasharp.Commands
 
         public void Execute(DrawManager drawManager)
         {
-            throw new NotImplementedException();
+            _element.Move(_dx, _dy);
         }
 
         public void Undo(DrawManager drawManager)
         {
-            throw new NotImplementedException();
+            _element.Move(-_dx, -_dy);
         }
     }
 }

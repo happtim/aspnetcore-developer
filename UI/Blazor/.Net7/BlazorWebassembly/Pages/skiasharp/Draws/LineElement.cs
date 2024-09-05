@@ -21,6 +21,12 @@ namespace BlazorWebassembly.Pages.skiasharp.Draws
             };
         }
 
+        public override void Move(float dx, float dy)
+        {
+            Start = new SKPoint(Start.X + dx, Start.Y + dy);
+            End = new SKPoint(End.X + dx, End.Y + dy);
+        }
+
         public override void Draw(SKCanvas canvas)
         {
             canvas.DrawLine(Start, End, Paint);
@@ -74,5 +80,7 @@ namespace BlazorWebassembly.Pages.skiasharp.Draws
             float dy = y - yy;
             return (float)Math.Sqrt(dx * dx + dy * dy);
         }
+
+
     }
 }
