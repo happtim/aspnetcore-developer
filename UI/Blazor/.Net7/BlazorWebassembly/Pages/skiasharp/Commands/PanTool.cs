@@ -6,38 +6,47 @@ namespace BlazorWebassembly.Pages.skiasharp.Commands
     public class PanTool : ITool
     {
         SKPoint? _touchLocation;
-        DrawContext _drawContext;
+        DrawManager _drawManager;
 
-        public PanTool(DrawContext context)
+        public PanTool(DrawManager drawManager)
         {
-            _drawContext = context;
-            _drawContext.CurrentTool = this;
+            _drawManager = drawManager;
+            _drawManager.CurrentTool = this;
         }
 
-        public void MouseDown(float x, float y)
+        public void MouseDown(SKPoint worldPoint)
         {
-            _touchLocation = new SKPoint(x, y);
+            var screenPoint = _drawManager.Viewport.WorldToScreen(worldPoint);
+
+            //screenPoint = _drawManager.Viewport.OriginTransform(screenPoint);
+
+            _touchLocation = screenPoint;
+
         }
 
-        public void MouseMove(float x, float y)
+        public void MouseMove(SKPoint worldPoint)
         {
             if (_touchLocation == null) return;
 
-            float dx = x - _touchLocation.Value.X;
-            float dy = y - _touchLocation.Value.Y;
+            var screenPoint = _drawManager.Viewport.WorldToScreen(worldPoint);
 
-            _drawContext.Viewport.Pan(dx, dy);
+            //screenPoint = _drawManager.Viewport.OriginTransform(screenPoint);
 
-            _touchLocation = new SKPoint(x, y);
+            float dx = screenPoint.X - _touchLocation.Value.X;
+            float dy = screenPoint.Y - _touchLocation.Value.Y;
 
-            _drawContext.CanvasView.Invalidate(); // 触发重绘
+            _drawManager.Viewport.Pan(dx, dy);
+
+            _touchLocation = screenPoint;
+
+            _drawManager.Invalidate(); // 触发重绘
         }
 
-        public void MouseUp(float x, float y)
+        public void MouseUp(SKPoint worldPoint)
         {
             _touchLocation = null;
 
-            _drawContext.CurrentTool = null;
+            _drawManager.CurrentTool = null;
         }
     }
 }

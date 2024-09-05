@@ -1,8 +1,8 @@
-﻿@page "/skiasharp/undo-redo"
+﻿@page "/skiasharp/move"
 @using BlazorWebassembly.Pages.skiasharp.Commands
 @using SkiaSharp
 @using SkiaSharp.Views.Blazor
-@attribute [RoutePriority(9)]
+@attribute [RoutePriority(10)]
 
 <div class="container">
     <div class="row">
@@ -10,8 +10,6 @@
 
             <div style="position: absolute;bottom: 10px;left:15%; transform: translateX(-50%);z-index: 10;">
                 <button class="btn btn-primary" @onclick="DrawLine">Line</button>
-                <button class="btn btn-primary" @onclick="Undo">Undo</button>
-                <button class="btn btn-primary" @onclick="Redo">Redo</button>
             </div>
 
             <SKCanvasView @ref="skiaView" OnPaintSurface="OnPaintSurface"
@@ -29,7 +27,6 @@
 {
     SKCanvasView skiaView = null!;
     private Viewport viewport = null!;
-
     private DrawManager _drawManager = null!;
 
     void OnPaintSurface(SKPaintSurfaceEventArgs e)
@@ -48,8 +45,7 @@
 
             viewport = new Viewport(e.Info.Size, dpi: (float)skiaView.Dpi);
 
-            _drawManager = new DrawManager(skiaView,viewport);
-
+            _drawManager = new DrawManager(skiaView, viewport);
         }
 
         var matrix = viewport.GetTransformMatrix();
@@ -70,7 +66,7 @@
         }
 
         _drawManager.Draw(canvas);
-        
+
     }
 
     void OnMouseMove(MouseEventArgs e)
@@ -84,7 +80,11 @@
 
         if (_drawManager.CurrentTool != null)
         {
-            _drawManager.CurrentTool.MouseMove(worldPoint);
+            _drawManager.CurrentTool.MouseMove(screenPoint);
+        }
+        else
+        {
+            _drawManager.HitTest(screenPoint);
         }
 
     }
@@ -133,18 +133,5 @@
     {
         new LineTool(_drawManager);
     }
-
-    public void Undo()
-    {
-        _drawManager.Undo();
-    }
-
-    public void Redo()
-    {
-        _drawManager.Redo();
-    }
-
-
-
 
 }

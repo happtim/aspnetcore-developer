@@ -97,7 +97,7 @@ namespace BlazorWebassembly.Pages.skiasharp
 
         public SKPoint WorldToScreen(SKPoint worldPoint)
         {
-            return new SKPoint(worldPoint.X * Scale + translateX, worldPoint.Y * Scale + translateY);
+            return new SKPoint(worldPoint.X * _scale + translateX, worldPoint.Y * _scale + translateY);
         }
 
         public SKPoint ScreenToWorld(SKPoint screenPoint) 

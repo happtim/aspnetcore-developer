@@ -7,44 +7,35 @@ namespace BlazorWebassembly.Pages.skiasharp.Commands
         private SKPoint _start;
         private SKPoint _end;
         private bool _isDrawing;
-        private DrawContext _drawContext;
+        private DrawManager _drawManager;
 
-        public LineTool(DrawContext context)
+        public LineTool(DrawManager drawManager)
         {
-            _drawContext = context;
-            _drawContext.CurrentTool = this;
+            _drawManager = drawManager;
+            _drawManager.CurrentTool = this;
         }
 
-        public void MouseDown(float x, float y)
+        public void MouseDown(SKPoint worldPoint)
         {
 
             if (_isDrawing) 
             {
                 //绘制结束 保存终点
+                _end = worldPoint;
 
-                var screen = new SKPoint(x, y);
-
-                _end = _drawContext.Viewport.ScreenToWorld(screen);
-
-                _end = _drawContext.Viewport.OriginTransform(_end);
-
-                _drawContext.UndoRedo.AddElement(new LineElement(_start, _end, SKColors.Black));
+                _drawManager.AddElement(new LineElement(_start, _end, SKColors.Black));
 
                 _isDrawing = false;
 
-                _drawContext.CurrentTool = null;
+                _drawManager.CurrentTool = null;
 
-                _drawContext.PreviewElement = null;
+                _drawManager.PreviewElement = null;
             }
             else
             {
                 //绘制开始 保存起点
 
-                var screen = new SKPoint(x, y);
-
-                _start = _drawContext.Viewport.ScreenToWorld(screen);
-
-                _start = _drawContext.Viewport.OriginTransform(_start);
+                _start = worldPoint;
 
                 _isDrawing = true;
 
@@ -53,25 +44,22 @@ namespace BlazorWebassembly.Pages.skiasharp.Commands
    
         }
 
-        public void MouseMove(float x, float y)
+
+        public void MouseMove(SKPoint worldPoint)
         {
             if (_isDrawing)
             {
-                var screen = new SKPoint(x, y);
-
-                _end = _drawContext.Viewport.ScreenToWorld(screen);
-
-                _end = _drawContext.Viewport.OriginTransform(_end);
+                _end = worldPoint;
 
                 var line = new LineElement(_start, _end, SKColors.Black);
 
-                _drawContext.PreviewElement = line;
-                
-                _drawContext.CanvasView.Invalidate(); // 触发重绘
+                _drawManager.PreviewElement = line;
+
+                _drawManager.Invalidate(); // 触发重绘
             }
         }
 
-        public void MouseUp(float x, float y)
+        public void MouseUp(SKPoint worldPoint)
         {
 
         }
