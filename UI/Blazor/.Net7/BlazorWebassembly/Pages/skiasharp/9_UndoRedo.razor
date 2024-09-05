@@ -1,0 +1,171 @@
+﻿@page "/skiasharp/scale-undo-redo"
+@using BlazorWebassembly.Pages.skiasharp.Commands
+@using SkiaSharp
+@using SkiaSharp.Views.Blazor
+@attribute [RoutePriority(9)]
+
+<div class="container">
+    <div class="row">
+        <div class="col border rounded p-2 canvas-container position-relative">
+
+            <div style="position: absolute;bottom: 10px;left:15%; transform: translateX(-50%);z-index: 10;">
+                <button class="btn btn-primary" @onclick="DrawLine">Line</button>
+                <button class="btn btn-primary" @onclick="Undo">Undo</button>
+                <button class="btn btn-primary" @onclick="Redo">Redo</button>
+            </div>
+
+            <SKCanvasView @ref="skiaView" OnPaintSurface="OnPaintSurface"
+                          IgnorePixelScaling="false"
+                          @onmousemove="OnMouseMove"
+                          @onmousedown="OnMouseDown"
+                          @onmouseup="OnMouseUp"
+                          @onwheel="OnWheel" />
+
+        </div>
+    </div>
+</div>
+
+@code
+{
+    SKCanvasView skiaView = null!;
+    private Viewport viewport = null!;
+    private readonly List<DrawElement> _elements = new List<DrawElement>();
+    private readonly List<DrawElement> _redoElements = new List<DrawElement>();
+    private DrawContext _drawContext = new DrawContext();
+
+    void OnPaintSurface(SKPaintSurfaceEventArgs e)
+    {
+        Console.WriteLine("OnPaintSurface");
+
+        SKSurface surface = e.Surface;
+        SKCanvas canvas = surface.Canvas;
+        canvas.Clear(SKColors.White);
+
+        if (viewport == null)
+        {
+            Console.WriteLine("Canvas Size:" + "Width:" + e.Info.Size.Width + " Height:" + e.Info.Size.Height);
+
+            Console.WriteLine("Dpi:" + skiaView.Dpi);
+
+            viewport = new Viewport(e.Info.Size, dpi: (float)skiaView.Dpi);
+
+            _drawContext.Viewport = viewport;
+            _drawContext.CanvasView = skiaView;
+            _drawContext.UndoRedo = this;
+        }
+
+        var matrix = viewport.GetTransformMatrix();
+
+        canvas.SetMatrix(matrix);
+
+        Console.WriteLine($"matrix scaleX:{matrix.ScaleX} scaleY:{matrix.ScaleY} transX:{matrix.TransX} transY:{matrix.TransY}");
+
+        // 在这里绘制你的内容
+        // 例如：
+        using (SKPaint paint = new SKPaint { Color = SKColors.Blue })
+        {
+            canvas.DrawCircle(0, 0, 100, paint);
+
+            paint.Color = new SKColor(255, 0, 0);
+
+            canvas.DrawCircle(200, 200, 2, paint);
+        }
+
+        foreach (var element in _elements)
+        {
+            element.Draw(canvas);
+        }
+
+        _drawContext.PreviewElement?.Draw(canvas);
+        
+    }
+
+    void OnMouseMove(MouseEventArgs e)
+    {
+        var screenPoint = new SKPoint((float)e.OffsetX, (float)e.OffsetY);
+
+        var woldPoint = viewport.ScreenToWorld(screenPoint);
+
+        //打印坐标
+        //Console.WriteLine($"mouse x:{e.OffsetX} y:{e.OffsetY} . world x:{woldPoint.X} y:{woldPoint.Y}");
+
+        if(_drawContext.CurrentTool != null)
+        {
+            _drawContext.CurrentTool.MouseMove((float)e.OffsetX, (float)e.OffsetY);
+        }
+
+    }
+
+    void OnMouseDown(MouseEventArgs e)
+    {
+        Console.WriteLine($"OnMouseDown Button:{e.Button}");
+
+        //button middle
+        if (e.Button == 1)
+        {
+            if (_drawContext.CurrentTool == null)
+            {
+                new PanTool(_drawContext);
+            }
+        }
+
+        if (_drawContext.CurrentTool != null)
+        {
+            _drawContext.CurrentTool.MouseDown((float)e.OffsetX, (float)e.OffsetY);
+        }
+    }
+
+    void OnMouseUp(MouseEventArgs e)
+    {
+        if (_drawContext.CurrentTool != null)
+        {
+            _drawContext.CurrentTool.MouseUp((float)e.OffsetX, (float)e.OffsetY);
+        }
+    }
+
+    void OnWheel(WheelEventArgs e)
+    {
+        viewport.Zoom((float)e.DeltaY, new SKPoint((float)e.OffsetX, (float)e.OffsetY));
+
+        skiaView.Invalidate(); // 触发重绘
+    }
+
+    void DrawLine(MouseEventArgs e)
+    {
+        new LineTool(_drawContext);
+    }
+
+    public void AddElement(DrawElement element)
+    {
+        _elements.Add(element);
+        _redoElements.Clear();
+
+        skiaView.Invalidate(); // 触发重绘
+    }
+
+    public void Undo()
+    {
+        if (_elements.Count > 0)
+        {
+            var element = _elements[^1];
+            _elements.RemoveAt(_elements.Count - 1);
+            _redoElements.Add(element);
+
+            skiaView.Invalidate(); // 触发重绘
+        }
+    }
+
+    public void Redo()
+    {
+        if (_redoElements.Count > 0)
+        {
+            var element = _redoElements[^1];
+            _redoElements.RemoveAt(_redoElements.Count - 1);
+            _elements.Add(element);
+
+            skiaView.Invalidate(); // 触发重绘
+        }
+    }
+
+
+}
