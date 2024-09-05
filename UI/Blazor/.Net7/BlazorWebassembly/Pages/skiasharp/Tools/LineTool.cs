@@ -1,6 +1,8 @@
-﻿using SkiaSharp;
+﻿using BlazorWebassembly.Pages.skiasharp.Commands;
+using BlazorWebassembly.Pages.skiasharp.Draws;
+using SkiaSharp;
 
-namespace BlazorWebassembly.Pages.skiasharp.Commands
+namespace BlazorWebassembly.Pages.skiasharp.Tools
 {
     public class LineTool : ITool
     {
@@ -18,12 +20,12 @@ namespace BlazorWebassembly.Pages.skiasharp.Commands
         public void MouseDown(SKPoint worldPoint)
         {
 
-            if (_isDrawing) 
+            if (_isDrawing)
             {
                 //绘制结束 保存终点
                 _end = worldPoint;
 
-                _drawManager.AddElement(new LineElement(_start, _end, SKColors.Black));
+                _drawManager.AddCommand(new DrawElementCommand(new LineElement(_start, _end, SKColors.Black)));
 
                 _isDrawing = false;
 
@@ -41,7 +43,7 @@ namespace BlazorWebassembly.Pages.skiasharp.Commands
 
             }
 
-   
+
         }
 
 

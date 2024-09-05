@@ -1,6 +1,6 @@
 ﻿using SkiaSharp;
 
-namespace BlazorWebassembly.Pages.skiasharp.Commands
+namespace BlazorWebassembly.Pages.skiasharp.Tools
 {
     public interface ITool
     {

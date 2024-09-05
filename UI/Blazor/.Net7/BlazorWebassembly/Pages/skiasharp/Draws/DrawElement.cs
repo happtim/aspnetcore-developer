@@ -1,6 +1,6 @@
 ﻿using SkiaSharp;
 
-namespace BlazorWebassembly.Pages.skiasharp.Commands
+namespace BlazorWebassembly.Pages.skiasharp.Draws
 {
     public abstract class DrawElement
     {

@@ -1,7 +1,10 @@
 ﻿@page "/skiasharp/move"
 @using BlazorWebassembly.Pages.skiasharp.Commands
+@using BlazorWebassembly.Pages.skiasharp.Tools
 @using SkiaSharp
 @using SkiaSharp.Views.Blazor
+
+@inject IJSRuntime JSRuntime
 @attribute [RoutePriority(10)]
 
 <div class="container">
@@ -69,7 +72,7 @@
 
     }
 
-    void OnMouseMove(MouseEventArgs e)
+    async Task OnMouseMove(MouseEventArgs e)
     {
         var screenPoint = new SKPoint((float)e.OffsetX, (float)e.OffsetY);
 
@@ -80,12 +83,20 @@
 
         if (_drawManager.CurrentTool != null)
         {
-            _drawManager.CurrentTool.MouseMove(screenPoint);
+            _drawManager.CurrentTool.MouseMove(worldPoint);
         }
         else
         {
-            _drawManager.HitTest(screenPoint);
+            if( _drawManager.HitTest(worldPoint) != null)
+            {
+                await JSRuntime.InvokeVoidAsync("changeCursor", "move");
+            }
+            else
+            {
+                await JSRuntime.InvokeVoidAsync("changeCursor", "default");
+            }
         }
+
 
     }
 

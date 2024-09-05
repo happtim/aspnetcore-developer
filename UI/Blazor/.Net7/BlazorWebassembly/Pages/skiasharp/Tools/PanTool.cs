@@ -1,7 +1,7 @@
 ﻿using SkiaSharp;
 using SkiaSharp.Views.Blazor;
 
-namespace BlazorWebassembly.Pages.skiasharp.Commands
+namespace BlazorWebassembly.Pages.skiasharp.Tools
 {
     public class PanTool : ITool
     {
