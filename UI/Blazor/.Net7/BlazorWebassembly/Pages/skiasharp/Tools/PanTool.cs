@@ -1,4 +1,5 @@
-﻿using SkiaSharp;
+﻿using BlazorWebassembly.Pages.skiasharp.Draws;
+using SkiaSharp;
 using SkiaSharp.Views.Blazor;
 
 namespace BlazorWebassembly.Pages.skiasharp.Tools

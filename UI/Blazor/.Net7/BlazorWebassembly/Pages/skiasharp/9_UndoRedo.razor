@@ -1,5 +1,6 @@
 ﻿@page "/skiasharp/undo-redo"
 @using BlazorWebassembly.Pages.skiasharp.Commands
+@using BlazorWebassembly.Pages.skiasharp.Draws
 @using BlazorWebassembly.Pages.skiasharp.Tools
 @using SkiaSharp
 @using SkiaSharp.Views.Blazor
@@ -33,6 +34,7 @@
 
     private DrawManager _drawManager = null!;
     private ToolManager _toolManager = null!;
+    private CommandManager _commandManager = null!;
 
     void OnPaintSurface(SKPaintSurfaceEventArgs e)
     {
@@ -53,6 +55,8 @@
             _drawManager = new DrawManager(skiaView,viewport);
 
             _toolManager = new ToolManager();
+
+            _commandManager = new CommandManager(_drawManager);
 
         }
 
@@ -126,17 +130,17 @@
 
     void DrawLine(MouseEventArgs e)
     {
-        _toolManager.SetTool(new LineTool(_drawManager,_toolManager));
+        _toolManager.SetTool(new LineTool(_drawManager,_toolManager,_commandManager));
     }
 
     public void Undo()
     {
-        _drawManager.Undo();
+        _commandManager.Undo();
     }
 
     public void Redo()
     {
-        _drawManager.Redo();
+        _commandManager.Redo();
     }
 
 

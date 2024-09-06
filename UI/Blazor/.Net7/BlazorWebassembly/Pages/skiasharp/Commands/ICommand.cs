@@ -1,4 +1,6 @@
-﻿namespace BlazorWebassembly.Pages.skiasharp.Commands
+﻿using BlazorWebassembly.Pages.skiasharp.Draws;
+
+namespace BlazorWebassembly.Pages.skiasharp.Commands
 {
     public interface ICommand
     {

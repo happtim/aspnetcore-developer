@@ -1,17 +1,15 @@
 ﻿using BlazorWebassembly.Pages.skiasharp.Commands;
-using BlazorWebassembly.Pages.skiasharp.Draws;
 using BlazorWebassembly.Pages.skiasharp.Tools;
 using SkiaSharp;
 using SkiaSharp.Views.Blazor;
 using System.Xml.Linq;
 
-namespace BlazorWebassembly.Pages.skiasharp
+namespace BlazorWebassembly.Pages.skiasharp.Draws
 {
     public class DrawManager
     {
         private readonly List<DrawElement> _elements = new List<DrawElement>();
-        private readonly List<ICommand> _redoCommands = new List<ICommand>();
-        private readonly List<ICommand> _commands = new List<ICommand>();
+
         private SKCanvasView _skiaView = null!;
         private Viewport _viewport = null!;
         public Viewport Viewport => _viewport;
@@ -23,15 +21,6 @@ namespace BlazorWebassembly.Pages.skiasharp
         {
             _skiaView = skiaView;
             _viewport = viewport;
-        }
-
-        public void AddCommand(ICommand command)
-        {
-            command.Execute(this);
-            _commands.Add(command);
-            _redoCommands.Clear();
-
-            _skiaView.Invalidate(); // 触发重绘
         }
 
         public void AddElement(DrawElement element)
@@ -66,37 +55,11 @@ namespace BlazorWebassembly.Pages.skiasharp
             return null;
         }
 
-        public void Invalidate() 
+        public void Invalidate()
         {
             _skiaView.Invalidate();
         }
 
-        public void Undo()
-        {
-            if (_commands.Count > 0)
-            {
-                var command = _commands[^1];
-                command.Undo(this);
 
-                _commands.RemoveAt(_commands.Count - 1);
-                _redoCommands.Add(command);
-
-                _skiaView.Invalidate(); // 触发重绘
-            }
-        }
-
-        public void Redo()
-        {
-            if (_redoCommands.Count > 0)
-            {
-                var command = _redoCommands[^1];
-                command.Execute(this);
-
-                _redoCommands.RemoveAt(_redoCommands.Count - 1);
-                _commands.Add(command);
-
-                _skiaView.Invalidate(); // 触发重绘
-            }
-        }
     }
 }

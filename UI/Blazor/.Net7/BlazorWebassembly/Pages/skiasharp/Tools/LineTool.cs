@@ -11,11 +11,13 @@ namespace BlazorWebassembly.Pages.skiasharp.Tools
         private bool _isDrawing;
         private DrawManager _drawManager;
         private ToolManager _toolManager;
+        private CommandManager _commandManager;
 
-        public LineTool(DrawManager drawManager,ToolManager toolManager)
+        public LineTool(DrawManager drawManager,ToolManager toolManager, CommandManager commandManager)
         {
             _drawManager = drawManager;
             _toolManager = toolManager;
+            _commandManager = commandManager;
         }
 
         public void MouseDown(SKPoint worldPoint)
@@ -26,7 +28,7 @@ namespace BlazorWebassembly.Pages.skiasharp.Tools
                 //绘制结束 保存终点
                 _end = worldPoint;
 
-                _drawManager.AddCommand(new DrawElementCommand(new LineElement(_start, _end, SKColors.Black)));
+                _commandManager.AddCommand(new DrawElementCommand(new LineElement(_start, _end, SKColors.Black)));
 
                 _isDrawing = false;
 
