@@ -15,15 +15,15 @@ namespace BlazorWebassembly.Pages.skiasharp
 
         public SKSize MapSize { get; private set; }
 
-        public SKPoint Center => new SKPoint(ViewportSize.Width/DpiScale / 2, ViewportSize.Height / DpiScale / 2);
+        public SKPoint Center => new SKPoint(ViewportSize.Width/dpiScale / 2, ViewportSize.Height / dpiScale / 2);
 
-        public float DpiScale { get; private set; }
+        public float dpiScale = 1.0f;
 
         public float _scale = 1.0f;
 
         public float scaleStep = 0.05f;
 
-        public float minScale = 0.1f;
+        public float minScale = 0.2f;
         public float maxScale = 5.0f;
 
         OriginCoordinate Origin { get; set; }
@@ -31,7 +31,7 @@ namespace BlazorWebassembly.Pages.skiasharp
         float translateX = 0;
         float translateY = 0;
 
-        public float Scale => DpiScale * _scale;
+        public float Scale => dpiScale * _scale;
 
         public ViewportManager(SKSize viewportSize, SKSize? mapSize = null, float dpi = 1.0f,OriginCoordinate origin = OriginCoordinate.TopLeft)
         {
@@ -39,7 +39,9 @@ namespace BlazorWebassembly.Pages.skiasharp
             Origin = origin;
             ViewportSize = viewportSize;
             _scale = 1.0f;
-            DpiScale = dpi;
+            dpiScale = dpi;
+            maxScale = 5.0f / dpiScale;
+            minScale = 0.2f / dpiScale;
         }
 
         public void Resize(SKSize viewportSize)
@@ -55,22 +57,23 @@ namespace BlazorWebassembly.Pages.skiasharp
             if (delta < 0)
             {
                 // 放大
-                this._scale = (float)Math.Round(this._scale + this.scaleStep , 2); // 解决小数点运算丢失精度的问题  
-                if (this._scale > this.maxScale)
+                var scale = this._scale * 1.1f;
+                if (scale > this.maxScale)
                 {
-                    this._scale = this.maxScale;
                     return;
                 }
+
+                this._scale = scale;
             }
             else
             {
                 // 缩小
-                this._scale = (float)Math.Round(this._scale - this.scaleStep, 2); // 解决小数点运算丢失精度的问题  
-                if (this._scale < this.minScale)
+                var scale = this._scale / 1.1f;
+                if (scale < this.minScale)
                 {
-                    this._scale = this.minScale;
                     return;
                 }
+                this._scale = scale;
             }
 
             translateX = focus.X - (focus.X - translateX) * Scale / oldScale;
@@ -88,8 +91,8 @@ namespace BlazorWebassembly.Pages.skiasharp
         {
             // 计算适合的缩放
             // 计算考虑边距后的可用尺寸  
-            float availableWidth = ViewportSize.Width / DpiScale - 2 * margin;
-            float availableHeight = ViewportSize.Height / DpiScale - 2 * margin;
+            float availableWidth = ViewportSize.Width / dpiScale - 2 * margin;
+            float availableHeight = ViewportSize.Height / dpiScale - 2 * margin;
 
             // 计算适合的缩放
             float scaleX = availableWidth / contentBounds.Width;
@@ -101,8 +104,8 @@ namespace BlazorWebassembly.Pages.skiasharp
             _scale = Math.Max(minScale, Math.Min(_scale, maxScale));
 
             // 计算居中的平移值  
-            translateX = (ViewportSize.Width / DpiScale - contentBounds.Width * _scale) / 2 - contentBounds.Left * _scale;
-            translateY = (ViewportSize.Height /DpiScale - contentBounds.Height * _scale) / 2 - contentBounds.Top * _scale;
+            translateX = (ViewportSize.Width / dpiScale - contentBounds.Width * _scale) / 2 - contentBounds.Left * _scale;
+            translateY = (ViewportSize.Height /dpiScale - contentBounds.Height * _scale) / 2 - contentBounds.Top * _scale;
 
         }
 
@@ -134,7 +137,7 @@ namespace BlazorWebassembly.Pages.skiasharp
         public SKMatrix GetTransformMatrix()
         {
             return SKMatrix.CreateScale(Scale, Scale)
-                .PostConcat(SKMatrix.CreateTranslation(translateX * DpiScale, translateY * DpiScale));
+                .PostConcat(SKMatrix.CreateTranslation(translateX * dpiScale, translateY * dpiScale));
         }
     }
 }
