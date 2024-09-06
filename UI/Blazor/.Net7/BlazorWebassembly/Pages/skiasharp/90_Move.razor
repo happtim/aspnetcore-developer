@@ -32,7 +32,7 @@
 @code
 {
     SKCanvasView skiaView = null!;
-    private ViewportManager viewport = null!;
+    private ViewportManager _viewportManager = null!;
     private DrawManager _drawManager = null!;
     private ToolManager _toolManager = null!;
     private CommandManager _commandManager = null!;
@@ -45,22 +45,22 @@
         SKCanvas canvas = surface.Canvas;
         canvas.Clear(SKColors.White);
 
-        if (viewport == null)
+        if (_viewportManager == null)
         {
             Console.WriteLine("Canvas Size:" + "Width:" + e.Info.Size.Width + " Height:" + e.Info.Size.Height);
 
             Console.WriteLine("Dpi:" + skiaView.Dpi);
 
-            viewport = new ViewportManager(e.Info.Size, dpi: (float)skiaView.Dpi);
+            _viewportManager = new ViewportManager(e.Info.Size, dpi: (float)skiaView.Dpi);
 
-            _drawManager = new DrawManager(skiaView, viewport);
+            _drawManager = new DrawManager(skiaView);
 
             _toolManager = new ToolManager();
 
             _commandManager = new CommandManager(_drawManager);
         }
 
-        var matrix = viewport.GetTransformMatrix();
+        var matrix = _viewportManager.GetTransformMatrix();
 
         canvas.SetMatrix(matrix);
 
@@ -85,7 +85,7 @@
     {
         var screenPoint = new SKPoint((float)e.OffsetX, (float)e.OffsetY);
 
-        var worldPoint = viewport.ScreenToWorld(screenPoint);
+        var worldPoint = _viewportManager.ScreenToWorld(screenPoint);
 
         //打印坐标
         //Console.WriteLine($"mouse x:{e.OffsetX} y:{e.OffsetY} . world x:{woldPoint.X} y:{woldPoint.Y}");
@@ -115,12 +115,12 @@
     {
         var screenPoint = new SKPoint((float)e.OffsetX, (float)e.OffsetY);
 
-        var worldPoint = viewport.ScreenToWorld(screenPoint);
+        var worldPoint = _viewportManager.ScreenToWorld(screenPoint);
 
         //button middle
         if (e.Button == 1)
         {
-            _toolManager.SetTool(new PanTool(_drawManager,_toolManager));
+            _toolManager.SetTool(new PanTool(_drawManager,_toolManager,_viewportManager));
         }
 
         if (_toolManager.CurrentTool != null)
@@ -141,14 +141,14 @@
     {
         var screenPoint = new SKPoint((float)e.OffsetX, (float)e.OffsetY);
 
-        var worldPoint = viewport.ScreenToWorld(screenPoint);
+        var worldPoint = _viewportManager.ScreenToWorld(screenPoint);
 
         _toolManager.MouseUp(worldPoint);
     }
 
     void OnWheel(WheelEventArgs e)
     {
-        viewport.Zoom((float)e.DeltaY, new SKPoint((float)e.OffsetX, (float)e.OffsetY));
+        _viewportManager.Zoom((float)e.DeltaY, new SKPoint((float)e.OffsetX, (float)e.OffsetY));
 
         skiaView.Invalidate(); // 触发重绘
     }

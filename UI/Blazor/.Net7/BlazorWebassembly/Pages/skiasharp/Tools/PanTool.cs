@@ -9,16 +9,18 @@ namespace BlazorWebassembly.Pages.skiasharp.Tools
         SKPoint? _touchLocation;
         DrawManager _drawManager;
         ToolManager _toolManager;
+        ViewportManager _viewportManager;
 
-        public PanTool(DrawManager drawManager, ToolManager toolManager)
+        public PanTool(DrawManager drawManager, ToolManager toolManager , ViewportManager viewportManager)
         {
             _drawManager = drawManager;
             _toolManager = toolManager;
+            _viewportManager = viewportManager;
         }
 
         public void MouseDown(SKPoint worldPoint)
         {
-            var screenPoint = _drawManager.Viewport.WorldToScreen(worldPoint);
+            var screenPoint = _viewportManager.WorldToScreen(worldPoint);
 
             //screenPoint = _drawManager.Viewport.OriginTransform(screenPoint);
 
@@ -30,14 +32,14 @@ namespace BlazorWebassembly.Pages.skiasharp.Tools
         {
             if (_touchLocation == null) return;
 
-            var screenPoint = _drawManager.Viewport.WorldToScreen(worldPoint);
+            var screenPoint = _viewportManager.WorldToScreen(worldPoint);
 
             //screenPoint = _drawManager.Viewport.OriginTransform(screenPoint);
 
             float dx = screenPoint.X - _touchLocation.Value.X;
             float dy = screenPoint.Y - _touchLocation.Value.Y;
 
-            _drawManager.Viewport.Pan(dx, dy);
+            _viewportManager.Pan(dx, dy);
 
             _touchLocation = screenPoint;
 
