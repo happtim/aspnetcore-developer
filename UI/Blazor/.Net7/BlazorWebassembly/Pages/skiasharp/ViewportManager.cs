@@ -1,10 +1,9 @@
 ﻿using SkiaSharp;
 using System.Drawing;
-using static System.Formats.Asn1.AsnWriter;
 
 namespace BlazorWebassembly.Pages.skiasharp
 {
-    public class Viewport
+    public class ViewportManager
     {
         public enum OriginCoordinate
         {
@@ -34,7 +33,7 @@ namespace BlazorWebassembly.Pages.skiasharp
 
         public float Scale => DpiScale * _scale;
 
-        public Viewport(SKSize viewportSize, SKSize? mapSize = null, float dpi = 1.0f,OriginCoordinate origin = OriginCoordinate.TopLeft)
+        public ViewportManager(SKSize viewportSize, SKSize? mapSize = null, float dpi = 1.0f,OriginCoordinate origin = OriginCoordinate.TopLeft)
         {
             MapSize = mapSize ?? new SKSize(viewportSize.Width, viewportSize.Height);
             Origin = origin;

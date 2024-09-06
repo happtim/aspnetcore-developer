@@ -11,13 +11,13 @@ namespace BlazorWebassembly.Pages.skiasharp.Draws
         private readonly List<DrawElement> _elements = new List<DrawElement>();
 
         private SKCanvasView _skiaView = null!;
-        private Viewport _viewport = null!;
-        public Viewport Viewport => _viewport;
+        private ViewportManager _viewport = null!;
+        public ViewportManager Viewport => _viewport;
 
         public DrawElement? PreviewElement { get; set; }
 
 
-        public DrawManager(SKCanvasView skiaView, Viewport viewport)
+        public DrawManager(SKCanvasView skiaView, ViewportManager viewport)
         {
             _skiaView = skiaView;
             _viewport = viewport;

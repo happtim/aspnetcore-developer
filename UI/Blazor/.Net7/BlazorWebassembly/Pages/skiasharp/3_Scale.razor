@@ -26,7 +26,7 @@
 @code 
 {
     SKCanvasView skiaView = null!;
-    private Viewport viewport = null!;
+    private ViewportManager viewport = null!;
 
 
     void OnPaintSurface(SKPaintSurfaceEventArgs e)
@@ -43,7 +43,7 @@
 
             Console.WriteLine("Dpi:" + skiaView.Dpi);
 
-            viewport = new Viewport(e.Info.Size,dpi:(float)skiaView.Dpi);
+            viewport = new ViewportManager(e.Info.Size,dpi:(float)skiaView.Dpi);
 
         }
 

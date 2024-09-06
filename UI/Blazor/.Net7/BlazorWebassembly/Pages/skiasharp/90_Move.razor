@@ -32,7 +32,7 @@
 @code
 {
     SKCanvasView skiaView = null!;
-    private Viewport viewport = null!;
+    private ViewportManager viewport = null!;
     private DrawManager _drawManager = null!;
     private ToolManager _toolManager = null!;
     private CommandManager _commandManager = null!;
@@ -51,7 +51,7 @@
 
             Console.WriteLine("Dpi:" + skiaView.Dpi);
 
-            viewport = new Viewport(e.Info.Size, dpi: (float)skiaView.Dpi);
+            viewport = new ViewportManager(e.Info.Size, dpi: (float)skiaView.Dpi);
 
             _drawManager = new DrawManager(skiaView, viewport);
 

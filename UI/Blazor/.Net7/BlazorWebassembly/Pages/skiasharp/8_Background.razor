@@ -22,7 +22,7 @@
 {
     SKCanvasView skiaView = null!;
     SKPoint? touchLocation;
-    private Viewport viewport = null!;
+    private ViewportManager viewport = null!;
     private SKImage? map = null;
     private SKSize? mapSize = null;
 
@@ -61,7 +61,7 @@
 
             Console.WriteLine("Dpi:" + skiaView.Dpi);
 
-            viewport = new Viewport(e.Info.Size, mapSize: mapSize, dpi: (float)skiaView.Dpi, origin: Viewport.OriginCoordinate.BottomLeft);
+            viewport = new ViewportManager(e.Info.Size, mapSize: mapSize, dpi: (float)skiaView.Dpi, origin: ViewportManager.OriginCoordinate.BottomLeft);
 
         }
 
