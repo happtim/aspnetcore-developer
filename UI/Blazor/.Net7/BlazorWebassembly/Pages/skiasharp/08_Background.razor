@@ -5,8 +5,11 @@
 
 <div class="container">
     <div class="row">
-        <div class="col border rounded p-2 canvas-container">
-
+        <div class="col border rounded p-2 canvas-container position-relative">
+            <div style="position: absolute;bottom: 10px;left:15%; transform: translateX(-50%);z-index: 10;">
+                <button class="btn btn-secondary" @onclick="HandleFitScreen">Fit Screen</button>
+                <span class="ml-2 no-select">X: @((currentX * 0.05f).ToString("F2")), Y: @((currentY * 0.05).ToString("F2"))</span>
+            </div>
             <SKCanvasView @ref="skiaView" OnPaintSurface="OnPaintSurface"
                           IgnorePixelScaling="false"
                           @onmousemove="OnMouseMove"
@@ -20,9 +23,11 @@
 
 @code
 {
+    private double currentX;
+    private double currentY;
     SKCanvasView skiaView = null!;
     SKPoint? touchLocation;
-    private ViewportManager viewport = null!;
+    private ViewportManager _viewportManager = null!;
     private SKImage? map = null;
     private SKSize? mapSize = null;
 
@@ -54,18 +59,23 @@
         SKCanvas canvas = surface.Canvas;
         canvas.Clear(SKColors.White);
 
-        if (viewport == null)
+        if (_viewportManager == null)
         {
             Console.WriteLine("Canvas Size:" + "Width:" + e.Info.Size.Width + " Height:" + e.Info.Size.Height);
             Console.WriteLine("Map Size:" + "Width:" + mapSize.Value.Width + " Height:" + mapSize.Value.Height);
 
             Console.WriteLine("Dpi:" + skiaView.Dpi);
 
-            viewport = new ViewportManager(e.Info.Size, mapSize: mapSize, dpi: (float)skiaView.Dpi, origin: ViewportManager.OriginCoordinate.BottomLeft);
+            _viewportManager = new ViewportManager(e.Info.Size, mapSize: mapSize, dpi: (float)skiaView.Dpi, origin: ViewportManager.OriginCoordinate.BottomLeft);
 
         }
+        else if (_viewportManager.ViewportSize != e.Info.Size)
+        {
+            Console.WriteLine("Canvas Resize:" + "Width:" + e.Info.Size.Width + " Height:" + e.Info.Size.Height);
+            _viewportManager.Resize(e.Info.Size);
+        }
 
-        var matrix = viewport.GetTransformMatrix();
+        var matrix = _viewportManager.GetTransformMatrix();
 
         canvas.SetMatrix(matrix);
 
@@ -84,9 +94,9 @@
             var point2 = new SKPoint(36.250f / 0.05f, 43.450f / 0.05f);
             var point3 = new SKPoint(35.000f / 0.05f, 41.600f / 0.05f);
 
-            canvas.DrawCircle(viewport.OriginTransform(point1), 5, paint);
-            canvas.DrawCircle(viewport.OriginTransform(point2), 5, paint);
-            canvas.DrawCircle(viewport.OriginTransform(point3), 5, paint);
+            canvas.DrawCircle(_viewportManager.OriginTransform(point1), 5, paint);
+            canvas.DrawCircle(_viewportManager.OriginTransform(point2), 5, paint);
+            canvas.DrawCircle(_viewportManager.OriginTransform(point3), 5, paint);
         }
 
     }
@@ -95,12 +105,16 @@
     {
         var screenPoint = new SKPoint((float)e.OffsetX, (float)e.OffsetY);
 
-        var worldPoint = viewport.ScreenToWorld(screenPoint);
+        var worldPoint = _viewportManager.ScreenToWorld(screenPoint);
 
-        worldPoint = viewport.OriginTransform(worldPoint);
+        worldPoint = _viewportManager.OriginTransform(worldPoint);
 
         //打印坐标
         Console.WriteLine($"mouse x:{e.OffsetX} y:{e.OffsetY} . world x:{worldPoint.X} y:{worldPoint.Y}");
+
+        currentX = worldPoint.X;
+        currentY = worldPoint.Y;
+        StateHasChanged();
 
         if (touchLocation == null)
             return;
@@ -108,7 +122,7 @@
         float dx = (float)e.OffsetX - touchLocation.Value.X;
         float dy = (float)e.OffsetY - touchLocation.Value.Y;
 
-        viewport.Pan(dx, dy);
+        _viewportManager.Pan(dx, dy);
 
         touchLocation = new SKPoint((float)e.OffsetX, (float)e.OffsetY);
 
@@ -129,9 +143,44 @@
     void OnWheel(WheelEventArgs e)
     {
 
-        viewport.Zoom((float)e.DeltaY, new SKPoint((float)e.OffsetX, (float)e.OffsetY));
+        _viewportManager.Zoom((float)e.DeltaY, new SKPoint((float)e.OffsetX, (float)e.OffsetY));
 
         skiaView.Invalidate(); // 触发重绘
     }
 
+    void HandleFitScreen(MouseEventArgs e)
+    {
+        // 处理点击事件的代码
+        var contentBounds = CalculateContentBounds();
+        _viewportManager.ZoomToFit(contentBounds);
+
+        skiaView.Invalidate();
+    }
+
+    SKRect CalculateContentBounds()
+    {
+        using (SKPath path = new SKPath())
+        {
+            // 模拟绘制圆形
+
+            var point1 = new SKPoint(37.000f / 0.05f, 41.800f / 0.05f);
+            var point2 = new SKPoint(36.250f / 0.05f, 43.450f / 0.05f);
+            var point3 = new SKPoint(35.000f / 0.05f, 41.600f / 0.05f);
+
+            var circlePoint1 = _viewportManager.OriginTransform(point1);
+            path.AddCircle(circlePoint1.X, circlePoint1.Y, 5);
+
+            var circlePoint2 = _viewportManager.OriginTransform(point2);
+            path.AddCircle(circlePoint2.X, circlePoint2.Y, 5);
+
+            var circlePoint3 = _viewportManager.OriginTransform(point3);
+            path.AddCircle(circlePoint3.X, circlePoint3.Y, 5);
+
+            // 获取边界矩形
+            path.GetBounds(out SKRect bounds);
+
+            // 返回边界矩形
+            return bounds;
+        }
+    }
 }
