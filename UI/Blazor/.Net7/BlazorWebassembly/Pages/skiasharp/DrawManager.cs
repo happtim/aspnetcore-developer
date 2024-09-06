@@ -17,7 +17,7 @@ namespace BlazorWebassembly.Pages.skiasharp
         public Viewport Viewport => _viewport;
 
         public DrawElement? PreviewElement { get; set; }
-        public ITool? CurrentTool { get; set; }
+
 
         public DrawManager(SKCanvasView skiaView, Viewport viewport)
         {

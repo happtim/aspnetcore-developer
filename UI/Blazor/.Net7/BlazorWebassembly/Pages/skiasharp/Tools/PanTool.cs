@@ -7,11 +7,12 @@ namespace BlazorWebassembly.Pages.skiasharp.Tools
     {
         SKPoint? _touchLocation;
         DrawManager _drawManager;
+        ToolManager _toolManager;
 
-        public PanTool(DrawManager drawManager)
+        public PanTool(DrawManager drawManager, ToolManager toolManager)
         {
             _drawManager = drawManager;
-            _drawManager.CurrentTool = this;
+            _toolManager = toolManager;
         }
 
         public void MouseDown(SKPoint worldPoint)
@@ -46,7 +47,7 @@ namespace BlazorWebassembly.Pages.skiasharp.Tools
         {
             _touchLocation = null;
 
-            _drawManager.CurrentTool = null;
+            _toolManager.SetTool(null);
         }
     }
 }

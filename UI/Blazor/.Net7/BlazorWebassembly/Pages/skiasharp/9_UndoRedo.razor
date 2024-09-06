@@ -32,6 +32,7 @@
     private Viewport viewport = null!;
 
     private DrawManager _drawManager = null!;
+    private ToolManager _toolManager = null!;
 
     void OnPaintSurface(SKPaintSurfaceEventArgs e)
     {
@@ -50,6 +51,8 @@
             viewport = new Viewport(e.Info.Size, dpi: (float)skiaView.Dpi);
 
             _drawManager = new DrawManager(skiaView,viewport);
+
+            _toolManager = new ToolManager();
 
         }
 
@@ -71,7 +74,7 @@
         }
 
         _drawManager.Draw(canvas);
-        
+
     }
 
     void OnMouseMove(MouseEventArgs e)
@@ -83,10 +86,7 @@
         //打印坐标
         //Console.WriteLine($"mouse x:{e.OffsetX} y:{e.OffsetY} . world x:{woldPoint.X} y:{woldPoint.Y}");
 
-        if (_drawManager.CurrentTool != null)
-        {
-            _drawManager.CurrentTool.MouseMove(worldPoint);
-        }
+        _toolManager.MouseMove(worldPoint);
 
     }
 
@@ -99,16 +99,11 @@
         //button middle
         if (e.Button == 1)
         {
-            if (_drawManager.CurrentTool == null)
-            {
-                new PanTool(_drawManager);
-            }
+            _toolManager.SetTool(new PanTool(_drawManager,_toolManager));
         }
 
-        if (_drawManager.CurrentTool != null)
-        {
-            _drawManager.CurrentTool.MouseDown(worldPoint);
-        }
+        _toolManager.MouseDown(worldPoint);
+
     }
 
     void OnMouseUp(MouseEventArgs e)
@@ -117,10 +112,9 @@
 
         var worldPoint = viewport.ScreenToWorld(screenPoint);
 
-        if (_drawManager.CurrentTool != null)
-        {
-            _drawManager.CurrentTool.MouseUp(worldPoint);
-        }
+        _toolManager.MouseUp(worldPoint);
+
+
     }
 
     void OnWheel(WheelEventArgs e)
@@ -132,7 +126,7 @@
 
     void DrawLine(MouseEventArgs e)
     {
-        new LineTool(_drawManager);
+        _toolManager.SetTool(new LineTool(_drawManager,_toolManager));
     }
 
     public void Undo()

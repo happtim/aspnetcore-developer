@@ -7,15 +7,16 @@ namespace BlazorWebassembly.Pages.skiasharp.Tools
     public class MoveTool : ITool
     {
         private DrawManager _drawManager;
+        private ToolManager _toolManager;
         private DrawElement _hitElement;
         //位置差值
         private SKPoint _diff;
         private SKPoint _start;
 
-        public MoveTool(DrawManager drawManager)
+        public MoveTool(DrawManager drawManager, ToolManager toolManager)
         {
             _drawManager = drawManager;
-            _drawManager.CurrentTool = this;
+            _toolManager = toolManager;
         }
 
         public void MouseDown(SKPoint worldPoint)
@@ -51,7 +52,7 @@ namespace BlazorWebassembly.Pages.skiasharp.Tools
 
                 _hitElement = null;
 
-                _drawManager.CurrentTool = null;
+                _toolManager.SetTool(null);
             }
         }
     }

@@ -80,11 +80,17 @@ namespace BlazorWebassembly.Pages.skiasharp
             translateY += dy;
         }
 
-        public void FitToScreen(SKRect contentBounds)
+        public void ZoomToFit(SKRect contentBounds,float margin = 20f)
         {
             // 计算适合的缩放
-            float scaleX = ViewportSize.Width / DpiScale / contentBounds.Width;
-            float scaleY = ViewportSize.Height / DpiScale / contentBounds.Height;
+            // 计算考虑边距后的可用尺寸  
+            float availableWidth = ViewportSize.Width / DpiScale - 2 * margin;
+            float availableHeight = ViewportSize.Height / DpiScale - 2 * margin;
+
+            // 计算适合的缩放
+            float scaleX = availableWidth / contentBounds.Width;
+            float scaleY = availableHeight / contentBounds.Height;
+
             _scale = Math.Min(scaleX, scaleY);
 
             // 确保缩放在允许的范围内  
@@ -93,6 +99,7 @@ namespace BlazorWebassembly.Pages.skiasharp
             // 计算居中的平移值  
             translateX = (ViewportSize.Width / DpiScale - contentBounds.Width * _scale) / 2 - contentBounds.Left * _scale;
             translateY = (ViewportSize.Height /DpiScale - contentBounds.Height * _scale) / 2 - contentBounds.Top * _scale;
+
         }
 
         public SKPoint WorldToScreen(SKPoint worldPoint)

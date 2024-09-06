@@ -33,6 +33,7 @@
     SKCanvasView skiaView = null!;
     private Viewport viewport = null!;
     private DrawManager _drawManager = null!;
+    private ToolManager _toolManager = null!;
 
     void OnPaintSurface(SKPaintSurfaceEventArgs e)
     {
@@ -51,6 +52,8 @@
             viewport = new Viewport(e.Info.Size, dpi: (float)skiaView.Dpi);
 
             _drawManager = new DrawManager(skiaView, viewport);
+
+            _toolManager = new ToolManager();
         }
 
         var matrix = viewport.GetTransformMatrix();
@@ -83,9 +86,11 @@
         //打印坐标
         //Console.WriteLine($"mouse x:{e.OffsetX} y:{e.OffsetY} . world x:{woldPoint.X} y:{woldPoint.Y}");
 
-        if (_drawManager.CurrentTool != null)
+
+
+        if (_toolManager.CurrentTool != null)
         {
-            _drawManager.CurrentTool.MouseMove(worldPoint);
+            _toolManager.MouseMove(worldPoint);
         }
         else
         {
@@ -111,21 +116,19 @@
         //button middle
         if (e.Button == 1)
         {
-            if (_drawManager.CurrentTool == null)
-            {
-                new PanTool(_drawManager);
-            }
+            _toolManager.SetTool(new PanTool(_drawManager,_toolManager));
         }
 
-        if (_drawManager.CurrentTool != null)
+        if (_toolManager.CurrentTool != null)
         {
-            _drawManager.CurrentTool.MouseDown(worldPoint);
+            _toolManager.MouseDown(worldPoint);
         }
         else
         {
             if( _drawManager.HitTest(worldPoint) != null)
             {
-                new MoveTool(_drawManager).MouseDown(worldPoint);
+                _toolManager.SetTool(new MoveTool(_drawManager,_toolManager));
+                _toolManager.MouseDown(worldPoint);
             }
         }
     }
@@ -136,10 +139,7 @@
 
         var worldPoint = viewport.ScreenToWorld(screenPoint);
 
-        if (_drawManager.CurrentTool != null)
-        {
-            _drawManager.CurrentTool.MouseUp(worldPoint);
-        }
+        _toolManager.MouseUp(worldPoint);
     }
 
     void OnWheel(WheelEventArgs e)
@@ -152,7 +152,8 @@
     async Task DrawLine(MouseEventArgs e)
     {
         await JSRuntime.InvokeVoidAsync("changeCursor", "crosshair");
-        new LineTool(_drawManager);
+
+        _toolManager.SetTool(new LineTool(_drawManager,_toolManager));
        
     }
 

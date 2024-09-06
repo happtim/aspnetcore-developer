@@ -106,13 +106,11 @@
         skiaView.Invalidate(); // 触发重绘
     }
 
-
-
     void HandleFitScreen(MouseEventArgs e)
     {
         // 处理点击事件的代码
         var contentBounds =  CalculateContentBounds();
-        viewport.FitToScreen(contentBounds);
+        viewport.ZoomToFit(contentBounds);
 
         skiaView.Invalidate();
 

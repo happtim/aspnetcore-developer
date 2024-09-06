@@ -10,11 +10,12 @@ namespace BlazorWebassembly.Pages.skiasharp.Tools
         private SKPoint _end;
         private bool _isDrawing;
         private DrawManager _drawManager;
+        private ToolManager _toolManager;
 
-        public LineTool(DrawManager drawManager)
+        public LineTool(DrawManager drawManager,ToolManager toolManager)
         {
             _drawManager = drawManager;
-            _drawManager.CurrentTool = this;
+            _toolManager = toolManager;
         }
 
         public void MouseDown(SKPoint worldPoint)
@@ -29,7 +30,7 @@ namespace BlazorWebassembly.Pages.skiasharp.Tools
 
                 _isDrawing = false;
 
-                _drawManager.CurrentTool = null;
+                _toolManager.SetTool(null);
 
                 _drawManager.PreviewElement = null;
             }
