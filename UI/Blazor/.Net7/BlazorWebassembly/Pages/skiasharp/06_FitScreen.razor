@@ -1,7 +1,7 @@
 ﻿@page "/skiasharp/fit-screen"
 @using SkiaSharp
 @using SkiaSharp.Views.Blazor
-@attribute [RoutePriority(7)]
+@attribute [RoutePriority(6)]
 
 <div class="container">
     <div class="row">
@@ -26,7 +26,7 @@
 {
     SKCanvasView skiaView = null!;
     SKPoint? touchLocation;
-    private ViewportManager viewport = null!;
+    private ViewportManager _viewportManager = null!;
 
     void OnPaintSurface(SKPaintSurfaceEventArgs e)
     {
@@ -36,17 +36,21 @@
         SKCanvas canvas = surface.Canvas;
         canvas.Clear(SKColors.White);
 
-        if (viewport == null)
+        if (_viewportManager == null)
         {
             Console.WriteLine("Canvas Size:" + "Width:" + e.Info.Size.Width + " Height:" + e.Info.Size.Height);
 
             Console.WriteLine("Dpi:" + skiaView.Dpi);
 
-            viewport = new ViewportManager(e.Info.Size, dpi: (float)skiaView.Dpi);
-
+            _viewportManager = new ViewportManager(e.Info.Size, dpi: (float)skiaView.Dpi);
+        }
+        else if (_viewportManager.ViewportSize != e.Info.Size)
+        {
+            Console.WriteLine("Canvas Resize:" + "Width:" + e.Info.Size.Width + " Height:" + e.Info.Size.Height);
+            _viewportManager.Resize(e.Info.Size);
         }
 
-        var matrix = viewport.GetTransformMatrix();
+        var matrix = _viewportManager.GetTransformMatrix();
 
         canvas.SetMatrix(matrix);
 
@@ -81,7 +85,7 @@
     {
         var screenPoint = new SKPoint((float)e.OffsetX, (float)e.OffsetY);
 
-        var woldPoint = viewport.ScreenToWorld(screenPoint);
+        var woldPoint = _viewportManager.ScreenToWorld(screenPoint);
 
         //打印坐标
         Console.WriteLine($"mouse x:{e.OffsetX} y:{e.OffsetY} . world x:{woldPoint.X} y:{woldPoint.Y}");
@@ -92,7 +96,7 @@
         float dx = (float)e.OffsetX - touchLocation.Value.X;
         float dy = (float)e.OffsetY - touchLocation.Value.Y;
 
-        viewport.Pan(dx, dy);
+        _viewportManager.Pan(dx, dy);
 
         touchLocation = new SKPoint((float)e.OffsetX, (float)e.OffsetY);
 
@@ -101,7 +105,7 @@
 
     void OnWheel(WheelEventArgs e)
     {
-        viewport.Zoom((float)e.DeltaY, new SKPoint((float)e.OffsetX, (float)e.OffsetY));
+        _viewportManager.Zoom((float)e.DeltaY, new SKPoint((float)e.OffsetX, (float)e.OffsetY));
 
         skiaView.Invalidate(); // 触发重绘
     }
@@ -110,7 +114,7 @@
     {
         // 处理点击事件的代码
         var contentBounds =  CalculateContentBounds();
-        viewport.ZoomToFit(contentBounds);
+        _viewportManager.ZoomToFit(contentBounds);
 
         skiaView.Invalidate();
 

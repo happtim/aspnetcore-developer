@@ -42,6 +42,11 @@ namespace BlazorWebassembly.Pages.skiasharp
             DpiScale = dpi;
         }
 
+        public void Resize(SKSize viewportSize)
+        {
+            ViewportSize = viewportSize;
+        }
+
         public void Zoom(float delta, SKPoint focus)
         {
 
