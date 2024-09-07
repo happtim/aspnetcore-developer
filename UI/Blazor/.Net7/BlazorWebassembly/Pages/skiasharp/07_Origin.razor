@@ -43,7 +43,10 @@
 
             Console.WriteLine("Dpi:" + skiaView.Dpi);
 
-            _viewportManager = new ViewportManager(e.Info.Size, dpi: (float)skiaView.Dpi, origin: ViewportManager.OriginCoordinate.BottomLeft);
+            _viewportManager = new ViewportManager(
+                e.Info.Size, 
+                dpi: (float)skiaView.Dpi, 
+                origin: ViewportManager.OriginCoordinate.BottomLeft);
         }
         else if (_viewportManager.ViewportSize != e.Info.Size)
         {
@@ -61,11 +64,11 @@
         // 例如：
         using (SKPaint paint = new SKPaint { Color = SKColors.Blue })
         {
-            canvas.DrawCircle(_viewportManager.OriginTransform(new SKPoint(0, 0)), 100, paint);
+            canvas.DrawCircle(_viewportManager.WorldToMap(new SKPoint(0, 0)), 100, paint);
 
             paint.Color = new SKColor(255, 0, 0);
 
-            canvas.DrawCircle(_viewportManager.OriginTransform(new SKPoint(200, 200)), 2, paint);
+            canvas.DrawCircle(_viewportManager.WorldToMap(new SKPoint(200, 200)), 2, paint);
         }
 
     }
@@ -76,7 +79,7 @@
 
         var worldPoint = _viewportManager.ScreenToWorld(screenPoint);
 
-        worldPoint = _viewportManager.OriginTransform(worldPoint);
+        worldPoint = _viewportManager.WorldToMap(worldPoint);
 
         //打印坐标
         Console.WriteLine($"mouse x:{e.OffsetX} y:{e.OffsetY} . world x:{worldPoint.X} y:{worldPoint.Y}");
@@ -131,10 +134,10 @@
         {
             // 模拟绘制圆形
 
-            var circlePoint1 = _viewportManager.OriginTransform(new SKPoint(0, 0));
+            var circlePoint1 = _viewportManager.WorldToMap(new SKPoint(0, 0));
             path.AddCircle(circlePoint1.X,circlePoint1.Y, 100);
 
-            var circlePoint2 = _viewportManager.OriginTransform(new SKPoint(200, 200));
+            var circlePoint2 = _viewportManager.WorldToMap(new SKPoint(200, 200));
             path.AddCircle(circlePoint2.X, circlePoint2.Y, 2);
 
             // 获取边界矩形

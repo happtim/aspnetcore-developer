@@ -13,7 +13,15 @@ namespace BlazorWebassembly.Pages.skiasharp
 
         public SKSize ViewportSize { get; private set; }
 
-        public SKSize MapSize { get; private set; }
+        //底图大小
+        public SKSize mapSize { get; private set; }
+
+        //地图分辨率
+        public float mapResolution = 0.05f;
+        public float mapOriginOffsetX = 0f;
+        public float mapOriginOffsetY = 0f;
+        public float mapOriginOffsetTheta = 0f;
+
 
         public SKPoint Center => new SKPoint(ViewportSize.Width/dpiScale / 2, ViewportSize.Height / dpiScale / 2);
 
@@ -33,15 +41,27 @@ namespace BlazorWebassembly.Pages.skiasharp
 
         public float Scale => dpiScale * _scale;
 
-        public ViewportManager(SKSize viewportSize, SKSize? mapSize = null, float dpi = 1.0f,OriginCoordinate origin = OriginCoordinate.TopLeft)
+        public ViewportManager(SKSize viewportSize, 
+            SKSize? mapSize = null,
+            float mapResolution = 1f,
+            float mapOriginOffsetX = 0f,
+            float mapOriginOffsetY = 0f,
+            float mapOriginOffsetTheta = 0f,
+            float dpi = 1.0f,
+            OriginCoordinate origin = OriginCoordinate.TopLeft)
         {
-            MapSize = mapSize ?? new SKSize(viewportSize.Width, viewportSize.Height);
+            this.mapSize = mapSize ?? new SKSize(viewportSize.Width, viewportSize.Height);
             Origin = origin;
             ViewportSize = viewportSize;
             _scale = 1.0f;
             dpiScale = dpi;
             maxScale = 5.0f / dpiScale;
             minScale = 0.2f / dpiScale;
+
+            this.mapResolution = mapResolution;
+            this.mapOriginOffsetX = mapOriginOffsetX;
+            this.mapOriginOffsetY = mapOriginOffsetY;
+            this.mapOriginOffsetTheta = mapOriginOffsetTheta;
         }
 
         public void Resize(SKSize viewportSize)
@@ -89,8 +109,7 @@ namespace BlazorWebassembly.Pages.skiasharp
 
         public void ZoomToFit(SKRect contentBounds,float margin = 20f)
         {
-            // 计算适合的缩放
-            // 计算考虑边距后的可用尺寸  
+            // 计算适合的缩放 & 计算考虑边距后的可用尺寸  
             float availableWidth = ViewportSize.Width / dpiScale - 2 * margin;
             float availableHeight = ViewportSize.Height / dpiScale - 2 * margin;
 
@@ -119,19 +138,32 @@ namespace BlazorWebassembly.Pages.skiasharp
             return new SKPoint((screenPoint.X - translateX) / _scale, (screenPoint.Y - translateY) / _scale);
         }
 
-        public SKPoint OriginTransform(SKPoint point) 
+        public SKPoint WorldToMap(SKPoint point) 
         {
             if (Origin == OriginCoordinate.TopLeft)
             {
-                return point;
+                return new SKPoint((point.X + mapOriginOffsetX) / mapResolution, (point.Y + mapOriginOffsetY) / mapResolution);
             }
             else if (Origin == OriginCoordinate.BottomLeft) 
             {
-                return new SKPoint(point.X, MapSize.Height - point.Y);
+                return new SKPoint( (point.X + mapOriginOffsetX) /mapResolution, mapSize.Height - (point.Y + mapOriginOffsetY) / mapResolution);
             }
 
             throw new ArgumentException("Unsupported  OriginCoordinate");
+        }
 
+        public SKPoint MapToWorld(SKPoint point)
+        {
+            if (Origin == OriginCoordinate.TopLeft)
+            {
+                return new SKPoint(point.X * mapResolution - mapOriginOffsetX, point.Y * mapResolution - mapOriginOffsetY);
+            }
+            else if (Origin == OriginCoordinate.BottomLeft)
+            {
+                return new SKPoint(point.X * mapResolution - mapOriginOffsetX, (mapSize.Height - point.Y) * mapResolution - mapOriginOffsetY);
+            }
+
+            throw new ArgumentException("Unsupported  OriginCoordinate");
         }
 
         public SKMatrix GetTransformMatrix()
