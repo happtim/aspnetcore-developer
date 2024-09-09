@@ -10,21 +10,29 @@ namespace BlazorWebassembly.Pages.skiasharp.Tools
         DrawManager _drawManager;
         ToolManager _toolManager;
         ViewportManager _viewportManager;
+        CursorManager _cursorManager;
 
-        public PanTool(DrawManager drawManager, ToolManager toolManager , ViewportManager viewportManager)
+        public PanTool(
+            DrawManager drawManager, 
+            ToolManager toolManager , 
+            ViewportManager viewportManager,
+            CursorManager cursorManager
+            )
         {
             _drawManager = drawManager;
             _toolManager = toolManager;
             _viewportManager = viewportManager;
+            _cursorManager = cursorManager;
         }
 
-        public void MouseDown(SKPoint worldPoint)
+        public async void MouseDown(SKPoint worldPoint)
         {
             var screenPoint = _viewportManager.WorldToScreen(worldPoint);
 
-            //screenPoint = _drawManager.Viewport.OriginTransform(screenPoint);
-
             _touchLocation = screenPoint;
+
+            //TODO 设置抓手样式
+            await _cursorManager.SetHand();
 
         }
 
@@ -46,11 +54,13 @@ namespace BlazorWebassembly.Pages.skiasharp.Tools
             _drawManager.Invalidate(); // 触发重绘
         }
 
-        public void MouseUp(SKPoint worldPoint)
+        public async void MouseUp(SKPoint worldPoint)
         {
             _touchLocation = null;
 
-            _toolManager.SetTool(null);
+            await _cursorManager.SetDefault();
+
+
         }
     }
 }

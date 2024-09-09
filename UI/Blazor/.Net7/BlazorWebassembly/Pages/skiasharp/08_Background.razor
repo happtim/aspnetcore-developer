@@ -111,7 +111,7 @@
 
         var worldPoint = _viewportManager.ScreenToWorld(screenPoint);
 
-        worldPoint = _viewportManager.MapToWorld(worldPoint);
+        worldPoint = _viewportManager.WorldFromMap(worldPoint);
 
         //打印坐标
         Console.WriteLine($"mouse x:{e.OffsetX} y:{e.OffsetY} . world x:{worldPoint.X} y:{worldPoint.Y}");

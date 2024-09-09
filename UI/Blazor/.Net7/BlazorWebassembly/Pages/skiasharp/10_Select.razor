@@ -1,10 +1,11 @@
-﻿@page "/skiasharp/undo-redo"
+﻿@page "/skiasharp/select"
+
 @using BlazorWebassembly.Pages.skiasharp.Commands
 @using BlazorWebassembly.Pages.skiasharp.Draws
 @using BlazorWebassembly.Pages.skiasharp.Tools
 @using SkiaSharp
 @using SkiaSharp.Views.Blazor
-@attribute [RoutePriority(9)]
+@attribute [RoutePriority(10)]
 
 @inject IJSRuntime JSRuntime
 
@@ -60,7 +61,7 @@
 
             _cursorManager = new CursorManager(JSRuntime);
 
-            _toolManager = new ToolManager(_viewportManager, _drawManager, _commandManager, _cursorManager);
+            _toolManager = new ToolManager(_viewportManager, _drawManager,_commandManager,_cursorManager);
 
         }
 
@@ -97,8 +98,8 @@
 
     void OnMouseUp(MouseEventArgs e)
     {
-
         _toolManager.MouseUp(e);
+
     }
 
     void OnWheel(WheelEventArgs e)
@@ -110,7 +111,7 @@
 
     void DrawLine(MouseEventArgs e)
     {
-        _toolManager.SetTool(new LineTool(_drawManager,_toolManager,_commandManager));
+        _toolManager.SetTool(new LineTool(_drawManager, _toolManager, _commandManager));
     }
 
     public void Undo()
@@ -122,5 +123,8 @@
     {
         _commandManager.Redo();
     }
+
+
+
 
 }

@@ -152,7 +152,7 @@ namespace BlazorWebassembly.Pages.skiasharp
             throw new ArgumentException("Unsupported  OriginCoordinate");
         }
 
-        public SKPoint MapToWorld(SKPoint point)
+        public SKPoint WorldFromMap(SKPoint point)
         {
             if (Origin == OriginCoordinate.TopLeft)
             {

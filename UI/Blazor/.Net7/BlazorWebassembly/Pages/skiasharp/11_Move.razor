@@ -5,8 +5,9 @@
 @using SkiaSharp
 @using SkiaSharp.Views.Blazor
 
+@attribute [RoutePriority(11)]
+
 @inject IJSRuntime JSRuntime
-@attribute [RoutePriority(10)]
 
 <div class="container">
     <div class="row">
@@ -36,6 +37,7 @@
     private DrawManager _drawManager = null!;
     private ToolManager _toolManager = null!;
     private CommandManager _commandManager = null!;
+    private CursorManager _cursorManager = null!;
 
     void OnPaintSurface(SKPaintSurfaceEventArgs e)
     {
@@ -55,9 +57,13 @@
 
             _drawManager = new DrawManager(skiaView);
 
-            _toolManager = new ToolManager();
-
             _commandManager = new CommandManager(_drawManager);
+
+            _cursorManager = new CursorManager(JSRuntime);
+
+            _toolManager = new ToolManager(_viewportManager, _drawManager,_commandManager,_cursorManager);
+
+
         }
 
         var matrix = _viewportManager.GetTransformMatrix();
@@ -83,67 +89,19 @@
 
     async Task OnMouseMove(MouseEventArgs e)
     {
-        var screenPoint = new SKPoint((float)e.OffsetX, (float)e.OffsetY);
 
-        var worldPoint = _viewportManager.ScreenToWorld(screenPoint);
-
-        //打印坐标
-        //Console.WriteLine($"mouse x:{e.OffsetX} y:{e.OffsetY} . world x:{woldPoint.X} y:{woldPoint.Y}");
-
-
-
-        if (_toolManager.CurrentTool != null)
-        {
-            _toolManager.MouseMove(worldPoint);
-        }
-        else
-        {
-            if( _drawManager.HitTest(worldPoint) != null)
-            {
-                await JSRuntime.InvokeVoidAsync("changeCursor", "move");
-            }
-            else
-            {
-                await JSRuntime.InvokeVoidAsync("changeCursor", "default");
-            }
-        }
-
+        _toolManager.MouseMove(e);
 
     }
 
     void OnMouseDown(MouseEventArgs e)
     {
-        var screenPoint = new SKPoint((float)e.OffsetX, (float)e.OffsetY);
-
-        var worldPoint = _viewportManager.ScreenToWorld(screenPoint);
-
-        //button middle
-        if (e.Button == 1)
-        {
-            _toolManager.SetTool(new PanTool(_drawManager,_toolManager,_viewportManager));
-        }
-
-        if (_toolManager.CurrentTool != null)
-        {
-            _toolManager.MouseDown(worldPoint);
-        }
-        else
-        {
-            if( _drawManager.HitTest(worldPoint) != null)
-            {
-                _toolManager.SetTool(new MoveTool(_drawManager,_toolManager,_commandManager));
-                _toolManager.MouseDown(worldPoint);
-            }
-        }
+        _toolManager.MouseDown(e);
     }
 
     void OnMouseUp(MouseEventArgs e)
     {
-        var screenPoint = new SKPoint((float)e.OffsetX, (float)e.OffsetY);
-
-        var worldPoint = _viewportManager.ScreenToWorld(screenPoint);
-
-        _toolManager.MouseUp(worldPoint);
+        _toolManager.MouseUp(e);
     }
 
     void OnWheel(WheelEventArgs e)
