@@ -11,11 +11,14 @@ namespace BlazorWebassembly.Pages.skiasharp.Draws
         private readonly List<DrawElement> _elements = new List<DrawElement>();
 
         private SKCanvasView _skiaView = null!;
+        private SelectedManager _selectedManager = null!;
+
         public DrawElement? PreviewElement { get; set; }
 
-        public DrawManager(SKCanvasView skiaView)
+        public DrawManager(SKCanvasView skiaView,SelectedManager selectedManager)
         {
             _skiaView = skiaView;
+            _selectedManager = selectedManager;
         }
 
         public void AddElement(DrawElement element)
@@ -32,7 +35,20 @@ namespace BlazorWebassembly.Pages.skiasharp.Draws
         {
             foreach (var element in _elements)
             {
-                element.Draw(canvas);
+                //绘制选中效果
+                if (_selectedManager.Get().Contains(element)) 
+                {
+                    element.DrawSelected(canvas);
+                }
+                else if (_selectedManager.HoverElement == element)
+                {
+                    element.DrawSelected(canvas);
+                }
+                else
+                {
+                    element.Draw(canvas);
+                }
+
             }
 
             PreviewElement?.Draw(canvas);

@@ -32,6 +32,25 @@ namespace BlazorWebassembly.Pages.skiasharp.Draws
             canvas.DrawLine(Start, End, Paint);
         }
 
+        public override void DrawSelected(SKCanvas canvas)
+        {
+            // 1. 绘制粗一些的线条作为背景  
+            using (var paint = new SKPaint
+            {
+                Color = SKColors.LightBlue,
+                StrokeWidth = Paint.StrokeWidth + 4,
+                IsAntialias = true,
+                Style = SKPaintStyle.Stroke
+            })
+            {
+                canvas.DrawLine(Start, End, paint);
+            }
+
+            // 2. 绘制原始线条  
+            canvas.DrawLine(Start, End, Paint);
+
+        }
+
         public override bool IsHit(SKPoint point)
         {
             // 简单的碰撞检测，可以根据需要改进  
@@ -80,7 +99,6 @@ namespace BlazorWebassembly.Pages.skiasharp.Draws
             float dy = y - yy;
             return (float)Math.Sqrt(dx * dx + dy * dy);
         }
-
 
     }
 }

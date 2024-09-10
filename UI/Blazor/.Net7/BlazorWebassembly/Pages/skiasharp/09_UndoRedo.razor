@@ -37,6 +37,7 @@
     private ToolManager _toolManager = null!;
     private CommandManager _commandManager = null!;
     private CursorManager _cursorManager = null!;
+    private SelectedManager _selectedManager = null!;
 
     void OnPaintSurface(SKPaintSurfaceEventArgs e)
     {
@@ -54,13 +55,15 @@
 
             _viewportManager = new ViewportManager(e.Info.Size, dpi: (float)skiaView.Dpi);
 
-            _drawManager = new DrawManager(skiaView);
+            _drawManager = new DrawManager(skiaView, _selectedManager);
+
+            _selectedManager = new SelectedManager();
 
             _commandManager = new CommandManager(_drawManager);
 
             _cursorManager = new CursorManager(JSRuntime);
 
-            _toolManager = new ToolManager(_viewportManager, _drawManager, _commandManager, _cursorManager);
+            _toolManager = new ToolManager(_viewportManager, _drawManager, _commandManager, _cursorManager, _selectedManager);
 
         }
 

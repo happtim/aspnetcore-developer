@@ -8,7 +8,7 @@ namespace BlazorWebassembly.Pages.skiasharp.Tools
 {
     public class ToolManager
     {
-        public ITool? CurrentTool { get; set; }
+        public ITool? _currentTool = null;
 
         public ITool? _panTool = null;
 
@@ -16,54 +16,51 @@ namespace BlazorWebassembly.Pages.skiasharp.Tools
         private DrawManager _drawManager;
         private CommandManager _commandManager;
         private CursorManager _cursorManager;
+        private SelectedManager _selectedManager;
+
         public ToolManager(
             ViewportManager viewportManager, 
             DrawManager drawManager, 
             CommandManager commandManager,
-            CursorManager cursorManager)
+            CursorManager cursorManager,
+            SelectedManager selectedManager
+            )
         {
             _viewportManager = viewportManager;
             _drawManager = drawManager;
             _commandManager = commandManager;
             _cursorManager = cursorManager;
+            _selectedManager = selectedManager;
         }
 
         public void SetTool(ITool tool)
         {
-            CurrentTool = tool;
+            _currentTool = tool;
         }
 
 
-        public async void MouseDown(MouseEventArgs e)
+        public async Task MouseDown(MouseEventArgs e)
         {
             var screenPoint = new SKPoint((float)e.OffsetX, (float)e.OffsetY);
 
             var worldPoint = _viewportManager.ScreenToWorld(screenPoint);
 
-            
             //button middle
-            if (e.Button == 1 && CurrentTool == null)
+            if (e.Button == 1)
             {
-                this._panTool = new PanTool(_drawManager, this, _viewportManager,_cursorManager);
-                this._panTool.MouseDown(worldPoint);
+                _panTool = new PanTool(_drawManager, this, _viewportManager,_cursorManager);
+                _panTool.MouseDown(worldPoint);
+            }
+            //not middle button
+            else if (_currentTool != null)
+            {
+                _currentTool.MouseDown(worldPoint);
             }
 
-            if (this.CurrentTool != null)
-            {
-                CurrentTool.MouseDown(worldPoint);
-            }
-            else
-            {
-                if (_drawManager.HitTest(worldPoint) != null)
-                {
-                    this.SetTool(new MoveTool(_drawManager, this, _commandManager));
-                    CurrentTool.MouseDown(worldPoint);
-                }
-            }
 
         }
 
-        public async void MouseMove(MouseEventArgs e)
+        public async Task MouseMove(MouseEventArgs e)
         {
             var screenPoint = new SKPoint((float)e.OffsetX, (float)e.OffsetY);
 
@@ -74,37 +71,40 @@ namespace BlazorWebassembly.Pages.skiasharp.Tools
             
             _panTool?.MouseMove(worldPoint);
 
-            if (this.CurrentTool != null)
+            if (this._currentTool != null)
             {
-                CurrentTool.MouseMove(worldPoint);
-            }
-            else
-            {
-                if (_drawManager.HitTest(worldPoint) != null)
-                {
-                    await _cursorManager.SetMove();
-                }
-                else
-                {
-                    await _cursorManager.SetDefault();
-                }
-
+                _currentTool.MouseMove(worldPoint);
             }
         }
 
-        public void MouseUp(MouseEventArgs e)
+        public Task MouseUp(MouseEventArgs e)
         {
             var screenPoint = new SKPoint((float)e.OffsetX, (float)e.OffsetY);
 
             var worldPoint = _viewportManager.ScreenToWorld(screenPoint);
 
-            _panTool?.MouseUp(worldPoint);
-            _panTool = null;
-
-            if (CurrentTool != null)
+            //button middle
+            if (e.Button == 1) 
             {
-                CurrentTool.MouseUp(worldPoint);
+                _panTool?.MouseUp(worldPoint);
+                _panTool = null;
             }
+            //not middle button
+            else
+            {
+                if (_currentTool != null)
+                {
+                    _currentTool.MouseUp(worldPoint);
+                }
+
+                //默认工具 选择工具
+                if (_currentTool == null)
+                {
+                    SetTool(new SelectTool(_drawManager, _selectedManager));
+                }
+            }
+
+            return Task.CompletedTask;
         }
 
     }
