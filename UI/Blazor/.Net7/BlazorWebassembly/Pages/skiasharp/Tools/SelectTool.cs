@@ -8,6 +8,10 @@ namespace BlazorWebassembly.Pages.skiasharp.Tools
     {
         private DrawManager _drawManager;
         private SelectedManager _selectedManager;
+
+        private SKPoint? _start;
+
+
         public SelectTool(
             DrawManager drawManager, 
             SelectedManager selectedManager)
@@ -21,14 +25,18 @@ namespace BlazorWebassembly.Pages.skiasharp.Tools
         /// 1. 点击空白处，清空选中
         /// 2. 点击元素，选中元素
         /// 3. 点击shift，多选
+        /// 4. 点击拖动，拉出选择框
         /// </summary>
         /// <param name="worldPoint"></param>
         public void MouseDown(SKPoint worldPoint)
         {
             var item = _drawManager.HitTest(worldPoint);
+
             if (item == null)
             {
                 _selectedManager.Clear();
+
+                _start = worldPoint;
             }
             else
             {
@@ -39,14 +47,35 @@ namespace BlazorWebassembly.Pages.skiasharp.Tools
 
         public void MouseMove(SKPoint worldPoint)
         {
-            var item = _drawManager.HitTest(worldPoint);
 
-            _selectedManager.SetHover(item);
+            if (_start != null) 
+            {
+                var end = worldPoint;
+
+                var selectBox = new SelectBoxElement(_start.Value, end);
+
+                _drawManager.PreviewElement = selectBox;
+
+                _drawManager.Invalidate(); // 触发重绘
+            }
+            else
+            {
+
+                var item = _drawManager.HitTest(worldPoint);
+
+                _selectedManager.SetHover(item);
+            }
+
         }
 
         public void MouseUp(SKPoint worldPoint)
         {
-
+            if(_start != null)
+            {
+                _start = null;
+                _drawManager.PreviewElement = null;
+                _drawManager.Invalidate();
+            }
         }
     }
 }

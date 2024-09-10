@@ -31,6 +31,8 @@ namespace BlazorWebassembly.Pages.skiasharp.Tools
             _commandManager = commandManager;
             _cursorManager = cursorManager;
             _selectedManager = selectedManager;
+
+            _currentTool = new SelectTool(_drawManager, _selectedManager);
         }
 
         public void SetTool(ITool tool)

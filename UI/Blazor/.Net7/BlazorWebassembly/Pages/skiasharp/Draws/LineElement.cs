@@ -39,6 +39,7 @@ namespace BlazorWebassembly.Pages.skiasharp.Draws
             {
                 Color = SKColors.LightBlue,
                 StrokeWidth = Paint.StrokeWidth + 4,
+                StrokeCap =  SKStrokeCap.Round,
                 IsAntialias = true,
                 Style = SKPaintStyle.Stroke
             })

@@ -23,6 +23,7 @@ namespace BlazorWebassembly.Pages.skiasharp
         public SelectedManager()
         {
             _selectedElements = new List<DrawElement>();
+
         }
 
         public void Set(DrawElement element)
