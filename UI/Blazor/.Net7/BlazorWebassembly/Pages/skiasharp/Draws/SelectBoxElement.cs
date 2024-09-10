@@ -57,7 +57,19 @@ namespace BlazorWebassembly.Pages.skiasharp.Draws
 
         public override bool IsHit(SKPoint point)
         {
-            return false;
+            var rect = SKRect.Create(
+                Math.Min(Start.X, End.X),
+                Math.Min(Start.Y, End.Y),
+                Math.Abs(End.X - Start.X),
+                Math.Abs(End.Y - Start.Y)
+            );
+
+            return rect.Contains(point);
+        }
+
+        public override bool IsContainedIn(SKRect rect)
+        {
+            return rect.Contains(Start) && rect.Contains(End);
         }
 
         public override void Move(float dx, float dy)
@@ -65,5 +77,7 @@ namespace BlazorWebassembly.Pages.skiasharp.Draws
             Start = new SKPoint(Start.X + dx, Start.Y + dy);
             End = new SKPoint(End.X + dx, End.Y + dy);
         }
+
+
     }
 }

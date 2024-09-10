@@ -40,7 +40,7 @@ namespace BlazorWebassembly.Pages.skiasharp.Tools
             }
             else
             {
-                _selectedManager.Set(item);
+                _selectedManager.Set(new List<DrawElement> { item});
             }
             
         }
@@ -72,6 +72,31 @@ namespace BlazorWebassembly.Pages.skiasharp.Tools
         {
             if(_start != null)
             {
+
+                SKPoint end = worldPoint;
+
+                // 创建选择框的矩形  
+                SKRect selectionRect = SKRect.Create(
+                    Math.Min(_start.Value.X, end.X),
+                    Math.Min(_start.Value.Y, end.Y),
+                    Math.Abs(end.X - _start.Value.X),
+                    Math.Abs(end.Y - _start.Value.Y)
+                );
+
+                // 获取所有被选择框包含的元素  
+                List<DrawElement> selectedElements = _drawManager.GetElementsInRect(selectionRect);
+
+                // 更新选中管理器  
+                if (selectedElements.Count > 0)
+                {
+                    _selectedManager.Set(selectedElements);
+                }
+                else
+                {
+                    _selectedManager.Clear();
+                }
+
+                // 清理临时变量和预览元素  
                 _start = null;
                 _drawManager.PreviewElement = null;
                 _drawManager.Invalidate();

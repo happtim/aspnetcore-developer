@@ -7,6 +7,7 @@ namespace BlazorWebassembly.Pages.skiasharp.Draws
         public abstract void Draw(SKCanvas canvas);
         public abstract void DrawSelected(SKCanvas canvas);
         public abstract bool IsHit(SKPoint point);
+        public abstract bool IsContainedIn(SKRect rect);
         public abstract void Move(float dx, float dy);
     }
 }

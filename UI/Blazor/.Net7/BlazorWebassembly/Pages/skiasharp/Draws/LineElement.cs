@@ -60,6 +60,11 @@ namespace BlazorWebassembly.Pages.skiasharp.Draws
             return d <= threshold;
         }
 
+        public override bool IsContainedIn(SKRect rect)
+        {
+            return rect.Contains(Start) && rect.Contains(End);
+        }
+
         private float PointToLineDistance(SKPoint point, SKPoint lineStart, SKPoint lineEnd)
         {
             float x = point.X;
@@ -100,6 +105,7 @@ namespace BlazorWebassembly.Pages.skiasharp.Draws
             float dy = y - yy;
             return (float)Math.Sqrt(dx * dx + dy * dy);
         }
+
 
     }
 }

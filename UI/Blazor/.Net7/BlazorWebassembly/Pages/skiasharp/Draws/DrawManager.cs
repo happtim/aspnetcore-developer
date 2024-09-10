@@ -66,6 +66,13 @@ namespace BlazorWebassembly.Pages.skiasharp.Draws
             return null;
         }
 
+
+        public List<DrawElement> GetElementsInRect(SKRect rect)
+        {
+            return _elements.Where(element => element.IsContainedIn(rect)).ToList();
+        }
+
+
         public void Invalidate()
         {
             _skiaView.Invalidate();

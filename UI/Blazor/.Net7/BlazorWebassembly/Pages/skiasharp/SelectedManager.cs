@@ -26,12 +26,20 @@ namespace BlazorWebassembly.Pages.skiasharp
 
         }
 
-        public void Set(DrawElement element)
+        public void Set(List<DrawElement> elements)
         {
-            if (!_selectedElements.Contains(element)) 
+            bool changed = false;
+            foreach (var element in elements)
             {
-                _selectedElements.Add(element);
+                if (!_selectedElements.Contains(element))
+                {
+                    _selectedElements.Add(element);
+                    changed = true;
+                }
+            }
 
+            if (changed)
+            {
                 // 触发事件
                 OnSelectionChanged();
             }
