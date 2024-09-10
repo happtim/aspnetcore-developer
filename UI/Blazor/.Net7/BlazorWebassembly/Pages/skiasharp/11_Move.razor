@@ -56,12 +56,26 @@
 
             _viewportManager = new ViewportManager(e.Info.Size, dpi: (float)skiaView.Dpi);
 
-            _drawManager = new DrawManager(skiaView, _selectedManager);
-
             _selectedManager = new SelectedManager();
+
+            _drawManager = new DrawManager(skiaView, _selectedManager);
 
             _selectedManager.SelectionChanged += (s, e) =>
             {
+                skiaView.Invalidate();
+            };
+
+            _selectedManager.HoverChanged += async (s, e) =>
+            {
+                if (e != null)
+                {
+                    await _cursorManager.SetMove();
+                }
+                else
+                {
+                    await _cursorManager.SetDefault();
+                }
+
                 skiaView.Invalidate();
             };
 
@@ -119,10 +133,7 @@
 
     async Task DrawLine(MouseEventArgs e)
     {
-        await JSRuntime.InvokeVoidAsync("changeCursor", "crosshair");
-
-        _toolManager.SetTool(new LineTool(_drawManager,_toolManager,_commandManager));
-       
+        _toolManager.SetTool(new LineTool(_drawManager,_toolManager,_commandManager,_cursorManager));
     }
 
     public void Undo()

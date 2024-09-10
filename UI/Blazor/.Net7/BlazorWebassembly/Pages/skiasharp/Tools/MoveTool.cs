@@ -9,32 +9,35 @@ namespace BlazorWebassembly.Pages.skiasharp.Tools
         private DrawManager _drawManager;
         private ToolManager _toolManager;
         private CommandManager _commandManager;
-        private DrawElement _hitElement;
+        private List<DrawElement> _movedElements;
         //位置差值
         private SKPoint _diff;
         private SKPoint _start;
 
-        public MoveTool(DrawManager drawManager, ToolManager toolManager, CommandManager commandManager)
+        public MoveTool(List<DrawElement> movedElements, DrawManager drawManager, ToolManager toolManager, CommandManager commandManager)
         {
             _drawManager = drawManager;
             _toolManager = toolManager;
             _commandManager = commandManager;
+            _movedElements = movedElements;
         }
 
         public void MouseDown(SKPoint worldPoint)
         {
-            _hitElement = _drawManager.HitTest(worldPoint);
             _start = _diff = worldPoint;
         }
 
         public void MouseMove(SKPoint worldPoint)
         {
-            if (_hitElement == null) return;
+            if (_movedElements == null || _movedElements.Count == 0) return;
 
             var dx = worldPoint.X - _diff.X;
             var dy = worldPoint.Y - _diff.Y;
 
-            _hitElement.Move(dx, dy);
+            foreach (var movedElement in _movedElements)
+            {
+                movedElement.Move(dx, dy);
+            }
 
              _diff = worldPoint;
 
@@ -43,16 +46,26 @@ namespace BlazorWebassembly.Pages.skiasharp.Tools
 
         public void MouseUp(SKPoint worldPoint)
         {
-            if (_hitElement != null)
+            if (_movedElements != null && _movedElements.Count > 0)
             {
                 var dx = worldPoint.X - _start.X;
                 var dy = worldPoint.Y - _start.Y;
 
-                _hitElement.Move(-dx, -dy);
+                foreach (var movedElement in _movedElements)
+                {
+                    movedElement.Move(-dx, -dy);
+                }
 
-                _commandManager.AddCommand(new MoveElementCommand(_hitElement, dx, dy));
+                var compositeCommand = new CompositeCommand();
 
-                _hitElement = null;
+                foreach (var movedElement in _movedElements)
+                {
+                    compositeCommand.Add(new MoveElementCommand(movedElement, dx, dy));
+                }
+
+                _commandManager.AddCommand(compositeCommand);
+
+                _movedElements.Clear();
 
                 _toolManager.SetTool(null);
             }

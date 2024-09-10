@@ -12,12 +12,18 @@ namespace BlazorWebassembly.Pages.skiasharp.Tools
         private DrawManager _drawManager;
         private ToolManager _toolManager;
         private CommandManager _commandManager;
+        private CursorManager _cursorManager;
 
-        public LineTool(DrawManager drawManager,ToolManager toolManager, CommandManager commandManager)
+        public LineTool(
+            DrawManager drawManager,
+            ToolManager toolManager, 
+            CommandManager commandManager,
+            CursorManager cursorManager)
         {
             _drawManager = drawManager;
             _toolManager = toolManager;
             _commandManager = commandManager;
+            _cursorManager = cursorManager;
         }
 
         public void MouseDown(SKPoint worldPoint)
@@ -35,6 +41,8 @@ namespace BlazorWebassembly.Pages.skiasharp.Tools
                 _toolManager.SetTool(null);
 
                 _drawManager.PreviewElement = null;
+
+                _cursorManager.SetDefault();
             }
             else
             {
@@ -43,6 +51,8 @@ namespace BlazorWebassembly.Pages.skiasharp.Tools
                 _start = worldPoint;
 
                 _isDrawing = true;
+
+                _cursorManager.SetCrosshair();
 
             }
 

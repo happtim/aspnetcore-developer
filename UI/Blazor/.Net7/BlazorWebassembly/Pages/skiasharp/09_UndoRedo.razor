@@ -113,7 +113,7 @@
 
     void DrawLine(MouseEventArgs e)
     {
-        _toolManager.SetTool(new LineTool(_drawManager,_toolManager,_commandManager));
+        _toolManager.SetTool(new LineTool(_drawManager,_toolManager,_commandManager,_cursorManager));
     }
 
     public void Undo()
