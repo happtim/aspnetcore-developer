@@ -11,6 +11,8 @@ namespace BlazorWebassembly.Pages.skiasharp.Tools
         private ToolManager _toolManager;
         private CommandManager _commandManager;
 
+        private ITool _innerTool;
+
         private SKPoint? _start;
 
 
@@ -38,6 +40,7 @@ namespace BlazorWebassembly.Pages.skiasharp.Tools
         {
             var item = _drawManager.HitTest(worldPoint);
 
+            //点击空白处，清空选中
             if (item == null)
             {
                 _selectedManager.Clear();
@@ -47,14 +50,18 @@ namespace BlazorWebassembly.Pages.skiasharp.Tools
             else
             {
                 //在选中元素上点击
-                if (!_selectedManager.Get().Contains(item)) 
+
+                if (!_selectedManager.Contains(item)) 
                 {
-                    _selectedManager.Set(new List<DrawElement> { item });
+                    _selectedManager.Clear();
                 }
 
-                var moveTool = new MoveTool(_selectedManager.Get(), _drawManager, _toolManager, _commandManager);
+                _selectedManager.Add(item);
+
+
+                var moveTool = new MoveTool(_selectedManager.GetSelected(), _drawManager, _toolManager, _commandManager);
                 moveTool.MouseDown(worldPoint);
-                _toolManager.SetTool(moveTool);
+                _innerTool = moveTool;
 
             }
             
@@ -62,7 +69,7 @@ namespace BlazorWebassembly.Pages.skiasharp.Tools
 
         public void MouseMove(SKPoint worldPoint)
         {
-
+            //矩形选择框
             if (_start != null)
             {
                 var end = worldPoint;
@@ -75,19 +82,29 @@ namespace BlazorWebassembly.Pages.skiasharp.Tools
             }
             else
             {
+                //点击元素拖动
+                if (_innerTool != null)
+                {
+                    _innerTool.MouseMove(worldPoint);
+                }
+                //鼠标移动到元素上
+                else
+                {
 
-                var item = _drawManager.HitTest(worldPoint);
+                    var item = _drawManager.HitTest(worldPoint);
 
-                _selectedManager.SetHover(item);
+                    _selectedManager.SetHover(item);
+                }
+
             }
 
         }
 
         public void MouseUp(SKPoint worldPoint)
         {
+            //矩形选择框
             if(_start != null)
             {
-
                 SKPoint end = worldPoint;
 
                 // 创建选择框的矩形  
@@ -104,7 +121,7 @@ namespace BlazorWebassembly.Pages.skiasharp.Tools
                 // 更新选中管理器  
                 if (selectedElements.Count > 0)
                 {
-                    _selectedManager.Set(selectedElements);
+                    _selectedManager.AddRange(selectedElements);
                 }
                 else
                 {
@@ -115,6 +132,13 @@ namespace BlazorWebassembly.Pages.skiasharp.Tools
                 _start = null;
                 _drawManager.PreviewElement = null;
                 _drawManager.Invalidate();
+            }
+            else
+            {
+                if ( _innerTool != null)
+                {
+                    _innerTool.MouseUp(worldPoint);
+                }
             }
         }
     }

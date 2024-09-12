@@ -32,7 +32,7 @@ namespace BlazorWebassembly.Pages.skiasharp.Draws
             canvas.DrawLine(Start, End, Paint);
         }
 
-        public override void DrawSelected(SKCanvas canvas)
+        public override void DrawHighlight(SKCanvas canvas)
         {
             // 1. 绘制粗一些的线条作为背景  
             using (var paint = new SKPaint
@@ -50,6 +50,12 @@ namespace BlazorWebassembly.Pages.skiasharp.Draws
             // 2. 绘制原始线条  
             canvas.DrawLine(Start, End, Paint);
 
+        }
+
+        public override void DrawEditMode(SKCanvas canvas)
+        {
+            DrawHighlight(canvas);
+            DrawControlPoints(canvas);
         }
 
         public override bool IsHit(SKPoint point)
@@ -106,6 +112,35 @@ namespace BlazorWebassembly.Pages.skiasharp.Draws
             return (float)Math.Sqrt(dx * dx + dy * dy);
         }
 
+        public override void DrawControlPoints(SKCanvas canvas)
+        {
+            using (var paint = new SKPaint { Color = SKColors.Red, Style = SKPaintStyle.Fill })
+            {
+                foreach (var point in GetControlPoints())
+                {
+                    canvas.DrawCircle(point.Position, 5, paint);
+                }
+            }
+        }
+
+        public override int GetControlPointIndex(SKPoint point)
+        {
+            if (SKPoint.Distance(point,Start) < 5) return 0;
+            if (SKPoint.Distance(point, End) < 5) return 1;
+            return -1;
+        }
+
+        public IEnumerable<ControlPoint> GetControlPoints()
+        {
+            yield return new ControlPoint { Position = Start, Type = ControlPointType.Normal };
+            yield return new ControlPoint { Position = End, Type = ControlPointType.Normal };
+        }
+
+        public override void UpdateControlPoint(int index, SKPoint newPosition)
+        {
+            if (index == 0) Start = newPosition;
+            else if (index == 1) End = newPosition;
+        }
 
     }
 }

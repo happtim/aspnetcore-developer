@@ -36,13 +36,13 @@ namespace BlazorWebassembly.Pages.skiasharp.Draws
             foreach (var element in _elements)
             {
                 //绘制选中效果
-                if (_selectedManager.Get().Contains(element)) 
+                if (_selectedManager.Contains(element)) 
                 {
-                    element.DrawSelected(canvas);
+                    element.DrawHighlight(canvas);
                 }
                 else if (_selectedManager.HoverElement == element)
                 {
-                    element.DrawSelected(canvas);
+                    element.DrawHighlight(canvas);
                 }
                 else
                 {

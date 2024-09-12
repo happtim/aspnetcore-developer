@@ -26,7 +26,20 @@ namespace BlazorWebassembly.Pages.skiasharp
 
         }
 
-        public void Set(List<DrawElement> elements)
+        public void Add(DrawElement element)
+        {
+            if (!_selectedElements.Contains(element))
+            {
+                _selectedElements.Add(element);
+
+                Console.WriteLine("SelectedManager.Add: " + element.GetType().Name);
+
+                // 触发事件
+                OnSelectionChanged();
+            }
+        }
+
+        public void AddRange(List<DrawElement> elements)
         {
             bool changed = false;
             foreach (var element in elements)
@@ -34,6 +47,8 @@ namespace BlazorWebassembly.Pages.skiasharp
                 if (!_selectedElements.Contains(element))
                 {
                     _selectedElements.Add(element);
+
+                    Console.WriteLine("SelectedManager.AddRange: " + element.GetType().Name);
                     changed = true;
                 }
             }
@@ -45,16 +60,29 @@ namespace BlazorWebassembly.Pages.skiasharp
             }
         }
 
-        public List<DrawElement> Get()
+        public bool Contains(DrawElement element)
+        {
+            return _selectedElements.Contains(element);
+        }
+
+        public List<DrawElement> GetSelected()
         {
             return _selectedElements;
         }
+
+        public bool IsEditMode(DrawElement drawElement)
+        {
+            return _selectedElements.Count == 1 && _selectedElements.Contains(drawElement);
+        }
+
 
         public void Clear()
         {
             if (_selectedElements.Count > 0) 
             {
                 _selectedElements.Clear();
+
+                Console.WriteLine("SelectedManager.Clear");
 
                 // 触发事件
                 OnSelectionChanged();

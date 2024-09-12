@@ -50,7 +50,7 @@ namespace BlazorWebassembly.Pages.skiasharp.Draws
             canvas.DrawRect(rect, StrokePaint);
         }
 
-        public override void DrawSelected(SKCanvas canvas)
+        public override void DrawHighlight(SKCanvas canvas)
         {
 
         }
@@ -78,6 +78,24 @@ namespace BlazorWebassembly.Pages.skiasharp.Draws
             End = new SKPoint(End.X + dx, End.Y + dy);
         }
 
+        public override void DrawControlPoints(SKCanvas canvas)
+        {
+           
+        }
 
+        public override int GetControlPointIndex(SKPoint point)
+        {
+            return -1;
+        }
+
+        public override void UpdateControlPoint(int index, SKPoint newPosition)
+        {
+            
+        }
+
+        public override void DrawEditMode(SKCanvas canvas)
+        {
+           
+        }
     }
 }
