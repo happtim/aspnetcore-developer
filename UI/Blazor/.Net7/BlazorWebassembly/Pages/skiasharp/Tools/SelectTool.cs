@@ -12,7 +12,6 @@ namespace BlazorWebassembly.Pages.skiasharp.Tools
         private CommandManager _commandManager;
 
         private ITool _innerTool;
-
         private SKPoint? _start;
 
 
@@ -39,107 +38,60 @@ namespace BlazorWebassembly.Pages.skiasharp.Tools
         public void MouseDown(SKPoint worldPoint)
         {
             var item = _drawManager.HitTest(worldPoint);
+            _start = worldPoint;
 
-            //点击空白处，清空选中
+            //点击空白处，清空选中, 设置SelectBoxTool
             if (item == null)
             {
                 _selectedManager.Clear();
 
-                _start = worldPoint;
+                _innerTool = new SelectBoxTool(_drawManager,_selectedManager);
             }
             else
             {
-                //在选中元素上点击
+                _innerTool = null;
 
+                //在选中元素上点击
                 if (!_selectedManager.Contains(item)) 
                 {
                     _selectedManager.Clear();
                 }
 
                 _selectedManager.Add(item);
-
-
-                var moveTool = new MoveTool(_selectedManager.GetSelected(), _drawManager, _toolManager, _commandManager);
-                moveTool.MouseDown(worldPoint);
-                _innerTool = moveTool;
-
             }
+
+            _innerTool?.MouseDown(worldPoint);
             
+        }
+
+        public void MouseDrag(SKPoint worldPoint)
+        {
+ 
+            if (_innerTool == null && _start != null) 
+            {
+                var moveTool = new MoveTool(_selectedManager.GetSelected(), _drawManager, _toolManager, _commandManager);
+                moveTool.MouseDown(_start.Value);
+                _innerTool = moveTool;
+            }
+
+            _innerTool?.MouseDrag(worldPoint);
+
+            Console.WriteLine("Current Tool:" + _innerTool?.GetType().Name);
+
         }
 
         public void MouseMove(SKPoint worldPoint)
         {
-            //矩形选择框
-            if (_start != null)
-            {
-                var end = worldPoint;
+            //鼠标移动到元素上高亮显示
+            var item = _drawManager.HitTest(worldPoint);
 
-                var selectBox = new SelectBoxElement(_start.Value, end);
-
-                _drawManager.PreviewElement = selectBox;
-
-                _drawManager.Invalidate(); // 触发重绘
-            }
-            else
-            {
-                //点击元素拖动
-                if (_innerTool != null)
-                {
-                    _innerTool.MouseMove(worldPoint);
-                }
-                //鼠标移动到元素上
-                else
-                {
-
-                    var item = _drawManager.HitTest(worldPoint);
-
-                    _selectedManager.SetHover(item);
-                }
-
-            }
+            _selectedManager.SetHover(item);
 
         }
 
         public void MouseUp(SKPoint worldPoint)
         {
-            //矩形选择框
-            if(_start != null)
-            {
-                SKPoint end = worldPoint;
-
-                // 创建选择框的矩形  
-                SKRect selectionRect = SKRect.Create(
-                    Math.Min(_start.Value.X, end.X),
-                    Math.Min(_start.Value.Y, end.Y),
-                    Math.Abs(end.X - _start.Value.X),
-                    Math.Abs(end.Y - _start.Value.Y)
-                );
-
-                // 获取所有被选择框包含的元素  
-                List<DrawElement> selectedElements = _drawManager.GetElementsInRect(selectionRect);
-
-                // 更新选中管理器  
-                if (selectedElements.Count > 0)
-                {
-                    _selectedManager.AddRange(selectedElements);
-                }
-                else
-                {
-                    _selectedManager.Clear();
-                }
-
-                // 清理临时变量和预览元素  
-                _start = null;
-                _drawManager.PreviewElement = null;
-                _drawManager.Invalidate();
-            }
-            else
-            {
-                if ( _innerTool != null)
-                {
-                    _innerTool.MouseUp(worldPoint);
-                }
-            }
+            _innerTool?.MouseUp(worldPoint);
         }
     }
 }

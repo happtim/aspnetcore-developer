@@ -36,6 +36,11 @@ namespace BlazorWebassembly.Pages.skiasharp.Tools
 
         }
 
+        public void MouseDrag(SKPoint worldPoint)
+        {
+
+        }
+
         public void MouseMove(SKPoint worldPoint)
         {
             if (_touchLocation == null) return;

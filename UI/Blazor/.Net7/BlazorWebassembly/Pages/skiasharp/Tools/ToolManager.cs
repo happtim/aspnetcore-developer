@@ -12,6 +12,13 @@ namespace BlazorWebassembly.Pages.skiasharp.Tools
 
         public ITool? _panTool = null;
 
+        //鼠标拖动事件
+        private bool _isMouseDown = false;
+        private bool _isDragging = false;
+        private double _startX;
+        private double _startY;
+        private const int DragThreshold = 5; // 像素阈值 
+
         private ViewportManager _viewportManager;
         private DrawManager _drawManager;
         private CommandManager _commandManager;
@@ -47,6 +54,10 @@ namespace BlazorWebassembly.Pages.skiasharp.Tools
 
             var worldPoint = _viewportManager.ScreenToWorld(screenPoint);
 
+            _isMouseDown = true;
+            _startX = e.ClientX;
+            _startY = e.ClientY;
+
             //button middle
             if (e.Button == 1)
             {
@@ -75,7 +86,23 @@ namespace BlazorWebassembly.Pages.skiasharp.Tools
 
             if (this._currentTool != null)
             {
-                _currentTool.MouseMove(worldPoint);
+                //判断按下，与当前坐标的阈值，如果超过阈值，触发拖动事件
+                if (_isMouseDown)
+                {
+                    var deltaX = e.ClientX - _startX;
+                    var deltaY = e.ClientY - _startY;
+                    var distance = Math.Sqrt(deltaX * deltaX + deltaY * deltaY);
+
+                    if (distance >= DragThreshold || _isDragging)
+                    {
+                        _currentTool.MouseDrag(worldPoint);
+                        _isDragging = true;
+                    }
+                }
+                else
+                {
+                    _currentTool.MouseMove(worldPoint);
+                }
             }
         }
 
@@ -84,6 +111,9 @@ namespace BlazorWebassembly.Pages.skiasharp.Tools
             var screenPoint = new SKPoint((float)e.OffsetX, (float)e.OffsetY);
 
             var worldPoint = _viewportManager.ScreenToWorld(screenPoint);
+
+            _isMouseDown = false;
+            _isDragging = false;
 
             //button middle
             if (e.Button == 1) 

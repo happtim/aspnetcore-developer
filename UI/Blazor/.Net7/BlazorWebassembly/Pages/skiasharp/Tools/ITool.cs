@@ -6,6 +6,7 @@ namespace BlazorWebassembly.Pages.skiasharp.Tools
     {
         void MouseDown(SKPoint worldPoint);
         void MouseMove(SKPoint worldPoint);
+        void MouseDrag(SKPoint worldPoint);
         void MouseUp(SKPoint worldPoint);
     }
 }

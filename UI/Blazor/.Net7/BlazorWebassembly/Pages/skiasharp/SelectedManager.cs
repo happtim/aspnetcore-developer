@@ -24,6 +24,8 @@ namespace BlazorWebassembly.Pages.skiasharp
         {
             _selectedElements = new List<DrawElement>();
 
+            Console.WriteLine("Construct SelectedManager");
+
         }
 
         public void Add(DrawElement element)
@@ -78,11 +80,13 @@ namespace BlazorWebassembly.Pages.skiasharp
 
         public void Clear()
         {
+            Console.WriteLine("SelectedManager.Clear:" + _selectedElements.Count);
+
             if (_selectedElements.Count > 0) 
             {
-                _selectedElements.Clear();
-
                 Console.WriteLine("SelectedManager.Clear");
+
+                _selectedElements.Clear();
 
                 // 触发事件
                 OnSelectionChanged();

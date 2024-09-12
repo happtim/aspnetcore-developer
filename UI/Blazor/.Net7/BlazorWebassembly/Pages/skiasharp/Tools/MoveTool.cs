@@ -27,7 +27,7 @@ namespace BlazorWebassembly.Pages.skiasharp.Tools
             _start = _diff = worldPoint;
         }
 
-        public void MouseMove(SKPoint worldPoint)
+        public void MouseDrag(SKPoint worldPoint)
         {
             if (_movedElements == null || _movedElements.Count == 0) return;
 
@@ -39,9 +39,14 @@ namespace BlazorWebassembly.Pages.skiasharp.Tools
                 movedElement.Move(dx, dy);
             }
 
-             _diff = worldPoint;
+            _diff = worldPoint;
 
             _drawManager.Invalidate(); // 触发重绘
+        }
+
+        public void MouseMove(SKPoint worldPoint)
+        {
+
         }
 
         public void MouseUp(SKPoint worldPoint)
@@ -67,7 +72,7 @@ namespace BlazorWebassembly.Pages.skiasharp.Tools
 
                 _movedElements.Clear();
 
-                _toolManager.SetTool(null);
+                //_toolManager.SetTool(null);
             }
         }
     }
