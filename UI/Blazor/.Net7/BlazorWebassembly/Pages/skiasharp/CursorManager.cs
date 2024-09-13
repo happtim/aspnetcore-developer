@@ -34,10 +34,9 @@ namespace BlazorWebassembly.Pages.skiasharp
             await SetCursor("crosshair");
         }
 
-        public Task SetHand()
+        public async Task SetPointer()
         {
-            //await SetCursor("pointer");
-            return Task.CompletedTask;
+            await SetCursor("pointer");
         }
 
 

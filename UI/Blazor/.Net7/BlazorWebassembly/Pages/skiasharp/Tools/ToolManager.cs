@@ -39,7 +39,7 @@ namespace BlazorWebassembly.Pages.skiasharp.Tools
             _cursorManager = cursorManager;
             _selectedManager = selectedManager;
 
-            _currentTool = new SelectTool(_drawManager, _selectedManager,this,_commandManager);
+            _currentTool = new SelectTool(_drawManager, _selectedManager,this,_commandManager,_cursorManager);
         }
 
         public void SetTool(ITool tool)
@@ -132,7 +132,7 @@ namespace BlazorWebassembly.Pages.skiasharp.Tools
                 //默认工具 选择工具
                 if (_currentTool == null)
                 {
-                    SetTool(new SelectTool(_drawManager, _selectedManager, this,_commandManager));
+                    SetTool(new SelectTool(_drawManager, _selectedManager, this,_commandManager,_cursorManager));
                 }
             }
 

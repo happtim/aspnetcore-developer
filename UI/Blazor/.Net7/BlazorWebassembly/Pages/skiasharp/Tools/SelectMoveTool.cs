@@ -4,22 +4,22 @@ using SkiaSharp;
 
 namespace BlazorWebassembly.Pages.skiasharp.Tools
 {
-    public class MoveTool : ITool
+    public class SelectMoveTool : ITool
     {
         private DrawManager _drawManager;
-        private ToolManager _toolManager;
         private CommandManager _commandManager;
-        private List<DrawElement> _movedElements;
+        private SelectedManager _selectedManager;
+        //private List<DrawElement> _movedElements;
         //位置差值
         private SKPoint _diff;
         private SKPoint _start;
 
-        public MoveTool(List<DrawElement> movedElements, DrawManager drawManager, ToolManager toolManager, CommandManager commandManager)
+        public SelectMoveTool(SelectedManager selectedManager, DrawManager drawManager, CommandManager commandManager)
         {
             _drawManager = drawManager;
-            _toolManager = toolManager;
+            _selectedManager = selectedManager;
             _commandManager = commandManager;
-            _movedElements = movedElements;
+            //_movedElements = movedElements;
         }
 
         public void MouseDown(SKPoint worldPoint)
@@ -29,12 +29,12 @@ namespace BlazorWebassembly.Pages.skiasharp.Tools
 
         public void MouseDrag(SKPoint worldPoint)
         {
-            if (_movedElements == null || _movedElements.Count == 0) return;
+            if (_selectedManager.Count() == 0) return;
 
             var dx = worldPoint.X - _diff.X;
             var dy = worldPoint.Y - _diff.Y;
 
-            foreach (var movedElement in _movedElements)
+            foreach (var movedElement in _selectedManager.GetSelectedElements())
             {
                 movedElement.Move(dx, dy);
             }
@@ -51,26 +51,26 @@ namespace BlazorWebassembly.Pages.skiasharp.Tools
 
         public void MouseUp(SKPoint worldPoint)
         {
-            if (_movedElements != null && _movedElements.Count > 0)
+            if (_selectedManager.Count() > 0)
             {
                 var dx = worldPoint.X - _start.X;
                 var dy = worldPoint.Y - _start.Y;
 
-                foreach (var movedElement in _movedElements)
+                foreach (var movedElement in _selectedManager.GetSelectedElements())
                 {
                     movedElement.Move(-dx, -dy);
                 }
 
                 var compositeCommand = new CompositeCommand();
 
-                foreach (var movedElement in _movedElements)
+                foreach (var movedElement in _selectedManager.GetSelectedElements())
                 {
                     compositeCommand.Add(new MoveElementCommand(movedElement, dx, dy));
                 }
 
                 _commandManager.AddCommand(compositeCommand);
 
-                _movedElements.Clear();
+                //_movedElements.Clear();
 
                 //_toolManager.SetTool(null);
             }

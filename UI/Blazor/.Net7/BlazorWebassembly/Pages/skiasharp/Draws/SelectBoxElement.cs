@@ -78,7 +78,7 @@ namespace BlazorWebassembly.Pages.skiasharp.Draws
             End = new SKPoint(End.X + dx, End.Y + dy);
         }
 
-        public override void DrawControlPoints(SKCanvas canvas)
+        public override void DrawControlPoints(SKCanvas canvas, int hoverControlPointIndex )
         {
            
         }
@@ -88,14 +88,11 @@ namespace BlazorWebassembly.Pages.skiasharp.Draws
             return -1;
         }
 
+
         public override void UpdateControlPoint(int index, SKPoint newPosition)
         {
             
         }
 
-        public override void DrawEditMode(SKCanvas canvas)
-        {
-           
-        }
     }
 }

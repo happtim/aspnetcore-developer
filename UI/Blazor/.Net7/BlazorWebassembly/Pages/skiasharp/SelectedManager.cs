@@ -1,4 +1,5 @@
 ﻿using BlazorWebassembly.Pages.skiasharp.Draws;
+using System.Net.NetworkInformation;
 
 namespace BlazorWebassembly.Pages.skiasharp
 {
@@ -16,15 +17,22 @@ namespace BlazorWebassembly.Pages.skiasharp
         //定义鼠标悬停变更事件
         public event HoverChangedEventHandler HoverChanged;
 
-        public DrawElement HoverElement { get; private set; }
+        //定义控制点悬停变更委托类型
+        public delegate void HoverControlPointIndexChangedEventHandler(object sender, int index);
+
+        //定义控制点悬停变更事件
+
+        public event HoverControlPointIndexChangedEventHandler HoverControlPointIndexChanged;
+
+        private DrawElement? _hoverElement;
+
+        private int _hoverControlPointIndex;
 
         private List<DrawElement> _selectedElements;
 
         public SelectedManager()
         {
             _selectedElements = new List<DrawElement>();
-
-            Console.WriteLine("Construct SelectedManager");
 
         }
 
@@ -33,8 +41,6 @@ namespace BlazorWebassembly.Pages.skiasharp
             if (!_selectedElements.Contains(element))
             {
                 _selectedElements.Add(element);
-
-                Console.WriteLine("SelectedManager.Add: " + element.GetType().Name);
 
                 // 触发事件
                 OnSelectionChanged();
@@ -50,7 +56,6 @@ namespace BlazorWebassembly.Pages.skiasharp
                 {
                     _selectedElements.Add(element);
 
-                    Console.WriteLine("SelectedManager.AddRange: " + element.GetType().Name);
                     changed = true;
                 }
             }
@@ -67,25 +72,21 @@ namespace BlazorWebassembly.Pages.skiasharp
             return _selectedElements.Contains(element);
         }
 
-        public List<DrawElement> GetSelected()
+        public IEnumerable<DrawElement> GetSelectedElements()
         {
             return _selectedElements;
         }
 
-        public bool IsEditMode(DrawElement drawElement)
+        public int Count()
         {
-            return _selectedElements.Count == 1 && _selectedElements.Contains(drawElement);
+            return _selectedElements.Count;
         }
-
 
         public void Clear()
         {
-            Console.WriteLine("SelectedManager.Clear:" + _selectedElements.Count);
 
             if (_selectedElements.Count > 0) 
             {
-                Console.WriteLine("SelectedManager.Clear");
-
                 _selectedElements.Clear();
 
                 // 触发事件
@@ -93,15 +94,61 @@ namespace BlazorWebassembly.Pages.skiasharp
             }
         }
 
+        public bool IsHover(DrawElement element)
+        {
+            return _hoverElement == element;
+        }
+
+        public bool IsEditMode()
+        {
+            return _selectedElements.Count == 1;
+        }
+
+        public bool IsEditMode(DrawElement element)
+        {
+            return _selectedElements.Count == 1 && _selectedElements.Contains(element);
+        }
+
+        public bool GetEditModeElement(out DrawElement element)
+        {
+            if (_selectedElements.Count == 1)
+            {
+                element = _selectedElements.First();
+                return true;
+            }
+            else
+            {
+                element = null;
+                return false;
+            }
+        }
+
         public void SetHover(DrawElement element)
         {
-            if (HoverElement != element)
+            if (_hoverElement != element)
             {
-                HoverElement = element;
+                _hoverElement = element;
 
                 OnHoverChanged(element);
             }
         }
+
+        public void SetHoverControlPointIndex(int index)
+        {
+
+            if (_hoverControlPointIndex != index)
+            {
+                _hoverControlPointIndex = index;
+
+                OnHoverControlPointIndexChanged(index);
+            }
+        }
+
+        public int GetHoverControlPointIndex()
+        {
+            return _hoverControlPointIndex;
+        }
+
 
         // 触发选择事件的方法  
         protected virtual void OnSelectionChanged()
@@ -113,6 +160,12 @@ namespace BlazorWebassembly.Pages.skiasharp
         protected virtual void OnHoverChanged(DrawElement element)
         {
             HoverChanged?.Invoke(this, element);
+        }
+
+        //触发悬停控制点事件的方法
+        protected virtual void OnHoverControlPointIndexChanged(int index)
+        {
+            HoverControlPointIndexChanged?.Invoke(this, index);
         }
 
     }

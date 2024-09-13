@@ -52,12 +52,6 @@ namespace BlazorWebassembly.Pages.skiasharp.Draws
 
         }
 
-        public override void DrawEditMode(SKCanvas canvas)
-        {
-            DrawHighlight(canvas);
-            DrawControlPoints(canvas);
-        }
-
         public override bool IsHit(SKPoint point)
         {
             // 简单的碰撞检测，可以根据需要改进  
@@ -112,14 +106,35 @@ namespace BlazorWebassembly.Pages.skiasharp.Draws
             return (float)Math.Sqrt(dx * dx + dy * dy);
         }
 
-        public override void DrawControlPoints(SKCanvas canvas)
+        public override void DrawControlPoints(SKCanvas canvas, int hoverControlPointIndex)
         {
-            using (var paint = new SKPaint { Color = SKColors.Red, Style = SKPaintStyle.Fill })
+
+            using var paint = new SKPaint();
+
+            var index = 0;
+            foreach (var point in GetControlPoints())
             {
-                foreach (var point in GetControlPoints())
+
+                if (index == hoverControlPointIndex)
                 {
-                    canvas.DrawCircle(point.Position, 5, paint);
+                    paint.Style = SKPaintStyle.Fill;
+                    paint.Color = new SKColor(0, 0, 255, 30);
+                    canvas.DrawCircle(point.Position, 10, paint);
                 }
+
+                paint.Style = SKPaintStyle.Fill;
+                paint.Color = SKColors.White;
+
+                canvas.DrawCircle(point.Position, 5, paint);
+
+                paint.Style = SKPaintStyle.Stroke;
+                paint.Color = new SKColor(0, 0, 255, 120);
+                paint.StrokeWidth = 1;
+
+                canvas.DrawCircle(point.Position, 5, paint);
+
+               index++;
+                
             }
         }
 
@@ -129,6 +144,7 @@ namespace BlazorWebassembly.Pages.skiasharp.Draws
             if (SKPoint.Distance(point, End) < 5) return 1;
             return -1;
         }
+
 
         public IEnumerable<ControlPoint> GetControlPoints()
         {
@@ -142,5 +158,6 @@ namespace BlazorWebassembly.Pages.skiasharp.Draws
             else if (index == 1) End = newPosition;
         }
 
+ 
     }
 }

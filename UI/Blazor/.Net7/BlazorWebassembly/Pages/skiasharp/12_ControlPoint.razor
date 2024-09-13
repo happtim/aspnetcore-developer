@@ -1,11 +1,11 @@
-﻿@page "/skiasharp/move"
+﻿@page "/skiasharp/control-point"
 @using BlazorWebassembly.Pages.skiasharp.Commands
 @using BlazorWebassembly.Pages.skiasharp.Draws
 @using BlazorWebassembly.Pages.skiasharp.Tools
 @using SkiaSharp
 @using SkiaSharp.Views.Blazor
 
-@attribute [RoutePriority(11)]
+@attribute [RoutePriority(12)]
 
 @inject IJSRuntime JSRuntime
 
@@ -74,11 +74,25 @@
                 skiaView.Invalidate();
             };
 
+            _selectedManager.HoverControlPointIndexChanged += async (s, e) =>
+            {
+                if (e != -1)
+                {
+                    await _cursorManager.SetPointer();
+                }
+                else
+                {
+                    await _cursorManager.SetDefault();
+                }
+
+                skiaView.Invalidate();
+            };
+
             _commandManager = new CommandManager(_drawManager);
 
             _cursorManager = new CursorManager(JSRuntime);
 
-            _toolManager = new ToolManager(_viewportManager, _drawManager,_commandManager,_cursorManager,_selectedManager);
+            _toolManager = new ToolManager(_viewportManager, _drawManager, _commandManager, _cursorManager, _selectedManager);
 
 
         }
@@ -128,7 +142,7 @@
 
     async Task DrawLine(MouseEventArgs e)
     {
-        _toolManager.SetTool(new LineTool(_drawManager,_toolManager,_commandManager,_cursorManager));
+        _toolManager.SetTool(new LineTool(_drawManager, _toolManager, _commandManager, _cursorManager));
     }
 
     public void Undo()

@@ -11,9 +11,7 @@ namespace BlazorWebassembly.Pages.skiasharp.Draws
         public abstract bool IsContainedIn(SKRect rect);
 
         public abstract void Move(float dx, float dy);
-
-        public abstract void DrawEditMode(SKCanvas canvas);
-        public abstract void DrawControlPoints(SKCanvas canvas);
+        public abstract void DrawControlPoints(SKCanvas canvas, int hoverControlPointIndex);
         public abstract int GetControlPointIndex(SKPoint point);
         public abstract void UpdateControlPoint(int index, SKPoint newPosition);
     }

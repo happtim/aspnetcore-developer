@@ -19,6 +19,11 @@ namespace BlazorWebassembly.Pages.skiasharp.Draws
         {
             _skiaView = skiaView;
             _selectedManager = selectedManager;
+
+            _selectedManager.SelectionChanged += (s, e) =>
+            {
+                skiaView.Invalidate();
+            };
         }
 
         public void AddElement(DrawElement element)
@@ -35,12 +40,16 @@ namespace BlazorWebassembly.Pages.skiasharp.Draws
         {
             foreach (var element in _elements)
             {
-                //绘制选中效果
-                if (_selectedManager.Contains(element)) 
+                if (_selectedManager.IsEditMode(element)) 
+                {
+                    element.DrawHighlight(canvas);
+                    element.DrawControlPoints(canvas, _selectedManager.GetHoverControlPointIndex());
+                }
+                else if (_selectedManager.Contains(element)) 
                 {
                     element.DrawHighlight(canvas);
                 }
-                else if (_selectedManager.HoverElement == element)
+                else if (_selectedManager.IsHover(element))
                 {
                     element.DrawHighlight(canvas);
                 }

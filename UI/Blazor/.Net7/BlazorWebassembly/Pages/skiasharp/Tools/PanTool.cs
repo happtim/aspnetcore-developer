@@ -32,7 +32,7 @@ namespace BlazorWebassembly.Pages.skiasharp.Tools
             _touchLocation = screenPoint;
 
             //TODO 设置抓手样式
-            await _cursorManager.SetHand();
+            //await _cursorManager.SetHand();
 
         }
 

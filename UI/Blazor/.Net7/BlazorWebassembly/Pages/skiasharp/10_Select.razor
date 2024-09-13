@@ -63,12 +63,6 @@
 
             _cursorManager = new CursorManager(JSRuntime);
 
-
-            _selectedManager.SelectionChanged += (s, e) =>
-            {
-                skiaView.Invalidate();
-            };
-
             _selectedManager.HoverChanged += async (s, e) =>
             {
                 if(e != null)
@@ -80,6 +74,7 @@
                     await _cursorManager.SetDefault();
                 }
 
+                skiaView.Invalidate();
             };
 
             _commandManager = new CommandManager(_drawManager);
