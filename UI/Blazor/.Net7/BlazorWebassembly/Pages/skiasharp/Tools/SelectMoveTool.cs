@@ -9,7 +9,6 @@ namespace BlazorWebassembly.Pages.skiasharp.Tools
         private DrawManager _drawManager;
         private CommandManager _commandManager;
         private SelectedManager _selectedManager;
-        //private List<DrawElement> _movedElements;
         //位置差值
         private SKPoint _diff;
         private SKPoint _start;
@@ -19,7 +18,6 @@ namespace BlazorWebassembly.Pages.skiasharp.Tools
             _drawManager = drawManager;
             _selectedManager = selectedManager;
             _commandManager = commandManager;
-            //_movedElements = movedElements;
         }
 
         public void MouseDown(SKPoint worldPoint)
@@ -70,9 +68,6 @@ namespace BlazorWebassembly.Pages.skiasharp.Tools
 
                 _commandManager.AddCommand(compositeCommand);
 
-                //_movedElements.Clear();
-
-                //_toolManager.SetTool(null);
             }
         }
     }

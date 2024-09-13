@@ -1,4 +1,5 @@
-﻿using SkiaSharp;
+﻿using BlazorWebassembly.Pages.skiasharp.Commands.Edits;
+using SkiaSharp;
 
 namespace BlazorWebassembly.Pages.skiasharp.Draws
 {
@@ -158,6 +159,13 @@ namespace BlazorWebassembly.Pages.skiasharp.Draws
             else if (index == 1) End = newPosition;
         }
 
- 
+        public override IEditOperation? GetEditOperation(int controlPointIndex)
+        {
+            if (controlPointIndex == 0) return new LineStartPointEditOperation();
+            if (controlPointIndex == 1) return new LineEndPointEditOperation();
+            return null;
+        }
+
+
     }
 }

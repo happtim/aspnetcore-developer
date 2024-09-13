@@ -1,4 +1,5 @@
-﻿using SkiaSharp;
+﻿using BlazorWebassembly.Pages.skiasharp.Commands.Edits;
+using SkiaSharp;
 
 namespace BlazorWebassembly.Pages.skiasharp.Draws
 {
@@ -94,5 +95,9 @@ namespace BlazorWebassembly.Pages.skiasharp.Draws
             
         }
 
+        public override IEditOperation? GetEditOperation(int controlPointIndex)
+        {
+            return null;
+        }
     }
 }
