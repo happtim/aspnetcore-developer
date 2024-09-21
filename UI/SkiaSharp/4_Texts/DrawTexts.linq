@@ -5,7 +5,7 @@
 
 #load "..\Dump"
 
-//我们就可以使用drawImage()方法将其渲染到画布上。
+//可以绘制文字
 
 var imageInfo = new SKImageInfo(300,300);
 var surfact = SKSurface.Create(imageInfo);

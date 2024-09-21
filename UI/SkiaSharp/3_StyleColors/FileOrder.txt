@@ -10,3 +10,6 @@ LineDashes.linq
 LinearGradient.linq
 RadialGradient.linq
 SweepGradient.linq
+Pattern.linq
+Shadow.linq
+FillRule.linq

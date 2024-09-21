@@ -1,2 +1,4 @@
 DrawTexts.linq
 Baseline.linq
+DrawChineseTexts.linq
+DrawChineseTexts2.linq
