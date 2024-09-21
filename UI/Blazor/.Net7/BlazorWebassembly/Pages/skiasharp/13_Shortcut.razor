@@ -1,0 +1,192 @@
+﻿@page "/skiasharp/shortcut"
+@using BlazorWebassembly.Pages.skiasharp.Commands
+@using BlazorWebassembly.Pages.skiasharp.Draws
+@using BlazorWebassembly.Pages.skiasharp.Tools
+@using SkiaSharp
+@using SkiaSharp.Views.Blazor
+
+@attribute [RoutePriority(13)]
+
+@inject IJSRuntime JSRuntime
+<div class="container">
+    <div class="row">
+        <div @ref="canvasContainer" class="col border rounded p-2 canvas-container position-relative" tabindex="0" @onkeydown:preventDefault="true" @onkeydown="OnKeyDown" @onkeyup="OnKeyUp" @onkeypress="OnKeyPress" style="outline: none;">
+
+            <div style="position: absolute;bottom: 10px;left:15%; transform: translateX(-50%);z-index: 10;">
+                <button class="btn btn-primary" @onclick="DrawLine">Line</button>
+                <button class="btn btn-primary" @onclick="Undo">Undo</button>
+                <button class="btn btn-primary" @onclick="Redo">Redo</button>
+            </div>
+
+            <SKCanvasView @ref="skiaView" OnPaintSurface="OnPaintSurface"
+                          IgnorePixelScaling="false"
+                          @onmousemove="OnMouseMove"
+                          @onmousedown="OnMouseDown"
+                          @onmouseup="OnMouseUp"
+                          @onwheel="OnWheel" />
+
+        </div>
+    </div>
+</div>
+
+@code 
+{
+
+    SKCanvasView skiaView = null!;
+    private ViewportManager _viewportManager = null!;
+    private DrawManager _drawManager = null!;
+    private ToolManager _toolManager = null!;
+    private CommandManager _commandManager = null!;
+    private CursorManager _cursorManager = null!;
+    private SelectedManager _selectedManager = null!;
+    private ElementReference canvasContainer;
+
+    protected override async Task OnAfterRenderAsync(bool firstRender)
+    {
+        if (firstRender)
+        {
+            await JSRuntime.InvokeVoidAsync("focusElement", canvasContainer);
+        }
+    }
+
+    void OnPaintSurface(SKPaintSurfaceEventArgs e)
+    {
+        Console.WriteLine("OnPaintSurface");
+
+        SKSurface surface = e.Surface;
+        SKCanvas canvas = surface.Canvas;
+        canvas.Clear(SKColors.White);
+
+        if (_viewportManager == null)
+        {
+            Console.WriteLine("Canvas Size:" + "Width:" + e.Info.Size.Width + " Height:" + e.Info.Size.Height);
+
+            Console.WriteLine("Dpi:" + skiaView.Dpi);
+
+            _viewportManager = new ViewportManager(e.Info.Size, dpi: (float)skiaView.Dpi);
+
+            _selectedManager = new SelectedManager();
+
+            _drawManager = new DrawManager(skiaView, _selectedManager);
+
+            _selectedManager.HoverChanged += async (s, e) =>
+            {
+                if (e != null)
+                {
+                    await _cursorManager.SetMove();
+                }
+                else
+                {
+                    await _cursorManager.SetDefault();
+                }
+
+                skiaView.Invalidate();
+            };
+
+            _selectedManager.HoverControlPointIndexChanged += async (s, e) =>
+            {
+                if (e != -1)
+                {
+                    await _cursorManager.SetPointer();
+                }
+                else
+                {
+                    await _cursorManager.SetDefault();
+                }
+
+                skiaView.Invalidate();
+            };
+
+            _commandManager = new CommandManager(_drawManager);
+
+            _cursorManager = new CursorManager(JSRuntime);
+
+            _toolManager = new ToolManager(_viewportManager, _drawManager, _commandManager, _cursorManager, _selectedManager);
+
+
+        }
+
+        var matrix = _viewportManager.GetTransformMatrix();
+
+        canvas.SetMatrix(matrix);
+
+        Console.WriteLine($"matrix scaleX:{matrix.ScaleX} scaleY:{matrix.ScaleY} transX:{matrix.TransX} transY:{matrix.TransY}");
+
+        // 在这里绘制你的内容
+        // 例如：
+        using (SKPaint paint = new SKPaint { Color = SKColors.Blue })
+        {
+            canvas.DrawCircle(0, 0, 100, paint);
+
+            paint.Color = new SKColor(255, 0, 0);
+
+            canvas.DrawCircle(200, 200, 2, paint);
+        }
+
+        _drawManager.Draw(canvas);
+
+    }
+
+    async Task OnKeyDown(KeyboardEventArgs e)
+    {
+        Console.WriteLine("OnKeyDown " + e.Key);
+
+ 
+    }
+
+
+    async Task OnKeyPress(KeyboardEventArgs e)
+    {
+    
+
+        Console.WriteLine("OnKeyPreess " + e.Key);
+
+
+    }
+
+
+
+    async Task OnKeyUp(KeyboardEventArgs e)
+    {
+
+        Console.WriteLine("OnKeyUp " + e.Key);
+    }
+
+    async Task OnMouseMove(MouseEventArgs e)
+    {
+        _toolManager.MouseMove(e);
+    }
+
+    void OnMouseDown(MouseEventArgs e)
+    {
+        _toolManager.MouseDown(e);
+    }
+
+    void OnMouseUp(MouseEventArgs e)
+    {
+        _toolManager.MouseUp(e);
+    }
+
+    void OnWheel(WheelEventArgs e)
+    {
+        _viewportManager.Zoom((float)e.DeltaY, new SKPoint((float)e.OffsetX, (float)e.OffsetY));
+
+        skiaView.Invalidate(); // 触发重绘
+    }
+
+    async Task DrawLine(MouseEventArgs e)
+    {
+        _toolManager.SetTool(new LineTool(_drawManager, _toolManager, _commandManager, _cursorManager));
+    }
+
+    public void Undo()
+    {
+        _commandManager.Undo();
+    }
+
+    public void Redo()
+    {
+        _commandManager.Redo();
+    }
+
+}
