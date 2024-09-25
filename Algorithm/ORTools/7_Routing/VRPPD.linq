@@ -40,7 +40,7 @@ routing.SetArcCostEvaluatorOfAllVehicles(transitCallbackIndex);
 routing.AddDimension(
 	transitCallbackIndex, // 过渡回调的索引，用于计算两个节点之间的距离  
 	0,                    // slack_max，允许的最大松弛量，这里为0，表示不允许额外的松弛  
-	3000,                 // capacity，维度的上限，这里设置每辆车的最大行驶距离为3000  
+	int.MaxValue,                 // capacity，维度的上限，这里设置每辆车的最大行驶距离为3000  
 	true,                 // start_cumul_to_zero，是否将每辆车的起始累积值设为0  
 	"Distance"            // 维度的名称  
 );
@@ -140,7 +140,8 @@ class DataModel
 	public int VehicleNumber = 4;
 	public int Depot = 0;
 	public int[][] PickupsDeliveries = {
-			new int[] { 1, 6 }, new int[] { 2, 10 },  new int[] { 4, 3 },   new int[] { 5, 9 },
+			new int[] { 1, 6},
+			new int[] { 2, 10 },  new int[] { 4, 3 },   new int[] { 5, 9 },
 			new int[] { 7, 8 }, new int[] { 15, 11 }, new int[] { 13, 12 }, new int[] { 16, 14 },
 		};
 };

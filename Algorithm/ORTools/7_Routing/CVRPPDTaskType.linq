@@ -55,7 +55,7 @@ distanceDimension.SetGlobalSpanCostCoefficient(100);
 //会按照设定的每单位惩罚成本（penalty cost per unit）累加到目标函数中。
 for (int i = 0; i < data.VehicleNumber; i++)
 {
-	distanceDimension.SetSoftSpanUpperBoundForVehicle(new BoundCost(2000,10),i);
+	distanceDimension.SetSoftSpanUpperBoundForVehicle(new BoundCost(1000,10),i);
 }
 
 
@@ -73,6 +73,8 @@ for (int i = 0; i < data.PickupsDeliveries.GetLength(0); i++)
 	//先取后放
 	solver.Add(solver.MakeLessOrEqual(distanceDimension.CumulVar(pickupIndex),
 									  distanceDimension.CumulVar(deliveryIndex)));
+									  
+	routing.solver().Add(routing.NextVar(pickupIndex) == deliveryIndex);
 
 	string taskType = data.TaskTypes[i];
 	// 获取允许处理该任务类型的车辆类型列表  
@@ -99,29 +101,11 @@ for (int i = 0; i < data.PickupsDeliveries.GetLength(0); i++)
 
 }
 
-//添加需求回调
-//需求回调仅取决于交付的位置（from_node）。
-int demandCallbackIndex = routing.RegisterUnaryTransitCallback((long fromIndex) =>
-															   {
-																   // Convert from routing variable Index to
-																   // demand NodeIndex.
-																   var fromNode =
-																	   manager.IndexToNode(fromIndex);
-																   return data.Demands[fromNode];
-															   });
-
-//由于容量限制涉及车辆所载货物的重量 — 这是在路线上累积的数量 — 我们需要为容量创建一个维度。
-//AddDimensionWithVehicleCapacity 方法添加容量维度，处理更一般的情况，即不同车辆具有不同的容量。
-routing.AddDimensionWithVehicleCapacity(demandCallbackIndex, 0, // null capacity slack
-										data.VehicleCapacities, // vehicle maximum capacities
-										true,                   // start cumul to zero
-										"Capacity");
-
-
 // Setting first solution heuristic.
 RoutingSearchParameters searchParameters =
 	operations_research_constraint_solver.DefaultRoutingSearchParameters();
 searchParameters.FirstSolutionStrategy = FirstSolutionStrategy.Types.Value.PathCheapestArc;
+
 
 // Solve the problem.
 Assignment solution = routing.SolveWithParameters(searchParameters);
@@ -214,12 +198,10 @@ class DataModel
 	public int VehicleNumber = 4;
 	public int Depot = 0;
 	public int[][] PickupsDeliveries = {
-			new int[] { 1, 6 }, new int[] { 2, 10 },  new int[] { 4, 3 },   new int[] { 5, 9 },
+			new int[] { 1, 6 }, 
+			new int[] { 2, 10 },  new int[] { 4, 3 },   new int[] { 5, 9 },
 			new int[] { 7, 8 }, new int[] { 15, 11 }, new int[] { 13, 12 }, new int[] { 16, 14 },
 		};
-							//0  1  2   3  4  5   6  7   8   9  10  11  12  13 14  15 16
-	public long[] Demands = { 0, 1, 1, -1, 1, 1, -1, 1, -1, -1, -1, -1, -1, 1, -1, 1, 1 };
-	public long[] VehicleCapacities = { 1, 1, 1, 1 };
 	public string[] VehicleTypes = { "Small", "Large", "Large", "Large" };
 	// 定义任务类型，每个任务对对应一个类型  
 	public string[] TaskTypes = {

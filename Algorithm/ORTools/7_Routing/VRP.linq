@@ -47,7 +47,7 @@ routing.SetArcCostEvaluatorOfAllVehicles(transitCallbackIndex);
 routing.AddDimension(
 	transitCallbackIndex, // 过渡回调的索引，用于计算两个节点之间的距离  
 	0,                    // slack_max，允许的最大松弛量，这里为0，表示不允许额外的松弛  
-	3000,                 // capacity，维度的上限，这里设置每辆车的最大行驶距离为3000  
+	int.MaxValue,                 // capacity，维度的上限，这里设置每辆车的最大行驶距离为3000  
 	true,                 // start_cumul_to_zero，是否将每辆车的起始累积值设为0  
 	"Distance"            // 维度的名称  
 );
