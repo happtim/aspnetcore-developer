@@ -54,7 +54,18 @@ namespace BlazorWebassembly.Pages.skiasharp.Tools
 
         public void SetTool(ITool tool)
         {
+            if (_currentTool != null) 
+            {
+                _currentTool.Deactivate();
+            }
+
             _currentTool = tool;
+
+            if (_currentTool != null)
+            {
+                _currentTool.Activate();
+            }
+
         }
 
 

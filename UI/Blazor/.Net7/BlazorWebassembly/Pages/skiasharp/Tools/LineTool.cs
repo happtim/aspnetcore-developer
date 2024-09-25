@@ -4,7 +4,7 @@ using SkiaSharp;
 
 namespace BlazorWebassembly.Pages.skiasharp.Tools
 {
-    public class LineTool : ITool
+    public class LineTool : ToolBase, ITool
     {
         private SKPoint _start;
         private SKPoint _end;
@@ -26,7 +26,7 @@ namespace BlazorWebassembly.Pages.skiasharp.Tools
             _cursorManager = cursorManager;
         }
 
-        public void MouseDown(SKPoint worldPoint)
+        public override void MouseDown(SKPoint worldPoint)
         {
 
             if (_isDrawing)
@@ -59,11 +59,8 @@ namespace BlazorWebassembly.Pages.skiasharp.Tools
 
         }
 
-        public void MouseDrag(SKPoint worldPoint)
-        {
-        }
 
-        public void MouseMove(SKPoint worldPoint)
+        public override void MouseMove(SKPoint worldPoint)
         {
             if (_isDrawing)
             {
@@ -77,9 +74,5 @@ namespace BlazorWebassembly.Pages.skiasharp.Tools
             }
         }
 
-        public void MouseUp(SKPoint worldPoint)
-        {
-
-        }
     }
 }

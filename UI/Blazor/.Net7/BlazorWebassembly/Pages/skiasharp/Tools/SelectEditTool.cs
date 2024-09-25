@@ -5,7 +5,7 @@ using SkiaSharp;
 
 namespace BlazorWebassembly.Pages.skiasharp.Tools
 {
-    public class SelectEditTool : ITool
+    public class SelectEditTool : ToolBase, ITool
     {
         private DrawElement _drawElement;
         private int _controlPointIndex;
@@ -27,10 +27,6 @@ namespace BlazorWebassembly.Pages.skiasharp.Tools
             _controlPointIndex = _drawElement.GetControlPointIndex(worldPoint);
             _editOperation = _drawElement.GetEditOperation(_controlPointIndex);
 
-        }
-
-        public void MouseMove(SKPoint worldPoint)
-        {
         }
 
         public void MouseDrag(SKPoint worldPoint)

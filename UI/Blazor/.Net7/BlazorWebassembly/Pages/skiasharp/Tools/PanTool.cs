@@ -4,7 +4,7 @@ using SkiaSharp.Views.Blazor;
 
 namespace BlazorWebassembly.Pages.skiasharp.Tools
 {
-    public class PanTool : ITool
+    public class PanTool : ToolBase, ITool
     {
         SKPoint? _touchLocation;
         DrawManager _drawManager;
@@ -25,6 +25,7 @@ namespace BlazorWebassembly.Pages.skiasharp.Tools
             _cursorManager = cursorManager;
         }
 
+
         public async void MouseDown(SKPoint worldPoint)
         {
             var screenPoint = _viewportManager.WorldToScreen(worldPoint);
@@ -33,11 +34,6 @@ namespace BlazorWebassembly.Pages.skiasharp.Tools
 
             //TODO 设置抓手样式
             //await _cursorManager.SetHand();
-
-        }
-
-        public void MouseDrag(SKPoint worldPoint)
-        {
 
         }
 
@@ -64,7 +60,6 @@ namespace BlazorWebassembly.Pages.skiasharp.Tools
             _touchLocation = null;
 
             await _cursorManager.SetDefault();
-
 
         }
     }

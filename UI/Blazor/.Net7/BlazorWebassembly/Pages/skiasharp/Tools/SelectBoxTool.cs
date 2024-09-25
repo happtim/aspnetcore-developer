@@ -3,7 +3,7 @@ using SkiaSharp;
 
 namespace BlazorWebassembly.Pages.skiasharp.Tools
 {
-    public class SelectBoxTool : ITool
+    public class SelectBoxTool : ToolBase, ITool
     {
         private SKPoint? _start;
         private DrawManager _drawManager;
@@ -28,10 +28,6 @@ namespace BlazorWebassembly.Pages.skiasharp.Tools
             _drawManager.PreviewElement = selectBox;
 
             _drawManager.Invalidate(); // 触发重绘
-        }
-
-        public void MouseMove(SKPoint worldPoint)
-        {
         }
 
         public void MouseUp(SKPoint worldPoint)

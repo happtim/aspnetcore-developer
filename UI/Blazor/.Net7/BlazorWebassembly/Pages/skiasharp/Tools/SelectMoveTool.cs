@@ -4,7 +4,7 @@ using SkiaSharp;
 
 namespace BlazorWebassembly.Pages.skiasharp.Tools
 {
-    public class SelectMoveTool : ITool
+    public class SelectMoveTool : ToolBase, ITool
     {
         private DrawManager _drawManager;
         private CommandManager _commandManager;
@@ -40,11 +40,6 @@ namespace BlazorWebassembly.Pages.skiasharp.Tools
             _diff = worldPoint;
 
             _drawManager.Invalidate(); // 触发重绘
-        }
-
-        public void MouseMove(SKPoint worldPoint)
-        {
-
         }
 
         public void MouseUp(SKPoint worldPoint)

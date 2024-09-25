@@ -4,7 +4,7 @@ using SkiaSharp;
 
 namespace BlazorWebassembly.Pages.skiasharp.Tools
 {
-    public class SelectTool : ITool
+    public class SelectTool : ToolBase, ITool
     {
         private DrawManager _drawManager;
         private SelectedManager _selectedManager;

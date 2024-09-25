@@ -1,4 +1,5 @@
 ﻿using BlazorWebassembly.Pages.skiasharp.Draws;
+using Microsoft.AspNetCore.Components.Web;
 using System.Net.NetworkInformation;
 
 namespace BlazorWebassembly.Pages.skiasharp
@@ -33,7 +34,6 @@ namespace BlazorWebassembly.Pages.skiasharp
         public SelectedManager()
         {
             _selectedElements = new List<DrawElement>();
-
         }
 
         public void Add(DrawElement element)
@@ -74,16 +74,17 @@ namespace BlazorWebassembly.Pages.skiasharp
 
         public bool Remove(DrawElement element)
         {
+            bool result = false;
+
             if (_selectedElements.Contains(element))
             {
-                bool result = _selectedElements.Remove(element);
+                result = _selectedElements.Remove(element);
 
                 // 触发事件
                 OnSelectionChanged();
-
-                return result;
             }
-            return false;
+
+            return result;
         }
 
         public IEnumerable<DrawElement> GetSelectedElements()

@@ -79,6 +79,8 @@ namespace BlazorWebassembly.Pages.skiasharp
         // 处理键盘释放事件  
         public void HandleKeyUp(KeyboardEventArgs e)
         {
+            _pressedKeys.Remove(e.Key.ToLower());
+
             UpdateModifierKeys(e.Key, isKeyDown: false);
         }
 
