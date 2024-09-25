@@ -1,12 +1,14 @@
 <Query Kind="Statements">
   <NuGetReference>Google.OrTools</NuGetReference>
   <Namespace>Google.OrTools.ConstraintSolver</Namespace>
+  <Namespace>Google.Protobuf.WellKnownTypes</Namespace>
 </Query>
 
 //https://developers.google.cn/optimization/routing/pickup_delivery?authuser=0
 
-//车辆路径规划与提货和送货
-//其中每辆车在各个位置取货并在其他位置卸货。问题是为车辆分配路线，以便取货和交付所有物品，同时最小化最长路线的长度。
+//车辆路径规划 与任务分配
+//任务分配和车辆是对应的，所以需要根据车辆的情况选择任务，进行分配。如果出现任务不在车辆内，就会异常。
+//需要Distance 的capacity 值，不能太高也不能太低。
 
 // 创建路由模型
 // Instantiate the data problem.
@@ -38,7 +40,7 @@ routing.SetArcCostEvaluatorOfAllVehicles(transitCallbackIndex);
 routing.AddDimension(
 	transitCallbackIndex, // 过渡回调的索引，用于计算两个节点之间的距离  
 	0,                    // slack_max，允许的最大松弛量，这里为0，表示不允许额外的松弛  
-	3000,                 // capacity，维度的上限，这里设置每辆车的最大行驶距离为3000  
+	int.MaxValue,         // capacity，维度的上限，这里设置每辆车的最大行驶距离为3000  
 	true,                 // start_cumul_to_zero，是否将每辆车的起始累积值设为0  
 	"Distance"            // 维度的名称  
 );
@@ -49,6 +51,14 @@ RoutingDimension distanceDimension = routing.GetMutableDimension("Distance");
 //通过将跨度（即所有车辆路径中该维度的最大值）乘以一个系数，并将其加入到优化目标函数中，从而鼓励求解器在优化时尽量减少这个跨度。
 distanceDimension.SetGlobalSpanCostCoefficient(100);
 
+//超过这个上限不会使解不可行，但会根据超过的数量施加惩罚成本。
+//会按照设定的每单位惩罚成本（penalty cost per unit）累加到目标函数中。
+for (int i = 0; i < data.VehicleNumber; i++)
+{
+	distanceDimension.SetSoftSpanUpperBoundForVehicle(new BoundCost(2000,10),i);
+}
+
+
 // Define Transportation Requests.
 Solver solver = routing.solver();
 for (int i = 0; i < data.PickupsDeliveries.GetLength(0); i++)
@@ -56,13 +66,57 @@ for (int i = 0; i < data.PickupsDeliveries.GetLength(0); i++)
 	long pickupIndex = manager.NodeToIndex(data.PickupsDeliveries[i][0]);
 	long deliveryIndex = manager.NodeToIndex(data.PickupsDeliveries[i][1]);
 	routing.AddPickupAndDelivery(pickupIndex, deliveryIndex);
+	
 	//以下一行添加了每个项目必须由同一辆车接送的要求。
 	solver.Add(solver.MakeEquality(routing.VehicleVar(pickupIndex), routing.VehicleVar(deliveryIndex)));
 	//每个物品在交付之前必须被取走。为此，我们要求车辆在物品取货地点的累积距离最多等于其在交付地点的累积距离。
 	//先取后放
 	solver.Add(solver.MakeLessOrEqual(distanceDimension.CumulVar(pickupIndex),
 									  distanceDimension.CumulVar(deliveryIndex)));
+
+	string taskType = data.TaskTypes[i];
+	// 获取允许处理该任务类型的车辆类型列表  
+	if (!data.TaskTypeToVehicleTypes.ContainsKey(taskType))
+	{
+		throw new Exception($"未定义的任务类型: {taskType}");
+	}
+	List<string> allowedVehicleTypes = data.TaskTypeToVehicleTypes[taskType];
+
+	// 获取允许处理该任务类型的车辆索引列表  
+	List<long> allowedVehicleIndices = new List<long>();
+	for (int v = 0; v < data.VehicleNumber; v++)
+	{
+		if (allowedVehicleTypes.Contains(data.VehicleTypes[v]))
+		{
+			allowedVehicleIndices.Add(v);
+		}
+	}
+
+	if (allowedVehicleIndices.Count() > 0) 
+	{
+		solver.Add(solver.MakeMemberCt(routing.VehicleVar(pickupIndex), allowedVehicleIndices.ToArray()));
+	}
+
 }
+
+//添加需求回调
+//需求回调仅取决于交付的位置（from_node）。
+int demandCallbackIndex = routing.RegisterUnaryTransitCallback((long fromIndex) =>
+															   {
+																   // Convert from routing variable Index to
+																   // demand NodeIndex.
+																   var fromNode =
+																	   manager.IndexToNode(fromIndex);
+																   return data.Demands[fromNode];
+															   });
+
+//由于容量限制涉及车辆所载货物的重量 — 这是在路线上累积的数量 — 我们需要为容量创建一个维度。
+//AddDimensionWithVehicleCapacity 方法添加容量维度，处理更一般的情况，即不同车辆具有不同的容量。
+routing.AddDimensionWithVehicleCapacity(demandCallbackIndex, 0, // null capacity slack
+										data.VehicleCapacities, // vehicle maximum capacities
+										true,                   // start cumul to zero
+										"Capacity");
+
 
 // Setting first solution heuristic.
 RoutingSearchParameters searchParameters =
@@ -84,19 +138,45 @@ static void PrintSolution(in DataModel data, in RoutingModel routing, in Routing
 {
 	Console.WriteLine($"Objective {solution.ObjectiveValue()}:");
 
+	// 构建节点与任务的映射  
+	var nodeToTask = new Dictionary<int, (int taskIndex, bool isPickup)>();
+	for (int t = 0; t < data.PickupsDeliveries.Length; t++)
+	{
+		nodeToTask[data.PickupsDeliveries[t][0]] = (t, true);  // 取货节点  
+		nodeToTask[data.PickupsDeliveries[t][1]] = (t, false); // 送货节点  
+	}
+
 	// Inspect solution.
 	long maxRouteDistance = 0;
 	for (int i = 0; i < data.VehicleNumber; ++i)
 	{
-		Console.WriteLine("Route for Vehicle {0}:", i);
+		var vehicleType = data.VehicleTypes[i];
+		Console.WriteLine($"Route for Vehicle {i} (Type: {vehicleType}):");
 		long routeDistance = 0;
 		var index = routing.Start(i);
 		while (routing.IsEnd(index) == false)
 		{
-			Console.Write("{0} -> ", manager.IndexToNode((int)index));
+			   int node = manager.IndexToNode((int)index);  
+
+            // 检查当前节点是否对应某个任务  
+            if (nodeToTask.ContainsKey(node))  
+            {
+				var (taskIndex, isPickup) = nodeToTask[node];
+				string action = isPickup ? "Pickup" : "Delivery";
+				string taskType = data.TaskTypes[taskIndex];
+				Console.Write($"{node} ({action}, {taskType}) -> ");
+			}
+			else
+			{
+				// 如果不是任务节点，仅打印节点编号  
+				Console.Write($"{node} -> ");
+			}
+
 			var previousIndex = index;
 			index = solution.Value(routing.NextVar(index));
-			routeDistance += routing.GetArcCostForVehicle(previousIndex, index, 0);
+
+			// 计算路线距离，注意传递正确的车辆索引  
+			routeDistance += routing.GetArcCostForVehicle(previousIndex, index, i);
 		}
 		Console.WriteLine("{0}", manager.IndexToNode((int)index));
 		Console.WriteLine("Distance of the route: {0}m", routeDistance);
@@ -137,4 +217,27 @@ class DataModel
 			new int[] { 1, 6 }, new int[] { 2, 10 },  new int[] { 4, 3 },   new int[] { 5, 9 },
 			new int[] { 7, 8 }, new int[] { 15, 11 }, new int[] { 13, 12 }, new int[] { 16, 14 },
 		};
+							//0  1  2   3  4  5   6  7   8   9  10  11  12  13 14  15 16
+	public long[] Demands = { 0, 1, 1, -1, 1, 1, -1, 1, -1, -1, -1, -1, -1, 1, -1, 1, 1 };
+	public long[] VehicleCapacities = { 1, 1, 1, 1 };
+	public string[] VehicleTypes = { "Small", "Large", "Large", "Large" };
+	// 定义任务类型，每个任务对对应一个类型  
+	public string[] TaskTypes = {
+		"TypeA", // 对应 PickupsDeliveries[0]  
+        "TypeB", // 对应 PickupsDeliveries[1]  
+        "TypeA", // 对应 PickupsDeliveries[2]  
+        "TypeC", // 对应 PickupsDeliveries[3]  
+        "TypeB", // 对应 PickupsDeliveries[4]  
+        "TypeA", // 对应 PickupsDeliveries[5]  
+        "TypeC", // 对应 PickupsDeliveries[6]  
+        "TypeB"  // 对应 PickupsDeliveries[7]
+    };
+
+	// 定义任务类型与车型的匹配关系  
+	public Dictionary<string, List<string>> TaskTypeToVehicleTypes = new Dictionary<string, List<string>>()
+	{
+		{ "TypeA", new List<string> { "Small" } },
+		{ "TypeB", new List<string> { "Large" } },
+		{ "TypeC", new List<string> { "Large" } }
+	};
 };

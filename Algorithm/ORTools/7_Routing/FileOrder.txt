@@ -2,7 +2,9 @@ TSP.linq
 CircuitBoard1.linq
 CircuitBoard2.linq
 Output.linq
-
 VRP.linq
 CVRP.linq
-VRPWithPickupDelivery.linq
+VRPPD.linq
+CVRPPD.linq
+CVRPPDTaskType.linq
+VRPDynamicEnds.linq
