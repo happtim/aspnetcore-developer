@@ -24,13 +24,15 @@ namespace BlazorWebassembly.Pages.skiasharp.Tools
         private CommandManager _commandManager;
         private CursorManager _cursorManager;
         private SelectedManager _selectedManager;
+        private KeyboardManager _keyboardManager;
 
         public ToolManager(
             ViewportManager viewportManager, 
             DrawManager drawManager, 
             CommandManager commandManager,
             CursorManager cursorManager,
-            SelectedManager selectedManager
+            SelectedManager selectedManager,
+            KeyboardManager keyboardManager
             )
         {
             _viewportManager = viewportManager;
@@ -38,8 +40,16 @@ namespace BlazorWebassembly.Pages.skiasharp.Tools
             _commandManager = commandManager;
             _cursorManager = cursorManager;
             _selectedManager = selectedManager;
+            _keyboardManager = keyboardManager;
 
-            _currentTool = new SelectTool(_drawManager, _selectedManager,this,_commandManager,_cursorManager);
+            SetTool(new SelectTool(
+                _drawManager, 
+                _selectedManager,
+                this,
+                _commandManager,
+                _cursorManager,
+                _keyboardManager
+            ));
         }
 
         public void SetTool(ITool tool)
@@ -132,7 +142,14 @@ namespace BlazorWebassembly.Pages.skiasharp.Tools
                 //默认工具 选择工具
                 if (_currentTool == null)
                 {
-                    SetTool(new SelectTool(_drawManager, _selectedManager, this,_commandManager,_cursorManager));
+                    SetTool(new SelectTool(
+                        _drawManager,
+                        _selectedManager,
+                        this,
+                        _commandManager,
+                        _cursorManager,
+                        _keyboardManager
+                        ));
                 }
             }
 

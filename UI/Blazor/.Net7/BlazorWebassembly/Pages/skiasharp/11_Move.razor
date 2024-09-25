@@ -39,6 +39,7 @@
     private CommandManager _commandManager = null!;
     private CursorManager _cursorManager = null!;
     private SelectedManager _selectedManager = null!;
+    private KeyboardManager _keyboardManager = null!;
 
     void OnPaintSurface(SKPaintSurfaceEventArgs e)
     {
@@ -60,6 +61,8 @@
 
             _drawManager = new DrawManager(skiaView, _selectedManager);
 
+            _keyboardManager = new KeyboardManager();
+
             _selectedManager.HoverChanged += async (s, e) =>
             {
                 if (e != null)
@@ -78,7 +81,7 @@
 
             _cursorManager = new CursorManager(JSRuntime);
 
-            _toolManager = new ToolManager(_viewportManager, _drawManager,_commandManager,_cursorManager,_selectedManager);
+            _toolManager = new ToolManager(_viewportManager, _drawManager,_commandManager,_cursorManager,_selectedManager,_keyboardManager);
 
 
         }

@@ -11,6 +11,7 @@ namespace BlazorWebassembly.Pages.skiasharp.Tools
         private ToolManager _toolManager;
         private CommandManager _commandManager;
         private CursorManager _cursorManager;
+        private KeyboardManager _keyboardManager;
 
         private ITool _innerTool;
         private SKPoint? _start;
@@ -21,13 +22,15 @@ namespace BlazorWebassembly.Pages.skiasharp.Tools
             SelectedManager selectedManager,
             ToolManager toolManager,
             CommandManager commandManager,
-            CursorManager cursorManager)
+            CursorManager cursorManager,
+            KeyboardManager keyboardManager)
         {
             _drawManager = drawManager;
             _selectedManager = selectedManager;
             _toolManager = toolManager;
             _commandManager = commandManager;
             _cursorManager = cursorManager;
+            _keyboardManager = keyboardManager;
         }
 
         /// <summary>
@@ -76,13 +79,29 @@ namespace BlazorWebassembly.Pages.skiasharp.Tools
             {
                 _innerTool = null;
 
-                //在选中元素上点击
-                if (!_selectedManager.Contains(item)) 
+                //如果按下shift，Toggle选中状态
+                if (_keyboardManager.IsShiftPressed)
                 {
-                    _selectedManager.Clear();
+                    if (_selectedManager.Contains(item))
+                    {
+                        _selectedManager.Remove(item);
+                    }
+                    else
+                    {
+                        _selectedManager.Add(item);
+                    }
                 }
+                else
+                {
+                    //在选中元素上点击
+                    if (!_selectedManager.Contains(item))
+                    {
+                        _selectedManager.Clear();
+                    }
 
-                _selectedManager.Add(item);
+                    _selectedManager.Add(item);
+                }
+    
             }
 
             _innerTool?.MouseDown(worldPoint);

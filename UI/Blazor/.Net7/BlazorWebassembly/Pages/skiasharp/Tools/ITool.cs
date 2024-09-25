@@ -8,5 +8,8 @@ namespace BlazorWebassembly.Pages.skiasharp.Tools
         void MouseMove(SKPoint worldPoint);
         void MouseDrag(SKPoint worldPoint);
         void MouseUp(SKPoint worldPoint);
+
+        //void Activate();
+        //void Deactivate();
     }
 }

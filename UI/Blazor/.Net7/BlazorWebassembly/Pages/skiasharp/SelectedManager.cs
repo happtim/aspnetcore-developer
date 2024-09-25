@@ -72,6 +72,20 @@ namespace BlazorWebassembly.Pages.skiasharp
             return _selectedElements.Contains(element);
         }
 
+        public bool Remove(DrawElement element)
+        {
+            if (_selectedElements.Contains(element))
+            {
+                bool result = _selectedElements.Remove(element);
+
+                // 触发事件
+                OnSelectionChanged();
+
+                return result;
+            }
+            return false;
+        }
+
         public IEnumerable<DrawElement> GetSelectedElements()
         {
             return _selectedElements;

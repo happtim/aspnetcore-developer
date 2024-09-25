@@ -10,7 +10,14 @@
 @inject IJSRuntime JSRuntime
 <div class="container">
     <div class="row">
-        <div @ref="canvasContainer" class="col border rounded p-2 canvas-container position-relative" tabindex="0" @onkeydown:preventDefault="true" @onkeydown="OnKeyDown" @onkeyup="OnKeyUp" @onkeypress="OnKeyPress" style="outline: none;">
+        <div @ref="canvasContainer" 
+             class="col border rounded p-2 canvas-container position-relative" 
+             tabindex="0"
+             style="outline: none;"
+             @onkeydown:preventDefault="true" 
+             @onkeydown="OnKeyDown" 
+             @onkeyup="OnKeyUp" 
+            >
 
             <div style="position: absolute;bottom: 10px;left:15%; transform: translateX(-50%);z-index: 10;">
                 <button class="btn btn-primary" @onclick="DrawLine">Line</button>
@@ -40,6 +47,8 @@
     private CursorManager _cursorManager = null!;
     private SelectedManager _selectedManager = null!;
     private ElementReference canvasContainer;
+    private KeyboardManager _keyboardManager = null!;
+
 
     protected override async Task OnAfterRenderAsync(bool firstRender)
     {
@@ -68,6 +77,8 @@
             _selectedManager = new SelectedManager();
 
             _drawManager = new DrawManager(skiaView, _selectedManager);
+
+            _keyboardManager = new KeyboardManager();
 
             _selectedManager.HoverChanged += async (s, e) =>
             {
@@ -101,7 +112,7 @@
 
             _cursorManager = new CursorManager(JSRuntime);
 
-            _toolManager = new ToolManager(_viewportManager, _drawManager, _commandManager, _cursorManager, _selectedManager);
+            _toolManager = new ToolManager(_viewportManager, _drawManager, _commandManager, _cursorManager, _selectedManager,_keyboardManager);
 
 
         }
@@ -130,26 +141,14 @@
     async Task OnKeyDown(KeyboardEventArgs e)
     {
         Console.WriteLine("OnKeyDown " + e.Key);
-
- 
-    }
-
-
-    async Task OnKeyPress(KeyboardEventArgs e)
-    {
-    
-
-        Console.WriteLine("OnKeyPreess " + e.Key);
-
+        await _keyboardManager.HandleKeyDown(e);
 
     }
-
-
 
     async Task OnKeyUp(KeyboardEventArgs e)
     {
-
         Console.WriteLine("OnKeyUp " + e.Key);
+        _keyboardManager.HandleKeyUp(e);
     }
 
     async Task OnMouseMove(MouseEventArgs e)
