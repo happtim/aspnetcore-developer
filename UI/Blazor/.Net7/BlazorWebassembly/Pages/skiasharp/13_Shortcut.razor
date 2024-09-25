@@ -48,6 +48,8 @@
     private SelectedManager _selectedManager = null!;
     private ElementReference canvasContainer;
     private KeyboardManager _keyboardManager = null!;
+    private CopyPasteManager _copyPasteManager = null!;
+    private ShortcutManager _shortcutManager = null!;
 
 
     protected override async Task OnAfterRenderAsync(bool firstRender)
@@ -81,6 +83,7 @@
             _keyboardManager = new KeyboardManager();
 
 
+
             _selectedManager.HoverChanged += async (s, e) =>
             {
                 if (e != null)
@@ -112,6 +115,12 @@
             _commandManager = new CommandManager(_drawManager);
 
             _cursorManager = new CursorManager(JSRuntime);
+
+            _copyPasteManager = new CopyPasteManager(_selectedManager, _commandManager);
+
+            _shortcutManager = new ShortcutManager(_keyboardManager, _commandManager,  _selectedManager, _copyPasteManager);
+
+            _shortcutManager.RegisterShortcuts();
 
             _toolManager = new ToolManager(_viewportManager, _drawManager, _commandManager, _cursorManager, _selectedManager,_keyboardManager);
 

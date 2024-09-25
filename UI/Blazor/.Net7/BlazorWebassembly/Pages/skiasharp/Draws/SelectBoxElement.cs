@@ -99,5 +99,10 @@ namespace BlazorWebassembly.Pages.skiasharp.Draws
         {
             return null;
         }
+
+        public override DrawElement Clone()
+        {
+            return new SelectBoxElement(Start, End);
+        }
     }
 }

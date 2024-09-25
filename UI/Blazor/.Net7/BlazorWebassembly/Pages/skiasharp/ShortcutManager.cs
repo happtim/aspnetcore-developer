@@ -8,15 +8,19 @@ namespace BlazorWebassembly.Pages.skiasharp
         private readonly KeyboardManager _keyboardManager;
         private readonly CommandManager _commandManager;
         private readonly SelectedManager _selectedManager;
+        private readonly CopyPasteManager _copyPasteManager;
 
         public ShortcutManager(
             KeyboardManager keyboardManager,
             CommandManager commandManager,
-            SelectedManager selectedManager)
+            SelectedManager selectedManager,
+            CopyPasteManager copyPasteManager
+            )
         {
             _keyboardManager = keyboardManager;
             _commandManager = commandManager;
             _selectedManager = selectedManager;
+            _copyPasteManager = copyPasteManager;
         }
 
         public void RegisterShortcuts()
@@ -24,6 +28,8 @@ namespace BlazorWebassembly.Pages.skiasharp
             _keyboardManager.RegisterHandler("delete", HandleDelete);
             _keyboardManager.RegisterHandler("ctrl+z", HandleUndo);
             _keyboardManager.RegisterHandler("ctrl+y", HandleRedo);
+            _keyboardManager.RegisterHandler("ctrl+c", HandleCopy);
+            _keyboardManager.RegisterHandler("ctrl+v", HandlePaste);
         }
 
         public void UnregisterShortcuts()
@@ -31,6 +37,8 @@ namespace BlazorWebassembly.Pages.skiasharp
             _keyboardManager.RegisterHandler("delete", HandleDelete);
             _keyboardManager.RegisterHandler("ctrl+z", HandleUndo);
             _keyboardManager.RegisterHandler("ctrl+y", HandleRedo);
+            _keyboardManager.RegisterHandler("ctrl+c", HandleCopy);
+            _keyboardManager.RegisterHandler("ctrl+v", HandlePaste);
         }
 
         private Task HandleDelete(KeyboardEventArgs e)
@@ -59,5 +67,17 @@ namespace BlazorWebassembly.Pages.skiasharp
             return Task.CompletedTask;
         }
 
+        private Task HandleCopy(KeyboardEventArgs e)
+        {
+            _copyPasteManager.Copy();
+            return Task.CompletedTask;
+        }
+
+
+        private Task HandlePaste(KeyboardEventArgs e)
+        {
+            _copyPasteManager.Paste();
+            return Task.CompletedTask;
+        }
     }
 }

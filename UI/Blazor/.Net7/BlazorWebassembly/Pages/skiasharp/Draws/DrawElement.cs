@@ -15,5 +15,7 @@ namespace BlazorWebassembly.Pages.skiasharp.Draws
         public abstract int GetControlPointIndex(SKPoint point);
         public abstract void UpdateControlPoint(int index, SKPoint newPosition);
         public abstract IEditOperation? GetEditOperation(int controlPointIndex);
+
+        public abstract DrawElement Clone();
     }
 }
