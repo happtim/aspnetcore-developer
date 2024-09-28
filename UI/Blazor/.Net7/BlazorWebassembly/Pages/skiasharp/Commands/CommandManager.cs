@@ -14,9 +14,13 @@ namespace BlazorWebassembly.Pages.skiasharp.Commands
             _drawManager = drawManager;
         }
 
-        public void AddCommand(ICommand command)
+        public void AddCommand(ICommand command, bool execute = true)
         {
-            command.Execute(_drawManager);
+            if (execute)
+            {
+                command.Execute(_drawManager);
+            }
+
             _commands.Add(command);
             _redoCommands.Clear();
 

@@ -30,11 +30,24 @@
     <script>
         function changeCursor(cursorType) {
             document.body.style.cursor = cursorType;
-        }
+        };
         function focusElement(element) {
             if (element) {
+                console.log('focusElement', element);
                 element.focus();
             }
+        };
+        function showEditor(textArea, x, y, text)
+        {
+            textArea.style.display = 'block';
+            textArea.style.left = x + 'px';
+            textArea.style.top = y + 'px';
+            textArea.value = text;
+            textArea.focus();
+        };
+        function hideEditor(textArea) {
+            console.log('hideEditor');
+            textArea.style.display = 'none';
         }  
     </script>
 </body>

@@ -5,7 +5,7 @@ namespace BlazorWebassembly.Pages.skiasharp.Commands.Edits
 {
     public class LineEndPointEditOperation : IEditOperation
     {
-        public void Apply(DrawElement element, object newState)
+        public void Apply(DrawElement element, object newState, object oldState)
         {
             if (element is LineElement line)
             {
@@ -13,9 +13,9 @@ namespace BlazorWebassembly.Pages.skiasharp.Commands.Edits
             }
         }
 
-        public object GetCurrentState(DrawElement element)
-        {
-            return (element as LineElement)?.End;
-        }
+        //public object GetCurrentState(DrawElement element)
+        //{
+        //    return (element as LineElement)?.End;
+        //}
     }
 }

@@ -1,0 +1,51 @@
+﻿
+<textarea @ref="textArea"
+          @oninput="OnInput"
+          @onblur="OnBlur"
+          style="position: absolute; display: none; border:1px solid black;outline:none;resize:none;padding:0px;" />
+
+@code 
+{
+    [Inject] private IJSRuntime JSRuntime { get; set; }
+
+    public string Text { get; set; }
+
+    public Action OnEditorDeactivated { get; set; }
+
+    private ElementReference textArea;
+
+    public bool IsActivated { get; set; }
+
+    public async Task ShowEditor(float x, float y)
+    {
+        await JSRuntime.InvokeVoidAsync("showEditor", textArea, x, y, Text);
+
+        await Task.Delay(300);
+
+        await JSRuntime.InvokeVoidAsync("focusElement", textArea);
+        IsActivated = true;
+
+    }
+
+    public async Task HideEditor()
+    {
+        await JSRuntime.InvokeVoidAsync("hideEditor", textArea);
+        IsActivated = false;
+        Text = "";
+    }
+
+    private async Task OnBlur(FocusEventArgs e)
+    {
+        if (IsActivated)
+        {
+            OnEditorDeactivated.Invoke();
+        }
+    }
+
+    private async Task OnInput(ChangeEventArgs e)
+    {
+        Text = e.Value.ToString();
+    }
+
+    
+}

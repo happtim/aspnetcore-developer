@@ -21,12 +21,12 @@ namespace BlazorWebassembly.Pages.skiasharp.Commands
 
         public void Execute(DrawManager drawManager)
         {
-            _operation.Apply(_element, _newState);
+            _operation.Apply(_element, _newState,_oldState);
         }
 
         public void Undo(DrawManager drawManager)
         {
-            _operation.Apply(_element, _oldState);
+            _operation.Apply(_element, _oldState, _newState);
         }
     }
 }

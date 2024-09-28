@@ -37,7 +37,9 @@ namespace BlazorWebassembly.Pages.skiasharp.Tools
 
         public void MouseUp(SKPoint worldPoint)
         {
-            _commandManager.AddCommand(new EditElementCommand(_drawElement, _editOperation, _start, worldPoint));
+            _commandManager.AddCommand(
+                new EditElementCommand(_drawElement, _editOperation, _start, worldPoint),
+                execute:false);
         }
     }
 }

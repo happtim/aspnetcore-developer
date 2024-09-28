@@ -102,10 +102,12 @@ namespace BlazorWebassembly.Pages.skiasharp.Tools
 
             //打印坐标
             //Console.WriteLine($"mouse x:{e.OffsetX} y:{e.OffsetY} . world x:{woldPoint.X} y:{woldPoint.Y}");
-            
-            _panTool?.MouseMove(worldPoint);
 
-            if (this._currentTool != null)
+            if (_panTool != null) 
+            {
+                _panTool?.MouseMove(worldPoint);
+            }
+            else  if (this._currentTool != null)
             {
                 //判断按下，与当前坐标的阈值，如果超过阈值，触发拖动事件
                 if (_isMouseDown)
