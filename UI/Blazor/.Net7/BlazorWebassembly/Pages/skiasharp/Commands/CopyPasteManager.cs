@@ -6,7 +6,7 @@ namespace BlazorWebassembly.Pages.skiasharp.Commands
     {
         private readonly SelectedManager _selectedManager;
         private readonly CommandManager _commandManager;
-        private List<DrawElement> _copiedElements = new List<DrawElement>();
+        private List<DrawingElement> _copiedElements = new List<DrawingElement>();
 
         public CopyPasteManager(
             SelectedManager selectedManager,
@@ -39,7 +39,7 @@ namespace BlazorWebassembly.Pages.skiasharp.Commands
             }
         }
 
-        private void OffsetElements(List<DrawElement> elements)
+        private void OffsetElements(List<DrawingElement> elements)
         {
             // 为粘贴的元素添加一个小偏移  
             const float offset = 10;

@@ -4,7 +4,7 @@ using System.Reflection.Metadata.Ecma335;
 
 namespace BlazorWebassembly.Pages.skiasharp.Draws
 {
-    public class TextElement : DrawElement
+    public class TextElement : DrawingElement
     {
         public SKPoint Position { get; set; }
         public string Text { get; set; }
@@ -240,7 +240,7 @@ namespace BlazorWebassembly.Pages.skiasharp.Draws
             return null;
         }
 
-        public override DrawElement Clone()
+        public override DrawingElement Clone()
         {
             var clone = new TextElement(Position, Text, Paint.Color, Paint.Typeface, BaseTextSize);
             clone.Scale = this.Scale;

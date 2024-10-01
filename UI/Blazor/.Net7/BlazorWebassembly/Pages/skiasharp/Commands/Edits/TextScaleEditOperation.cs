@@ -10,7 +10,7 @@ namespace BlazorWebassembly.Pages.skiasharp.Commands.Edits
         {
             _type = type;
         }
-        public void Apply(DrawElement element, object newState, object oldState)
+        public void Apply(DrawingElement element, object newState, object oldState)
         {
             if (element is TextElement textElement && newState is SKPoint newPosition && oldState is SKPoint oldPosition)
             {

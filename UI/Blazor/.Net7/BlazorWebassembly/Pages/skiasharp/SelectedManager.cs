@@ -1,5 +1,6 @@
 ﻿using BlazorWebassembly.Pages.skiasharp.Draws;
 using Microsoft.AspNetCore.Components.Web;
+using System.Collections.ObjectModel;
 using System.Net.NetworkInformation;
 
 namespace BlazorWebassembly.Pages.skiasharp
@@ -13,7 +14,7 @@ namespace BlazorWebassembly.Pages.skiasharp
         public event SelectionChangedEventHandler SelectionChanged;
 
         //定义鼠标悬停变更委托类型
-        public delegate void HoverChangedEventHandler(object sender, DrawElement element);
+        public delegate void HoverChangedEventHandler(object sender, DrawingElement element);
 
         //定义鼠标悬停变更事件
         public event HoverChangedEventHandler HoverChanged;
@@ -25,18 +26,20 @@ namespace BlazorWebassembly.Pages.skiasharp
 
         public event HoverControlPointIndexChangedEventHandler HoverControlPointIndexChanged;
 
-        private DrawElement? _hoverElement;
+        private DrawingElement? _hoverElement;
 
         private int _hoverControlPointIndex;
 
-        private List<DrawElement> _selectedElements;
+        private List<DrawingElement> _selectedElements;
+
+        public ObservableCollection<DrawingElement> SelectedElements { get; protected set; }
 
         public SelectedManager()
         {
-            _selectedElements = new List<DrawElement>();
+            _selectedElements = new List<DrawingElement>();
         }
 
-        public void Add(DrawElement element)
+        public void Add(DrawingElement element)
         {
             if (!_selectedElements.Contains(element))
             {
@@ -47,7 +50,7 @@ namespace BlazorWebassembly.Pages.skiasharp
             }
         }
 
-        public void AddRange(List<DrawElement> elements)
+        public void AddRange(List<DrawingElement> elements)
         {
             bool changed = false;
             foreach (var element in elements)
@@ -67,12 +70,12 @@ namespace BlazorWebassembly.Pages.skiasharp
             }
         }
 
-        public bool Contains(DrawElement element)
+        public bool Contains(DrawingElement element)
         {
             return _selectedElements.Contains(element);
         }
 
-        public bool Remove(DrawElement element)
+        public bool Remove(DrawingElement element)
         {
             bool result = false;
 
@@ -87,7 +90,7 @@ namespace BlazorWebassembly.Pages.skiasharp
             return result;
         }
 
-        public IEnumerable<DrawElement> GetSelectedElements()
+        public IEnumerable<DrawingElement> GetSelectedElements()
         {
             return _selectedElements;
         }
@@ -109,7 +112,7 @@ namespace BlazorWebassembly.Pages.skiasharp
             }
         }
 
-        public bool IsHover(DrawElement element)
+        public bool IsHover(DrawingElement element)
         {
             return _hoverElement == element;
         }
@@ -119,12 +122,12 @@ namespace BlazorWebassembly.Pages.skiasharp
             return _selectedElements.Count == 1;
         }
 
-        public bool IsEditMode(DrawElement element)
+        public bool IsEditMode(DrawingElement element)
         {
             return _selectedElements.Count == 1 && _selectedElements.Contains(element);
         }
 
-        public bool GetEditModeElement(out DrawElement element)
+        public bool GetEditModeElement(out DrawingElement element)
         {
             if (_selectedElements.Count == 1)
             {
@@ -138,7 +141,7 @@ namespace BlazorWebassembly.Pages.skiasharp
             }
         }
 
-        public void SetHover(DrawElement element)
+        public void SetHover(DrawingElement element)
         {
             if (_hoverElement != element)
             {
@@ -172,7 +175,7 @@ namespace BlazorWebassembly.Pages.skiasharp
         }
 
         //触发悬停事件的方法
-        protected virtual void OnHoverChanged(DrawElement element)
+        protected virtual void OnHoverChanged(DrawingElement element)
         {
             HoverChanged?.Invoke(this, element);
         }

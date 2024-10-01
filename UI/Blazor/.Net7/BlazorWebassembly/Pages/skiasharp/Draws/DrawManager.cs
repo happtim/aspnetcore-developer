@@ -8,12 +8,12 @@ namespace BlazorWebassembly.Pages.skiasharp.Draws
 {
     public class DrawManager
     {
-        private readonly List<DrawElement> _elements = new List<DrawElement>();
+        private readonly List<DrawingElement> _elements = new List<DrawingElement>();
 
         private SKCanvasView _skiaView = null!;
         private SelectedManager _selectedManager = null!;
 
-        public DrawElement? PreviewElement { get; set; }
+        public DrawingElement? PreviewElement { get; set; }
 
         public DrawManager(SKCanvasView skiaView,SelectedManager selectedManager)
         {
@@ -26,12 +26,12 @@ namespace BlazorWebassembly.Pages.skiasharp.Draws
             };
         }
 
-        public void AddElement(DrawElement element)
+        public void AddElement(DrawingElement element)
         {
             _elements.Add(element);
         }
 
-        public void RemoveElement(DrawElement element)
+        public void RemoveElement(DrawingElement element)
         {
             _elements.Remove(element);
         }
@@ -63,7 +63,7 @@ namespace BlazorWebassembly.Pages.skiasharp.Draws
             PreviewElement?.Draw(canvas);
         }
 
-        public DrawElement HitTest(SKPoint point)
+        public DrawingElement HitTest(SKPoint point)
         {
             for (int i = _elements.Count - 1; i >= 0; i--)
             {
@@ -76,7 +76,7 @@ namespace BlazorWebassembly.Pages.skiasharp.Draws
         }
 
 
-        public List<DrawElement> GetElementsInRect(SKRect rect)
+        public List<DrawingElement> GetElementsInRect(SKRect rect)
         {
             return _elements.Where(element => element.IsContainedIn(rect)).ToList();
         }

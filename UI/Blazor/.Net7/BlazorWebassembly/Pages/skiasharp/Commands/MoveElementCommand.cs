@@ -6,9 +6,9 @@ namespace BlazorWebassembly.Pages.skiasharp.Commands
     {
         private float _dx;
         private float _dy;
-        private DrawElement _element;
+        private DrawingElement _element;
 
-        public MoveElementCommand(DrawElement element, float dx, float dy)
+        public MoveElementCommand(DrawingElement element, float dx, float dy)
         {
             _dx = dx;
             _dy = dy;

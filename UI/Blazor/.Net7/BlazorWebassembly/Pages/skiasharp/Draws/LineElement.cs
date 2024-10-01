@@ -3,7 +3,7 @@ using SkiaSharp;
 
 namespace BlazorWebassembly.Pages.skiasharp.Draws
 {
-    public class LineElement : DrawElement
+    public class LineElement : DrawingElement
     {
         public SKPoint Start { get; set; }
         public SKPoint End { get; set; }
@@ -166,7 +166,7 @@ namespace BlazorWebassembly.Pages.skiasharp.Draws
             return null;
         }
 
-        public override DrawElement Clone()
+        public override DrawingElement Clone()
         {
             return new LineElement(Start, End, Paint.Color, Paint.StrokeWidth);
         }

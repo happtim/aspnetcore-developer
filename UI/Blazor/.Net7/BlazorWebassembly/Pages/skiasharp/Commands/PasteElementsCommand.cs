@@ -4,9 +4,9 @@ namespace BlazorWebassembly.Pages.skiasharp.Commands
 {
     public class PasteElementsCommand : ICommand
     {
-        private readonly List<DrawElement> _pastedElements;
+        private readonly List<DrawingElement> _pastedElements;
 
-        public PasteElementsCommand(List<DrawElement> pastedElements)
+        public PasteElementsCommand(List<DrawingElement> pastedElements)
         {
             _pastedElements = pastedElements;
         }

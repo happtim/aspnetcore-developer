@@ -5,12 +5,12 @@ namespace BlazorWebassembly.Pages.skiasharp.Commands
 {
     public class EditElementCommand : ICommand
     {
-        private DrawElement _element;
+        private DrawingElement _element;
         private IEditOperation _operation;
         private object _oldState;
         private object _newState;
 
-        public EditElementCommand(DrawElement element, IEditOperation operation, object oldState, object newState)
+        public EditElementCommand(DrawingElement element, IEditOperation operation, object oldState, object newState)
         {
             _element = element;
             _operation = operation;

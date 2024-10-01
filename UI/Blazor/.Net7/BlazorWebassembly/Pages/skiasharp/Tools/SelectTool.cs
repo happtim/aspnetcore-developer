@@ -48,7 +48,7 @@ namespace BlazorWebassembly.Pages.skiasharp.Tools
         {
 
             //如果是Edit模式，检测点击控制点
-            if (_selectedManager.GetEditModeElement(out DrawElement drawElement)) 
+            if (_selectedManager.GetEditModeElement(out DrawingElement drawElement)) 
             {
                 var controlPointIndex = drawElement.GetControlPointIndex(worldPoint);
 

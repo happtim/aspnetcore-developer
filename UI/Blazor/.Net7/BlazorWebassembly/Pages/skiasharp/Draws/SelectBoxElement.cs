@@ -3,7 +3,7 @@ using SkiaSharp;
 
 namespace BlazorWebassembly.Pages.skiasharp.Draws
 {
-    public class SelectBoxElement : DrawElement
+    public class SelectBoxElement : DrawingElement
     {
         public SKPoint Start { get; set; }
         public SKPoint End { get; set; }
@@ -100,7 +100,7 @@ namespace BlazorWebassembly.Pages.skiasharp.Draws
             return null;
         }
 
-        public override DrawElement Clone()
+        public override DrawingElement Clone()
         {
             return new SelectBoxElement(Start, End);
         }

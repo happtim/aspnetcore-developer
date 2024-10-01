@@ -43,7 +43,7 @@ namespace BlazorWebassembly.Pages.skiasharp.Tools
             );
 
             // 获取所有被选择框包含的元素  
-            List<DrawElement> selectedElements = _drawManager.GetElementsInRect(selectionRect);
+            List<DrawingElement> selectedElements = _drawManager.GetElementsInRect(selectionRect);
 
             // 更新选中管理器  
             if (selectedElements.Count > 0)

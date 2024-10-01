@@ -1,7 +1,6 @@
 ﻿using BlazorWebassembly.Pages.skiasharp.Commands;
 using BlazorWebassembly.Pages.skiasharp.Draws;
 using Microsoft.AspNetCore.Components;
-using Microsoft.AspNetCore.Components.Web.Virtualization;
 using SkiaSharp;
 
 namespace BlazorWebassembly.Pages.skiasharp.Tools

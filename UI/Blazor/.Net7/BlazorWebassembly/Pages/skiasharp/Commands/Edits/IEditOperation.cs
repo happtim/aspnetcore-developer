@@ -4,7 +4,7 @@ namespace BlazorWebassembly.Pages.skiasharp.Commands.Edits
 {
     public interface IEditOperation
     {
-        void Apply(DrawElement element, object newState, object oldState);
+        void Apply(DrawingElement element, object newState, object oldState);
         //object GetCurrentState(DrawElement element);
     }
 }
