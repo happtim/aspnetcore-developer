@@ -59,23 +59,11 @@
 
             _selectedManager = new SelectedManager();
 
-            _drawManager = new DrawManager(skiaView, _selectedManager);
+            _cursorManager = new CursorManager(JSRuntime);
+
+            _drawManager = new DrawManager(skiaView, _selectedManager, _cursorManager);
 
             _keyboardManager = new KeyboardManager();
-
-            _selectedManager.HoverChanged += async (s, e) =>
-            {
-                if (e != null)
-                {
-                    await _cursorManager.SetMove();
-                }
-                else
-                {
-                    await _cursorManager.SetDefault();
-                }
-
-                skiaView.Invalidate();
-            };
 
             _selectedManager.HoverControlPointIndexChanged += async (s, e) =>
             {
@@ -92,8 +80,6 @@
             };
 
             _commandManager = new CommandManager(_drawManager);
-
-            _cursorManager = new CursorManager(JSRuntime);
 
             _toolManager = new ToolManager(_viewportManager, _drawManager, _commandManager, _cursorManager, _selectedManager,_keyboardManager);
 

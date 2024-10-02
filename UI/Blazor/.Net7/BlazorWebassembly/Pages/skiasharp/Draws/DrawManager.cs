@@ -12,10 +12,13 @@ namespace BlazorWebassembly.Pages.skiasharp.Draws
 
         private SKCanvasView _skiaView = null!;
         private SelectedManager _selectedManager = null!;
+        private CursorManager _cursorManager = null!;
 
-        public DrawingElement? PreviewElement { get; set; }
+        DrawingElement? _previewElement;
 
-        public DrawManager(SKCanvasView skiaView,SelectedManager selectedManager)
+        DrawingElement? _hoverElement;
+
+        public DrawManager(SKCanvasView skiaView,SelectedManager selectedManager, CursorManager cursorManager)
         {
             _skiaView = skiaView;
             _selectedManager = selectedManager;
@@ -24,6 +27,32 @@ namespace BlazorWebassembly.Pages.skiasharp.Draws
             {
                 skiaView.Invalidate();
             };
+
+            _cursorManager = cursorManager;
+        }
+
+        public void SetHoverElement(DrawingElement? element)
+        {
+            if (_hoverElement != element)
+            {
+                _hoverElement = element;
+
+                if (element == null) 
+                {
+                    _cursorManager.SetDefault();
+                }
+                else
+                {
+                    _cursorManager.SetMove();
+                }
+
+                _skiaView.Invalidate();
+            }
+        }
+
+        public void SetPreviewElement(DrawingElement? element)
+        {
+            _previewElement = element;
         }
 
         public void AddElement(DrawingElement element)
@@ -49,7 +78,7 @@ namespace BlazorWebassembly.Pages.skiasharp.Draws
                 {
                     element.DrawHighlight(canvas);
                 }
-                else if (_selectedManager.IsHover(element))
+                else if (_hoverElement == element )
                 {
                     element.DrawHighlight(canvas);
                 }
@@ -60,7 +89,7 @@ namespace BlazorWebassembly.Pages.skiasharp.Draws
 
             }
 
-            PreviewElement?.Draw(canvas);
+            _previewElement?.Draw(canvas);
         }
 
         public DrawingElement HitTest(SKPoint point)

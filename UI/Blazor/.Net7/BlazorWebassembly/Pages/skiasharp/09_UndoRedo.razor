@@ -56,13 +56,13 @@
 
             _viewportManager = new ViewportManager(e.Info.Size, dpi: (float)skiaView.Dpi);
 
-            _drawManager = new DrawManager(skiaView, _selectedManager);
+            _cursorManager = new CursorManager(JSRuntime);
+
+            _drawManager = new DrawManager(skiaView, _selectedManager,_cursorManager);
 
             _selectedManager = new SelectedManager();
 
             _commandManager = new CommandManager(_drawManager);
-
-            _cursorManager = new CursorManager(JSRuntime);
 
             _keyboardManager = new KeyboardManager();
 

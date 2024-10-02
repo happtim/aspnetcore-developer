@@ -13,11 +13,6 @@ namespace BlazorWebassembly.Pages.skiasharp
         // 定义选择便变更事件  
         public event SelectionChangedEventHandler SelectionChanged;
 
-        //定义鼠标悬停变更委托类型
-        public delegate void HoverChangedEventHandler(object sender, DrawingElement element);
-
-        //定义鼠标悬停变更事件
-        public event HoverChangedEventHandler HoverChanged;
 
         //定义控制点悬停变更委托类型
         public delegate void HoverControlPointIndexChangedEventHandler(object sender, int index);
@@ -25,8 +20,6 @@ namespace BlazorWebassembly.Pages.skiasharp
         //定义控制点悬停变更事件
 
         public event HoverControlPointIndexChangedEventHandler HoverControlPointIndexChanged;
-
-        private DrawingElement? _hoverElement;
 
         private int _hoverControlPointIndex;
 
@@ -112,16 +105,6 @@ namespace BlazorWebassembly.Pages.skiasharp
             }
         }
 
-        public bool IsHover(DrawingElement element)
-        {
-            return _hoverElement == element;
-        }
-
-        public bool IsEditMode()
-        {
-            return _selectedElements.Count == 1;
-        }
-
         public bool IsEditMode(DrawingElement element)
         {
             return _selectedElements.Count == 1 && _selectedElements.Contains(element);
@@ -138,16 +121,6 @@ namespace BlazorWebassembly.Pages.skiasharp
             {
                 element = null;
                 return false;
-            }
-        }
-
-        public void SetHover(DrawingElement element)
-        {
-            if (_hoverElement != element)
-            {
-                _hoverElement = element;
-
-                OnHoverChanged(element);
             }
         }
 
@@ -174,11 +147,6 @@ namespace BlazorWebassembly.Pages.skiasharp
             SelectionChanged?.Invoke(this, EventArgs.Empty);
         }
 
-        //触发悬停事件的方法
-        protected virtual void OnHoverChanged(DrawingElement element)
-        {
-            HoverChanged?.Invoke(this, element);
-        }
 
         //触发悬停控制点事件的方法
         protected virtual void OnHoverControlPointIndexChanged(int index)

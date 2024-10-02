@@ -25,7 +25,7 @@ namespace BlazorWebassembly.Pages.skiasharp.Tools
             var end = worldPoint;
 
             var selectBox = new SelectBoxElement(_start.Value, end);
-            _drawManager.PreviewElement = selectBox;
+            _drawManager.SetPreviewElement(selectBox);
 
             _drawManager.Invalidate(); // 触发重绘
         }
@@ -56,7 +56,7 @@ namespace BlazorWebassembly.Pages.skiasharp.Tools
             }
 
             // 清理临时变量和预览元素
-            _drawManager.PreviewElement = null;
+            _drawManager.SetPreviewElement(null);
             _drawManager.Invalidate();
         }
     }

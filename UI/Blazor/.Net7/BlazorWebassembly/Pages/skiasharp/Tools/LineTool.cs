@@ -40,7 +40,7 @@ namespace BlazorWebassembly.Pages.skiasharp.Tools
 
                 _toolManager.SetTool(null);
 
-                _drawManager.PreviewElement = null;
+                _drawManager.SetPreviewElement(null);
 
                 _cursorManager.SetDefault();
             }
@@ -68,7 +68,7 @@ namespace BlazorWebassembly.Pages.skiasharp.Tools
 
                 var line = new LineElement(_start, _end, SKColors.Black);
 
-                _drawManager.PreviewElement = line;
+                _drawManager.SetPreviewElement(line);
 
                 _drawManager.Invalidate(); // 触发重绘
             }

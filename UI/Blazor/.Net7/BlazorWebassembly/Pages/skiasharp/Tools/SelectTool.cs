@@ -135,7 +135,7 @@ namespace BlazorWebassembly.Pages.skiasharp.Tools
                 //鼠标移动到元素上高亮显示
                 var item = _drawManager.HitTest(worldPoint);
 
-                _selectedManager.SetHover(item);
+                _drawManager.SetHoverElement(item);
             }
    
 
