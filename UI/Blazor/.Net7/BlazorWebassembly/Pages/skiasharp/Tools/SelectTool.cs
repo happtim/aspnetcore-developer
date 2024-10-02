@@ -48,8 +48,10 @@ namespace BlazorWebassembly.Pages.skiasharp.Tools
         {
 
             //如果是Edit模式，检测点击控制点
-            if (_selectedManager.GetEditModeElement(out DrawingElement drawElement)) 
+            if (_selectedManager.ClickedElement != null) 
             {
+                var drawElement = _selectedManager.ClickedElement;
+
                 var controlPointIndex = drawElement.GetControlPointIndex(worldPoint);
 
                 if (controlPointIndex != -1)
@@ -66,6 +68,9 @@ namespace BlazorWebassembly.Pages.skiasharp.Tools
             }
 
             var item = _drawManager.HitTest(worldPoint);
+
+            _selectedManager.SetClickedElement(item);
+
             _start = worldPoint;
 
             //点击空白处，清空选中, 设置SelectBoxTool
@@ -124,7 +129,7 @@ namespace BlazorWebassembly.Pages.skiasharp.Tools
         public void MouseMove(SKPoint worldPoint)
         {
             int index = -1;
-            if (_selectedManager.GetEditModeElement(out var drawElement))
+            if (_selectedManager.ClickedElement is var drawElement && drawElement != null)
             {
                 index = drawElement.GetControlPointIndex(worldPoint);
                 if (drawElement.SetHoverControlPointIndex(index, _cursorManager))

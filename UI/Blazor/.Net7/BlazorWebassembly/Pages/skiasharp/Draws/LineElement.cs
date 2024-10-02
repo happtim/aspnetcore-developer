@@ -174,7 +174,7 @@ namespace BlazorWebassembly.Pages.skiasharp.Draws
         }
 
 
-        public IEnumerable<ControlPoint> GetControlPoints()
+        private IEnumerable<ControlPoint> GetControlPoints()
         {
             yield return new ControlPoint { Position = Start, Type = "Start" };
             yield return new ControlPoint { Position = End, Type = "End" };

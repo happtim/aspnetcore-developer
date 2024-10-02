@@ -13,8 +13,16 @@ namespace BlazorWebassembly.Pages.skiasharp
         // 定义选择便变更事件  
         public event SelectionChangedEventHandler SelectionChanged;
 
+        //定义点击元素变更委托类型
+        public delegate void ClickedElementChangedEventHandler(object sender, EventArgs e);
+
+        //定义点击元素变更事件
+        public event ClickedElementChangedEventHandler ClickedElementChanged;
+
 
         private List<DrawingElement> _selectedElements;
+
+        public DrawingElement? ClickedElement { get; protected set; }
 
         public SelectedManager()
         {
@@ -94,22 +102,14 @@ namespace BlazorWebassembly.Pages.skiasharp
             }
         }
 
-        public bool IsEditMode(DrawingElement element)
+        public void SetClickedElement(DrawingElement? element)
         {
-            return _selectedElements.Count == 1 && _selectedElements.Contains(element);
-        }
+            if(ClickedElement != element)
+            {
+                ClickedElement = element;
 
-        public bool GetEditModeElement(out DrawingElement element)
-        {
-            if (_selectedElements.Count == 1)
-            {
-                element = _selectedElements.First();
-                return true;
-            }
-            else
-            {
-                element = null;
-                return false;
+                // 触发事件
+                OnClickedElementChanged();
             }
         }
 
@@ -117,6 +117,12 @@ namespace BlazorWebassembly.Pages.skiasharp
         protected virtual void OnSelectionChanged()
         {
             SelectionChanged?.Invoke(this, EventArgs.Empty);
+        }
+
+        // 触发点击元素变更事件的方法
+        protected virtual void OnClickedElementChanged()
+        {
+            ClickedElementChanged?.Invoke(this, EventArgs.Empty);
         }
 
 

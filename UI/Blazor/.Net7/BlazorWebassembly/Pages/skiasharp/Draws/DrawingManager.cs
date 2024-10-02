@@ -28,6 +28,11 @@ namespace BlazorWebassembly.Pages.skiasharp.Draws
                 skiaView.Invalidate();
             };
 
+            _selectedManager.ClickedElementChanged += (s, e) =>
+            {
+                skiaView.Invalidate();
+            };
+
             _cursorManager = cursorManager;
         }
 
@@ -69,7 +74,7 @@ namespace BlazorWebassembly.Pages.skiasharp.Draws
         {
             foreach (var element in _elements)
             {
-                if (_selectedManager.IsEditMode(element)) 
+                if (_selectedManager.ClickedElement == element) 
                 {
                     element.DrawHighlight(canvas);
                     element.DrawControlPoints(canvas);
