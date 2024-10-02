@@ -7,13 +7,13 @@ namespace BlazorWebassembly.Pages.skiasharp.Tools
     public class PanTool : ToolBase, ITool
     {
         SKPoint? _touchLocation;
-        DrawManager _drawManager;
+        DrawingManager _drawManager;
         ToolManager _toolManager;
         ViewportManager _viewportManager;
         CursorManager _cursorManager;
 
         public PanTool(
-            DrawManager drawManager, 
+            DrawingManager drawManager, 
             ToolManager toolManager , 
             ViewportManager viewportManager,
             CursorManager cursorManager

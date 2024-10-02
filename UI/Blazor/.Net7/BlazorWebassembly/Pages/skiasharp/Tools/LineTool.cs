@@ -9,13 +9,13 @@ namespace BlazorWebassembly.Pages.skiasharp.Tools
         private SKPoint _start;
         private SKPoint _end;
         private bool _isDrawing;
-        private DrawManager _drawManager;
+        private DrawingManager _drawManager;
         private ToolManager _toolManager;
         private CommandManager _commandManager;
         private CursorManager _cursorManager;
 
         public LineTool(
-            DrawManager drawManager,
+            DrawingManager drawManager,
             ToolManager toolManager, 
             CommandManager commandManager,
             CursorManager cursorManager)

@@ -6,14 +6,14 @@ namespace BlazorWebassembly.Pages.skiasharp.Tools
 {
     public class SelectMoveTool : ToolBase, ITool
     {
-        private DrawManager _drawManager;
+        private DrawingManager _drawManager;
         private CommandManager _commandManager;
         private SelectedManager _selectedManager;
         //位置差值
         private SKPoint _diff;
         private SKPoint _start;
 
-        public SelectMoveTool(SelectedManager selectedManager, DrawManager drawManager, CommandManager commandManager)
+        public SelectMoveTool(SelectedManager selectedManager, DrawingManager drawManager, CommandManager commandManager)
         {
             _drawManager = drawManager;
             _selectedManager = selectedManager;

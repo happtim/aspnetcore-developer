@@ -15,12 +15,12 @@ namespace BlazorWebassembly.Pages.skiasharp.Commands
             _element = element;
         }
 
-        public void Execute(DrawManager drawManager)
+        public void Execute(DrawingManager drawManager)
         {
             _element.Move(_dx, _dy);
         }
 
-        public void Undo(DrawManager drawManager)
+        public void Undo(DrawingManager drawManager)
         {
             _element.Move(-_dx, -_dy);
         }

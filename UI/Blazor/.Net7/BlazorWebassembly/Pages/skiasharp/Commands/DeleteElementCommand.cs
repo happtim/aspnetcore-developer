@@ -12,7 +12,7 @@ namespace BlazorWebassembly.Pages.skiasharp.Commands
             _elementsToDelete = elementsToDelete;
         }
 
-        public void Execute(DrawManager drawManager)
+        public void Execute(DrawingManager drawManager)
         {
             _deletedElements = new List<DrawingElement>(_elementsToDelete);
             foreach (var element in _elementsToDelete)
@@ -21,7 +21,7 @@ namespace BlazorWebassembly.Pages.skiasharp.Commands
             }
         }
 
-        public void Undo(DrawManager drawManager)
+        public void Undo(DrawingManager drawManager)
         {
             foreach (var element in _deletedElements)
             {

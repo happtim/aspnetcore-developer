@@ -34,7 +34,7 @@
 {
     SKCanvasView skiaView = null!;
     private ViewportManager _viewportManager = null!;
-    private DrawManager _drawManager = null!;
+    private DrawingManager _drawManager = null!;
     private ToolManager _toolManager = null!;
     private CommandManager _commandManager = null!;
     private CursorManager _cursorManager = null!;
@@ -61,7 +61,7 @@
 
             _cursorManager = new CursorManager(JSRuntime);
 
-            _drawManager = new DrawManager(skiaView, _selectedManager, _cursorManager);
+            _drawManager = new DrawingManager(skiaView, _selectedManager, _cursorManager);
 
             _keyboardManager = new KeyboardManager();
 

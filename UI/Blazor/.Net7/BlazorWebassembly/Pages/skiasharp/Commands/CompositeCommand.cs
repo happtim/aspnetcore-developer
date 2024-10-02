@@ -11,7 +11,7 @@ namespace BlazorWebassembly.Pages.skiasharp.Commands
             _commands.Add(command);
         }
 
-        public void Execute(DrawManager drawManager)
+        public void Execute(DrawingManager drawManager)
         {
             foreach (var command in _commands)
             {
@@ -19,7 +19,7 @@ namespace BlazorWebassembly.Pages.skiasharp.Commands
             }
         }
 
-        public void Undo(DrawManager drawManager)
+        public void Undo(DrawingManager drawManager)
         {
             for (int i = _commands.Count - 1; i >= 0; i--)
             {

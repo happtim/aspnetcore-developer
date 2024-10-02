@@ -10,11 +10,11 @@ namespace BlazorWebassembly.Pages.skiasharp.Tools
         private DrawingElement _drawElement;
         private int _controlPointIndex;
         private CommandManager _commandManager;
-        private DrawManager _drawManager;
+        private DrawingManager _drawManager;
         private SKPoint _start;
         private IEditOperation? _editOperation;
 
-        public SelectEditTool(DrawingElement drawElement, CommandManager commandManager, DrawManager drawManager)
+        public SelectEditTool(DrawingElement drawElement, CommandManager commandManager, DrawingManager drawManager)
         {
             _drawElement = drawElement;
             _commandManager = commandManager;

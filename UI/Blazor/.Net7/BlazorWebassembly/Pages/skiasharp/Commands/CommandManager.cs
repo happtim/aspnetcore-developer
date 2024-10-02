@@ -5,11 +5,11 @@ namespace BlazorWebassembly.Pages.skiasharp.Commands
 {
     public class CommandManager
     {
-        private DrawManager _drawManager;
+        private DrawingManager _drawManager;
         private readonly List<ICommand> _redoCommands = new List<ICommand>();
         private readonly List<ICommand> _commands = new List<ICommand>();
 
-        public CommandManager(DrawManager drawManager)
+        public CommandManager(DrawingManager drawManager)
         {
             _drawManager = drawManager;
         }

@@ -8,9 +8,9 @@ namespace BlazorWebassembly.Pages.skiasharp.Tools
 {
     public class ToolManager
     {
-        public ITool? _currentTool = null;
+        ITool? _currentTool = null;
 
-        public ITool? _panTool = null;
+        ITool? _panTool = null;
 
         //鼠标拖动事件
         private bool _isMouseDown = false;
@@ -20,7 +20,7 @@ namespace BlazorWebassembly.Pages.skiasharp.Tools
         private const int DragThreshold = 5; // 像素阈值 
 
         private ViewportManager _viewportManager;
-        private DrawManager _drawManager;
+        private DrawingManager _drawManager;
         private CommandManager _commandManager;
         private CursorManager _cursorManager;
         private SelectedManager _selectedManager;
@@ -28,7 +28,7 @@ namespace BlazorWebassembly.Pages.skiasharp.Tools
 
         public ToolManager(
             ViewportManager viewportManager, 
-            DrawManager drawManager, 
+            DrawingManager drawManager, 
             CommandManager commandManager,
             CursorManager cursorManager,
             SelectedManager selectedManager,

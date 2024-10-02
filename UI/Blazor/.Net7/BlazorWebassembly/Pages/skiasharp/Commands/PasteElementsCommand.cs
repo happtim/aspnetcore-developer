@@ -11,7 +11,7 @@ namespace BlazorWebassembly.Pages.skiasharp.Commands
             _pastedElements = pastedElements;
         }
 
-        public void Execute(DrawManager drawManager)
+        public void Execute(DrawingManager drawManager)
         {
             foreach (var element in _pastedElements)
             {
@@ -19,7 +19,7 @@ namespace BlazorWebassembly.Pages.skiasharp.Commands
             }
         }
 
-        public void Undo(DrawManager drawManager)
+        public void Undo(DrawingManager drawManager)
         {
             foreach (var element in _pastedElements)
             {

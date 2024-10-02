@@ -4,7 +4,7 @@ namespace BlazorWebassembly.Pages.skiasharp.Commands
 {
     public interface ICommand
     {
-        void Execute(DrawManager drawManager);
-        void Undo(DrawManager drawManager);
+        void Execute(DrawingManager drawManager);
+        void Undo(DrawingManager drawManager);
     }
 }

@@ -6,7 +6,7 @@ namespace BlazorWebassembly.Pages.skiasharp.Tools
 {
     public class SelectTool : ToolBase, ITool
     {
-        private DrawManager _drawManager;
+        private DrawingManager _drawManager;
         private SelectedManager _selectedManager;
         private ToolManager _toolManager;
         private CommandManager _commandManager;
@@ -18,7 +18,7 @@ namespace BlazorWebassembly.Pages.skiasharp.Tools
 
 
         public SelectTool(
-            DrawManager drawManager, 
+            DrawingManager drawManager, 
             SelectedManager selectedManager,
             ToolManager toolManager,
             CommandManager commandManager,

@@ -6,10 +6,10 @@ namespace BlazorWebassembly.Pages.skiasharp.Tools
     public class SelectBoxTool : ToolBase, ITool
     {
         private SKPoint? _start;
-        private DrawManager _drawManager;
+        private DrawingManager _drawManager;
         private SelectedManager _selectedManager;
 
-        public SelectBoxTool(DrawManager drawManager, SelectedManager selectedManager)
+        public SelectBoxTool(DrawingManager drawManager, SelectedManager selectedManager)
         {
             _drawManager = drawManager;
             _selectedManager = selectedManager;

@@ -10,12 +10,12 @@ namespace BlazorWebassembly.Pages.skiasharp.Commands
             _element = element;
         }
 
-        public void Execute(DrawManager drawManager)
+        public void Execute(DrawingManager drawManager)
         {
             drawManager.AddElement(_element);
         }
 
-        public void Undo(DrawManager drawManager)
+        public void Undo(DrawingManager drawManager)
         {
             drawManager.RemoveElement(_element);
         }

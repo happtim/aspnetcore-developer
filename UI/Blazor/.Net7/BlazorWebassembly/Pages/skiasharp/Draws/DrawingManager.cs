@@ -6,7 +6,7 @@ using System.Xml.Linq;
 
 namespace BlazorWebassembly.Pages.skiasharp.Draws
 {
-    public class DrawManager
+    public class DrawingManager
     {
         private readonly List<DrawingElement> _elements = new List<DrawingElement>();
 
@@ -18,7 +18,7 @@ namespace BlazorWebassembly.Pages.skiasharp.Draws
 
         DrawingElement? _hoverElement;
 
-        public DrawManager(SKCanvasView skiaView,SelectedManager selectedManager, CursorManager cursorManager)
+        public DrawingManager(SKCanvasView skiaView,SelectedManager selectedManager, CursorManager cursorManager)
         {
             _skiaView = skiaView;
             _selectedManager = selectedManager;
