@@ -65,20 +65,6 @@
 
             _keyboardManager = new KeyboardManager();
 
-            _selectedManager.HoverControlPointIndexChanged += async (s, e) =>
-            {
-                if (e != -1)
-                {
-                    await _cursorManager.SetPointer();
-                }
-                else
-                {
-                    await _cursorManager.SetDefault();
-                }
-
-                skiaView.Invalidate();
-            };
-
             _commandManager = new CommandManager(_drawManager);
 
             _toolManager = new ToolManager(_viewportManager, _drawManager, _commandManager, _cursorManager, _selectedManager,_keyboardManager);

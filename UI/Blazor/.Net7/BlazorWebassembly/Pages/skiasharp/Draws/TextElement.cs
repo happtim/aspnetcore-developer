@@ -14,6 +14,7 @@ namespace BlazorWebassembly.Pages.skiasharp.Draws
 
         public float minScale = 0.2f;
         public float maxScale = 5.0f;
+        private int _hoverControlPointIndex = -1;
 
         public TextElement(SKPoint position, string text, SKColor color, SKTypeface typeface, float textSize = 16)
         {
@@ -81,7 +82,7 @@ namespace BlazorWebassembly.Pages.skiasharp.Draws
             return rect.Contains(textRect);
         }
 
-        public override void DrawControlPoints(SKCanvas canvas, int hoverControlPointIndex)
+        public override void DrawControlPoints(SKCanvas canvas)
         {
             var controlPoints = GetControlPoints().ToList();
             using var paint = new SKPaint();
@@ -91,7 +92,7 @@ namespace BlazorWebassembly.Pages.skiasharp.Draws
             {
                 var point = controlPoints[i].Position;
 
-                if (i == hoverControlPointIndex)
+                if (i == _hoverControlPointIndex)
                 {
                     paint.Style = SKPaintStyle.Fill;
                     paint.Color = new SKColor(0, 0, 255, 30);
@@ -120,6 +121,30 @@ namespace BlazorWebassembly.Pages.skiasharp.Draws
                 }
             }
             return -1;
+        }
+
+        public override bool SetHoverControlPointIndex(int index, CursorManager? cursorManager = null)
+        {
+            if (_hoverControlPointIndex != index)
+            {
+                _hoverControlPointIndex = index;
+
+                if (cursorManager != null)
+                {
+                    if (index >= 0)
+                    {
+                        cursorManager.SetPointer();
+                    }
+                    else
+                    {
+                        cursorManager.SetDefault();
+                    }
+                }
+
+                return true;
+            }
+
+            return false;
         }
 
         public IEnumerable<ControlPoint> GetControlPoints()
@@ -247,5 +272,7 @@ namespace BlazorWebassembly.Pages.skiasharp.Draws
             clone.Paint.TextSize = clone.BaseTextSize * clone.Scale;
             return clone;
         }
+
+
     }
 }

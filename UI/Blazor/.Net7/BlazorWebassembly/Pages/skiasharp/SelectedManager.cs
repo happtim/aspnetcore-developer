@@ -14,18 +14,7 @@ namespace BlazorWebassembly.Pages.skiasharp
         public event SelectionChangedEventHandler SelectionChanged;
 
 
-        //定义控制点悬停变更委托类型
-        public delegate void HoverControlPointIndexChangedEventHandler(object sender, int index);
-
-        //定义控制点悬停变更事件
-
-        public event HoverControlPointIndexChangedEventHandler HoverControlPointIndexChanged;
-
-        private int _hoverControlPointIndex;
-
         private List<DrawingElement> _selectedElements;
-
-        public ObservableCollection<DrawingElement> SelectedElements { get; protected set; }
 
         public SelectedManager()
         {
@@ -124,35 +113,12 @@ namespace BlazorWebassembly.Pages.skiasharp
             }
         }
 
-        public void SetHoverControlPointIndex(int index)
-        {
-
-            if (_hoverControlPointIndex != index)
-            {
-                _hoverControlPointIndex = index;
-
-                OnHoverControlPointIndexChanged(index);
-            }
-        }
-
-        public int GetHoverControlPointIndex()
-        {
-            return _hoverControlPointIndex;
-        }
-
-
         // 触发选择事件的方法  
         protected virtual void OnSelectionChanged()
         {
             SelectionChanged?.Invoke(this, EventArgs.Empty);
         }
 
-
-        //触发悬停控制点事件的方法
-        protected virtual void OnHoverControlPointIndexChanged(int index)
-        {
-            HoverControlPointIndexChanged?.Invoke(this, index);
-        }
 
     }
 }

@@ -9,6 +9,8 @@ namespace BlazorWebassembly.Pages.skiasharp.Draws
         public SKPoint End { get; set; }
         public SKPaint Paint { get; set; }
 
+        private int _hoverControlPointIndex = -1;
+
         public LineElement(SKPoint start, SKPoint end, SKColor color, float strokeWidth = 2)
         {
             Start = start;
@@ -107,7 +109,7 @@ namespace BlazorWebassembly.Pages.skiasharp.Draws
             return (float)Math.Sqrt(dx * dx + dy * dy);
         }
 
-        public override void DrawControlPoints(SKCanvas canvas, int hoverControlPointIndex)
+        public override void DrawControlPoints(SKCanvas canvas)
         {
 
             using var paint = new SKPaint();
@@ -116,7 +118,7 @@ namespace BlazorWebassembly.Pages.skiasharp.Draws
             foreach (var point in GetControlPoints())
             {
 
-                if (index == hoverControlPointIndex)
+                if (index == _hoverControlPointIndex)
                 {
                     paint.Style = SKPaintStyle.Fill;
                     paint.Color = new SKColor(0, 0, 255, 30);
@@ -146,6 +148,31 @@ namespace BlazorWebassembly.Pages.skiasharp.Draws
             return -1;
         }
 
+        public override bool SetHoverControlPointIndex(int index, CursorManager? cursorManager = null)
+        {
+
+            if (_hoverControlPointIndex != index) 
+            {
+                _hoverControlPointIndex = index;
+
+                if (cursorManager != null)
+                {
+                    if (index == 0 || index == 1)
+                    {
+                        cursorManager.SetPointer();
+                    }
+                    else
+                    {
+                        cursorManager.SetDefault();
+                    }
+                }
+                return true;
+            }
+
+            return false;
+
+        }
+
 
         public IEnumerable<ControlPoint> GetControlPoints()
         {
@@ -170,5 +197,7 @@ namespace BlazorWebassembly.Pages.skiasharp.Draws
         {
             return new LineElement(Start, End, Paint.Color, Paint.StrokeWidth);
         }
+
+
     }
 }

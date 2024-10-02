@@ -79,7 +79,7 @@ namespace BlazorWebassembly.Pages.skiasharp.Draws
             End = new SKPoint(End.X + dx, End.Y + dy);
         }
 
-        public override void DrawControlPoints(SKCanvas canvas, int hoverControlPointIndex )
+        public override void DrawControlPoints(SKCanvas canvas )
         {
            
         }
@@ -103,6 +103,12 @@ namespace BlazorWebassembly.Pages.skiasharp.Draws
         public override DrawingElement Clone()
         {
             return new SelectBoxElement(Start, End);
+        }
+
+        public override bool SetHoverControlPointIndex(int index, CursorManager? cursorManager = null)
+        {
+            return false;
+
         }
     }
 }

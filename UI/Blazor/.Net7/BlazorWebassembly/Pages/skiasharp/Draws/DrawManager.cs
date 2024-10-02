@@ -72,7 +72,7 @@ namespace BlazorWebassembly.Pages.skiasharp.Draws
                 if (_selectedManager.IsEditMode(element)) 
                 {
                     element.DrawHighlight(canvas);
-                    element.DrawControlPoints(canvas, _selectedManager.GetHoverControlPointIndex());
+                    element.DrawControlPoints(canvas);
                 }
                 else if (_selectedManager.Contains(element)) 
                 {

@@ -127,7 +127,11 @@ namespace BlazorWebassembly.Pages.skiasharp.Tools
             if (_selectedManager.GetEditModeElement(out var drawElement))
             {
                 index = drawElement.GetControlPointIndex(worldPoint);
-                _selectedManager.SetHoverControlPointIndex(index);
+                if (drawElement.SetHoverControlPointIndex(index, _cursorManager))
+                {
+                    _drawManager.Invalidate();
+                }
+
             }
 
             if(index == -1)
