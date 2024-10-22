@@ -1,0 +1,3 @@
+SKBitmap.linq
+SKSurface.linq
+ClipRect.linq

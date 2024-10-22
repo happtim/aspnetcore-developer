@@ -7,7 +7,7 @@
 // 创建一个几何工厂  
 var geometryFactory = new GeometryFactory();
 
-// 创建一个R树  
+// 创建一个R树(静态树)
 var tree = new STRtree<string>();
 
 // 创建并插入一些几何图形  
