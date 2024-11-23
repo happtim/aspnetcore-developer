@@ -1,0 +1,184 @@
+﻿@page "/"
+
+@using GridStack.Blazor
+@using GridStack.Components
+
+<PageTitle>GridStask Blazor</PageTitle>
+
+<div class="page">
+    <div class="header">
+        <button class="button" @onclick="@OnAddWidget">Add widget</button>
+        <button class="button" @onclick="@OnToggleEnabledState">@(_isDisabled ? "Enable grid" : "Disable grid")</button>
+        <button class="button" @onclick="@SaveWidgets">Save</button>
+    </div>
+
+    <div class="grid-wrapper">
+
+        <div class="@(_isDisabled ? "grid-disabled" : "grid-enabled")">
+
+            <GsGrid @ref="@_grid" Options="@_gsGridOptions" OnEnable="@OnGridEnabled" OnDisable="@OnGridDisabled">
+
+                @foreach (var widget in _widgets)
+                {
+                    var id = widget.Id;
+                    <GsWidget Options="@GetWidgetOptions(id)">
+                        <AppWidget Id=@id
+                                   CanDelete="@(!_isDisabled)"
+                                   OnDelete="@OnDeleteWidget" />
+                    </GsWidget>
+                }
+
+            </GsGrid>
+        </div>
+    </div>
+</div>
+
+
+
+@code
+{
+    private bool _isDisabled;
+    private GsGrid _grid = null!;
+    private static uint _count;
+    private List<WidgetHolder> _widgets = new List<WidgetHolder>()
+    {
+        new WidgetHolder {Id = "markup-1", W = 2, H = 2 , IsAdded = true},
+        new WidgetHolder {Id = "markup-2", W = 2, H = 2 , IsAdded = true},
+    };
+
+    private sealed record WidgetHolder
+    {
+        public required string Id { get; init; }
+
+        public uint? X { get; init; }
+
+        public uint? Y { get; init; }
+
+        public uint W { get; init; }
+
+        public uint H { get; init; }
+
+        public bool IsAdded { get; set; }
+    }
+
+    private readonly GsWidgetOptions _gsMarkupValueAppWidgetOptions = new()
+    {
+        AutoPosition = true,
+        NoResize = true,
+        MinW = 2,
+        MinH = 2
+    };
+
+    private readonly GsWidgetOptions _gsRuntimeWidgetOptions = new()
+        {
+            W = 1,
+            H = 1,
+            MaxH = 2,
+            MaxW = 2,
+            AutoPosition = true
+        };
+
+    private readonly GsGridOptions _gsGridOptions = new()
+    {
+        AlwaysShowResizeHandle = true,
+        Float = true,
+        MaxRow = 6,
+        MinRow = 2,
+        Margin = "10px",
+        Draggable = new GsDraggableOptions
+        {
+            Scroll = true
+        }
+    };
+
+    private GsWidgetOptions GetWidgetOptions(string id)
+    {
+        return id.Split("-")[0] switch
+        {
+            "markup" => _gsMarkupValueAppWidgetOptions with
+            {
+                Id = id
+            },
+            "runtime" => _gsRuntimeWidgetOptions with
+            {
+                Id = id
+            },
+            _ => throw new NotImplementedException()
+        };
+    }
+
+    private async Task OnAddWidget()
+    {
+        var id = $"runtime-{_count++}";
+
+        var widget = new WidgetHolder
+        {
+            Id = id,
+            X = 0,
+            Y = 0,
+            W = 2,
+            H = 1
+        };
+
+        _widgets.Add(widget);
+    }
+
+    private async Task OnDeleteWidget(string id)
+    {
+        await _grid.RemoveWidget(id);
+        await _grid.Compact();
+    }
+
+    private async Task SaveWidgets()
+    {
+        var items = await _grid.GetGridItems();
+
+        foreach (var item in items)
+        {
+            Console.WriteLine($"Id: {item.Id}, X: {item.X}, Y: {item.Y}, W: {item.W}, H: {item.H}");
+        }
+    }
+
+    private async Task OnToggleEnabledState()
+    {
+        if (_isDisabled)
+        {
+            await _grid.Enable();
+        }
+        else
+        {
+            await _grid.Disable();
+        }
+    }
+
+    private void OnGridDisabled()
+    {
+        Console.WriteLine("disabled");
+        _isDisabled = true;
+    }
+
+    private void OnGridEnabled()
+    {
+        Console.WriteLine("enabled");
+        _isDisabled = false;
+    }
+
+    protected override async Task OnAfterRenderAsync(bool firstRender)
+    {
+        foreach (var widget in _widgets)
+        {
+            if (widget.IsAdded)
+            {
+                continue;
+            }
+
+            Console.WriteLine($"adding {widget.Id}");
+
+            var gridWidget = await _grid.MakeWidget(widget.Id);
+
+            widget.IsAdded = true;
+
+            Console.WriteLine($"added widget {gridWidget}");
+        }
+    }
+}
