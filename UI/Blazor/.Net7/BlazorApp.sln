@@ -7,7 +7,11 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "BlazorApp", "BlazorApp\Blaz
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "BlazorWebassembly", "BlazorWebassembly\BlazorWebassembly.csproj", "{1F7DEC88-90DA-4729-9428-3BBA2E7BE08D}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GridStack", "GridStack\GridStack.csproj", "{BEFE325E-D1B6-45E2-874F-C4DC41510A48}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "GridStack", "GridStack\GridStack.csproj", "{BEFE325E-D1B6-45E2-874F-C4DC41510A48}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MudBlazorServer", "MudBlazorServer\MudBlazorServer.csproj", "{B74EC343-8E58-49BC-A113-EEBC6256DC45}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MudBlazorWasm", "MudBlazorWasm\MudBlazorWasm.csproj", "{49CA44E7-89FA-4BB4-AA83-B6E286868D88}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -27,6 +31,14 @@ Global
 		{BEFE325E-D1B6-45E2-874F-C4DC41510A48}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{BEFE325E-D1B6-45E2-874F-C4DC41510A48}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{BEFE325E-D1B6-45E2-874F-C4DC41510A48}.Release|Any CPU.Build.0 = Release|Any CPU
+		{B74EC343-8E58-49BC-A113-EEBC6256DC45}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{B74EC343-8E58-49BC-A113-EEBC6256DC45}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{B74EC343-8E58-49BC-A113-EEBC6256DC45}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{B74EC343-8E58-49BC-A113-EEBC6256DC45}.Release|Any CPU.Build.0 = Release|Any CPU
+		{49CA44E7-89FA-4BB4-AA83-B6E286868D88}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{49CA44E7-89FA-4BB4-AA83-B6E286868D88}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{49CA44E7-89FA-4BB4-AA83-B6E286868D88}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{49CA44E7-89FA-4BB4-AA83-B6E286868D88}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
