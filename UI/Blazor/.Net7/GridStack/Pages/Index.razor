@@ -20,9 +20,8 @@
 
                 @foreach (var widget in _widgets)
                 {
-                    var id = widget.Id;
-                    <GsWidget Options="@GetWidgetOptions(id)">
-                        <AppWidget Id=@id
+                    <GsWidget Options="@GetWidgetOptions(widget)">
+                        <AppWidget Id=@widget.Id
                                    CanDelete="@(!_isDisabled)"
                                    OnDelete="@OnDeleteWidget" />
                     </GsWidget>
@@ -61,22 +60,22 @@
         public bool IsAdded { get; set; }
     }
 
-    private readonly GsWidgetOptions _gsMarkupValueAppWidgetOptions = new()
-    {
-        AutoPosition = true,
-        NoResize = true,
-        MinW = 2,
-        MinH = 2
-    };
+    // private readonly GsWidgetOptions _gsMarkupValueAppWidgetOptions = new()
+    // {
+    //     AutoPosition = true,
+    //     NoResize = true,
+    //     MinW = 2,
+    //     MinH = 2
+    // };
 
-    private readonly GsWidgetOptions _gsRuntimeWidgetOptions = new()
-        {
-            W = 1,
-            H = 1,
-            MaxH = 2,
-            MaxW = 2,
-            AutoPosition = true
-        };
+    // private readonly GsWidgetOptions _gsRuntimeWidgetOptions = new()
+    //     {
+    //         W = 1,
+    //         H = 1,
+    //         MaxH = 2,
+    //         MaxW = 2,
+    //         AutoPosition = true
+    //     };
 
     private readonly GsGridOptions _gsGridOptions = new()
     {
@@ -91,19 +90,14 @@
         }
     };
 
-    private GsWidgetOptions GetWidgetOptions(string id)
+    private GsWidgetOptions GetWidgetOptions(WidgetHolder widgetHolder)
     {
-        return id.Split("-")[0] switch
+        return new GsWidgetOptions
         {
-            "markup" => _gsMarkupValueAppWidgetOptions with
-            {
-                Id = id
-            },
-            "runtime" => _gsRuntimeWidgetOptions with
-            {
-                Id = id
-            },
-            _ => throw new NotImplementedException()
+            Id = widgetHolder.Id,
+            W = widgetHolder.W,
+            H = widgetHolder.H,
+            AutoPosition = true
         };
     }
 
@@ -174,11 +168,22 @@
 
             Console.WriteLine($"adding {widget.Id}");
 
-            var gridWidget = await _grid.MakeWidget(widget.Id);
+            var willItFit = await _grid.WillItFit(GetWidgetOptions(widget));
 
-            widget.IsAdded = true;
+            if (willItFit)
+            {
+                var gridWidget = await _grid.MakeWidget(widget.Id);
 
-            Console.WriteLine($"added widget {gridWidget}");
+                widget.IsAdded = true;
+
+                Console.WriteLine($"added widget {gridWidget}");
+            }
+            else
+            {
+                Console.WriteLine("cannot fit additional widget");
+            }
+
+
         }
     }
 }
