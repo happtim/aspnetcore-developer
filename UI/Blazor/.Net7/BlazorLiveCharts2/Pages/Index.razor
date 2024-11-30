@@ -1,0 +1,19 @@
+﻿@page "/"
+@using LiveChartsCore
+@using LiveChartsCore.SkiaSharpView
+@using LiveChartsCore.SkiaSharpView.Blazor
+@using LiveChartsCore.SkiaSharpView.VisualElements
+
+<PageTitle>Index</PageTitle>
+
+<h1>Hello, world!</h1>
+
+Welcome to your new app.
+
+<SurveyPrompt Title="How is Blazor working for you?" />
+
+<CartesianChart Series="ViewModel.Series" Title="ViewModel.Title" />
+
+@code {
+    public ViewModel ViewModel { get; set; } = new();
+}
