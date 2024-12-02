@@ -3,15 +3,17 @@
 @* 在 Blazor 中，父组件和子组件的初始化和渲染顺序遵循一定的规律。以下是大致的顺序：
 
 1. 父组件构造函数
-2. 父组件 OnInitialized/OnInitializedAsync
-3. 父组件 OnParametersSet/OnParametersSetAsync
-4. 子组件构造函数
-5. 子组件 OnInitialized/OnInitializedAsync
-6. 子组件 OnParametersSet/OnParametersSetAsync
-7. 子组件 BuildRenderTree (渲染)
-8. 父组件 BuildRenderTree (渲染)
-9. 子组件 OnAfterRender/OnAfterRenderAsync
-10. 父组件 OnAfterRender/OnAfterRenderAsync
+2. 父组件 SetParametersAsync
+3. 父组件 OnInitialized/OnInitializedAsync
+4. 父组件 OnParametersSet/OnParametersSetAsync
+5. 子组件构造函数
+6. 子组件 SetParametersAsync
+7. 子组件 OnInitialized/OnInitializedAsync
+8. 子组件 OnParametersSet/OnParametersSetAsync
+9. 子组件 BuildRenderTree (渲染)
+10 .父组件 BuildRenderTree (渲染)
+11. 子组件 OnAfterRender/OnAfterRenderAsync
+12. 父组件 OnAfterRender/OnAfterRenderAsync
 
 需要注意以下几点：
 
