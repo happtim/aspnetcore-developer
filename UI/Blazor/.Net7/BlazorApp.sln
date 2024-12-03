@@ -13,7 +13,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MudBlazorServer", "MudBlazo
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MudBlazorWasm", "MudBlazorWasm\MudBlazorWasm.csproj", "{49CA44E7-89FA-4BB4-AA83-B6E286868D88}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BlazorLiveCharts2", "BlazorLiveCharts2\BlazorLiveCharts2.csproj", "{1E9E7D24-C207-414B-92A5-030D8A84A55D}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "BlazorLiveCharts2", "BlazorLiveCharts2\BlazorLiveCharts2.csproj", "{1E9E7D24-C207-414B-92A5-030D8A84A55D}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

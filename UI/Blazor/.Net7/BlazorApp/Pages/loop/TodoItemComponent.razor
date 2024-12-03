@@ -1,0 +1,22 @@
+﻿@using static BlazorApp.Pages.loop.TodoList
+
+@Item.Text  
+
+<button @onclick="Increment">计数: @Count</button>  
+
+<DeleteButton Item="Item" OnDelete="OnDelete" />  
+
+@code {  
+    [Parameter]  
+    public TodoItem Item { get; set; }  
+
+    [Parameter]  
+    public EventCallback<int> OnDelete { get; set; }  
+
+    private int Count = 0;  
+
+    private void Increment()  
+    {  
+        Count++;  
+    }  
+} 
