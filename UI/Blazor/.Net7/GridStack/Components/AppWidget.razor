@@ -32,4 +32,10 @@
     {
         return typeof(ValueAppWidget);
     }
+
+    protected override void OnAfterRender(bool firstRender)
+    {
+        Console.WriteLine($"AppWidget {Id} rendered");
+    }
+
 }

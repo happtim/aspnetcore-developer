@@ -10,6 +10,7 @@
         <button class="button" @onclick="@OnAddWidget">Add widget</button>
         <button class="button" @onclick="@OnToggleEnabledState">@(_isDisabled ? "Enable grid" : "Disable grid")</button>
         <button class="button" @onclick="@SaveWidgets">Save</button>
+        <button class="button" @onclick="@Log">Log</button>
     </div>
 
     <div class="grid-wrapper">
@@ -20,7 +21,7 @@
 
                 @foreach (var widget in _widgets)
                 {
-                    <GsWidget Options="@GetWidgetOptions(widget)">
+                    <GsWidget @key="widget.Id" Options="@GetWidgetOptions(widget)">
                         <AppWidget Id=@widget.Id
                                    CanDelete="@(!_isDisabled)"
                                    OnDelete="@OnDeleteWidget" />
@@ -117,10 +118,17 @@
         _widgets.Add(widget);
     }
 
+    private async Task Log()
+    {
+        Console.WriteLine("widgets count:" + _widgets.Count);
+        StateHasChanged();
+    }
+
     private async Task OnDeleteWidget(string id)
     {
-        await _grid.RemoveWidget(id);
-        await _grid.Compact();
+        _widgets.RemoveAll(w => w.Id == id);
+
+        await _grid.RemoveWidget(id,removeDom:false);
     }
 
     private async Task SaveWidgets()
