@@ -1,4 +1,6 @@
 Basics.linq
 OLAP_Slice_And_Dice.linq
 OLAP_Roll_Up.linq
+Query_Filter_Measures.linq
 OrdersTable.linq
+Query_Filter_Keyword.linq

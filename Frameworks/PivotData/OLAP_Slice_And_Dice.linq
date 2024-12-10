@@ -17,7 +17,7 @@
 var ordersTable = GetOrdersTable();
 
 var cube = new PivotData(
-	new[] { "Product", "Country" , "Year" },
+	new[] { "Product", "Country" , "OrderDate" },
 	new CompositeAggregatorFactory(
 		new CountAggregatorFactory(),        // count is a measure #0
 		new SumAggregatorFactory("Total")   // sum of amount is a measure #1 
@@ -32,8 +32,8 @@ var whereQuery = new SliceQuery(cube)
 		 "Product #1", "Product #2"  // several values for IN match
 	)
 	.Where(
-		 "Year",
-		 2015  // note: value should match actual dimension key type
+		 "OrderDate",
+		 (dimKey) => ((DateTime)dimKey).Year == 2015
 	);
 var slicedPvtData = whereQuery.Execute();  // resulted cube is filtered by product and year
 
@@ -43,14 +43,4 @@ usaAggr.AsComposite().Aggregators[0].Value.Dump("Product #1 and #2 in 2015 USA C
 usaAggr.AsComposite().Aggregators[1].Value.Dump("Product #1 and #2 in 2015 Total Sum:");
 
 slicedPvtData.Dump();
-
-
-//2.复杂的过滤
-var where2Query = new SliceQuery(cube).Where(
-  "Product",  // dimension to filter
-  (dimKey) => ((string)dimKey).StartsWith("Product")
-);
-
-var slicedPvtData2 = where2Query.Execute();  // resulted cube is filtered by product and year
-
 

@@ -9,9 +9,7 @@ static DataTable GetOrdersTable()
 	t.Columns.Add("city", typeof(string)); 
 	t.Columns.Add("quantity", typeof(int));
 	t.Columns.Add("total", typeof(decimal));
-	t.Columns.Add("year", typeof(int));
-	t.Columns.Add("month", typeof(int));
-	t.Columns.Add("day", typeof(int));
+  	t.Columns.Add("orderDate", typeof(DateTime));
 
 	var countries = new[] { "USA", "United Kingdom", "Germany", "Italy", "France", "Canada", "Spain" };
 	var cities = new Dictionary<string, string[]>
@@ -35,16 +33,21 @@ static DataTable GetOrdersTable()
 		var country = countries[i % countries.Length];
 		var cityArray = cities[country];
 		var city = cityArray[i % cityArray.Length];
-		
+
+		// 构建日期  
+		var year = 2010 + (i % 6);
+		var month = 1 + (i % 12);
+		var day = 1 + (i % 28); // 改为1-28避免无效日期  
+
+		var orderDate = new DateTime(year, month, day);
+
 		t.Rows.Add(new object[] {
 					products[productIdx],
 					country,
 					city,
 					q,
 					q*productPrices[productIdx],
-					2010 + (i%6),
-					1+(i%12),
-					i%29
+					orderDate
 				});
 	}
 	t.AcceptChanges();
