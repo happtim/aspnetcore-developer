@@ -26,59 +26,43 @@
     void ChildCalled(string title)
     {
         this.title = title;
-        Debug.WriteLine("Child componet called. Title:" + title);
+        Console.WriteLine("Child componet called. Title:" + title);
     }
 
     //设置参数前
     public override Task SetParametersAsync(ParameterView parameters)
     {
-        Debug.WriteLine("Parent-SetParametersAsync");
+        Console.WriteLine("Parent-SetParametersAsync");
         return base.SetParametersAsync(parameters);
     }
 
     //初始化
     protected override void OnInitialized()
     {
-        Debug.WriteLine("Parent-OnInitialized");
+        Console.WriteLine("Parent-OnInitialized");
         base.OnInitialized();
     }
 
-    protected override Task OnInitializedAsync()
-    {
-        Debug.WriteLine("Parent-OnInitializedAsync");
-        return base.OnInitializedAsync();
-    }
 
     //设置参数之后
     protected override void OnParametersSet()
     {
-        Debug.WriteLine("Parent-OnParametersSet");
+        Console.WriteLine("Parent-OnParametersSet");
         base.OnParametersSet();
     }
 
-    protected override Task OnParametersSetAsync()
-    {
-        Debug.WriteLine("Parent-OnParametersSetAsync");
-        return base.OnParametersSetAsync();
-    }
 
     //组件呈现之后
     protected override void OnAfterRender(bool firstRender)
     {
-        Debug.WriteLine($"Parent-OnAfterRender, firstRender:{firstRender}");
+        Console.WriteLine($"Parent-OnAfterRender, firstRender:{firstRender}");
         base.OnAfterRender(firstRender);
-    }
-
-    protected override Task OnAfterRenderAsync(bool firstRender)
-    {
-        Debug.WriteLine($"Parent-OnAfterRenderAsync, firstRender:{firstRender}");
-        return base.OnAfterRenderAsync(firstRender);
     }
 
     //是否组件渲染
     protected override bool ShouldRender()
     {
-        Debug.WriteLine("Parent-ShouldRender");
+        Console.WriteLine("Parent-ShouldRender");
         return true;
     }
 

@@ -25,13 +25,19 @@
 
 4. BuildRenderTree 方法负责渲染组件的 UI。
 
+    4.1 构建新的渲染树：当组件的状态发生变化时，Blazor 会重新执行组件的渲染方法（如 BuildRenderTree），生成一个新的渲染树（Render Tree）。
+
+    4.2 渲染树比对（Diffing）：Blazor 将新生成的渲染树与之前的渲染树进行比对。这一过程用于识别两者之间的差异，确定哪些部分需要更新、添加或移除。
+
+    4.3 应用变更：基于比对结果，Blazor 生成相应的渲染指令，并将这些变更高效地应用到实际的 DOM 上，确保用户界面与组件的当前状态保持同步。
+
 5. OnAfterRender 和 OnAfterRenderAsync 在组件渲染到 DOM 后调用。
 
 6. 如果父组件包含多个子组件，所有子组件的初始化和渲染会在父组件的 BuildRenderTree 之前完成。
 
 7. 异步方法（如 OnInitializedAsync）可能会改变这个顺序，因为它们可能在其他操作完成之前就返回。
 
-8. 在后续的更新中，只有 OnParametersSet/OnParametersSetAsync、BuildRenderTree 和 OnAfterRender/OnAfterRenderAsync 会被重复调用。
+8. 在后续的更新中，只有 OnParametersSet/OnParametersSetAsync, ShouldRender, BuildRenderTree 和 OnAfterRender/OnAfterRenderAsync 会被重复调用。
 
 理解这个顺序对于正确管理组件的生命周期和处理组件间的交互非常重要。例如，如果你需要在子组件完全初始化后在父组件中执行某些操作，你应该在父组件的 OnAfterRender 方法中进行。 
 *@
