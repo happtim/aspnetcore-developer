@@ -2,6 +2,8 @@
 
 @attribute [RoutePriority(4)]
 
+@* 改案例讲述了一个子组件在父组件状态发生变化后，参数覆盖的问题。后面两个组件以私有变量避免参数覆盖。 *@
+
 @* 第一个 Expander 组件在可能可变的 RenderFragment 中设置子内容，因此在父组件中调用 StateHasChanged 
 会自动重新呈现组件，并可能将 的值 Expanded 覆盖到其初始值 true 。 *@
 

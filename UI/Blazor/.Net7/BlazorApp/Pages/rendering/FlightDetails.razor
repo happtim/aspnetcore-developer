@@ -23,6 +23,8 @@
 
     protected override void OnParametersSet()
     {
+        Console.WriteLine("FlightDetails OnParametersSet");
+
         shouldRender = (InboundFlight?.FlightId ?? 0) != prevInboundFlightId
             || (OutboundFlight?.FlightId ?? 0) != prevOutboundFlightId;
 
