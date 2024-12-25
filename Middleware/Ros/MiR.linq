@@ -12,6 +12,9 @@ RosSocket rosSocket  = new RosSocket(new RosSharp.RosBridgeClient.Protocols.WebS
 //查看topics
 //rosSocket.CallService<TopicsRequest ,TopicsResponse >("/rosapi/topics",TopicsResponseHandler, new TopicsRequest());
 
+//查看Topic类型
+//rosSocket.CallService<TopicTypeRequest, TopicTypeResponse>("/rosapi/topic_type",TopicsTypeResponseHandler , new TopicTypeRequest("/data_events/registers"));
+
 //查看service
 //rosSocket.CallService<ServicesRequest,ServicesResponse>("/rosapi/services", ServicesResponseHandler,  new ServicesRequest());
 
@@ -40,6 +43,10 @@ void TopicsResponseHandler(TopicsResponse message)
 	message.topics.OrderBy(t => t).Dump();
 }
 
+void TopicsTypeResponseHandler(TopicTypeResponse message)
+{
+	message.Dump();
+}
 
 void ServicesResponseHandler(ServicesResponse message)
 {

@@ -49,7 +49,7 @@ CMD ["roslaunch", "rosbridge_server", "rosbridge_websocket.launch"]
 
 使用以下命令运行刚刚创建的Docker镜像：
 
-`docker run -it--rm--name rosbridge_container -p 9090:9090 ros_kinetic_rosbridge`
+`docker run -it --rm --name rosbridge_container -p 9090:9090 ros_kinetic_rosbridge`
 
 */
 

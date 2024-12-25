@@ -5,10 +5,7 @@
 </Query>
 
 
-//支持哪些功能在如下目录中定义
-//https://github.com/RobotWebTools/rosbridge_suite/blob/ros2/rosapi/scripts/rosapi_node
-
-string uri = "ws://127.0.0.1:9090";
+string uri = "ws://192.168.5.128:9090";
 
 RosSocket rosSocket  = new RosSocket(new RosSharp.RosBridgeClient.Protocols.WebSocketNetProtocol(uri));
 
@@ -16,7 +13,7 @@ RosSocket rosSocket  = new RosSocket(new RosSharp.RosBridgeClient.Protocols.WebS
 rosSocket.CallService<TopicsRequest ,TopicsResponse >("/rosapi/topics",TopicsResponseHandler, new TopicsRequest());
 
 //查看Topic类型
-//rosSocket.CallService<TopicTypeRequest, TopicTypeResponse>("/rosapi/topic_type",TopicsTypeResponseHandler , new TopicTypeRequest("/rosout"));
+//rosSocket.CallService<TopicTypeRequest, TopicTypeResponse>("/rosapi/topic_type",TopicsTypeResponseHandler , new TopicTypeRequest("/data_events/registers"));
 
 //查看service
 //rosSocket.CallService<ServicesRequest,ServicesResponse>("/rosapi/services", ServicesResponseHandler,  new ServicesRequest());
@@ -30,13 +27,20 @@ rosSocket.CallService<TopicsRequest ,TopicsResponse >("/rosapi/topics",TopicsRes
 //查看单个param
 //rosSocket.CallService<GetParamRequest, GetParamResponse>("/rosapi/get_param", GetParamResponseHandler, new GetParamRequest() { name = "/rosdistro"});
 
-Console.ReadLine();
-rosSocket.Close();
 
+rosSocket.Subscribe<RobotStatus>("/robot_status", SubscriptionHandler);
+
+Console.ReadLine();
+
+
+void SubscriptionHandler(RobotStatus message)
+{
+	message.Dump();
+}
 
 void TopicsResponseHandler(TopicsResponse message)
 {
-	message.topics.OrderBy(t => t).Dump("topics");
+	message.topics.OrderBy(t => t).Dump();
 }
 
 void TopicsTypeResponseHandler(TopicTypeResponse message)
@@ -46,22 +50,30 @@ void TopicsTypeResponseHandler(TopicTypeResponse message)
 
 void ServicesResponseHandler(ServicesResponse message)
 {
-	message.services.OrderBy(s =>s ).Dump("services");
+	message.services.OrderBy(s =>s ).Dump();
 }
 
 void NodesResponseHandler(NodesResponse message)
 {
-	message.nodes.OrderBy(n => n).Dump("nodes");
+	message.nodes.OrderBy(n => n).Dump();
 }
 
 void GetParamNamesResponseHandler(GetParamNamesResponse message)
 {
-	message.names.OrderBy(n => n.Trim()).Dump("param names");
+	message.names.OrderBy(n => n.Trim()).Dump();
 }
 
 void GetParamResponseHandler(GetParamResponse message)
 {
-	message.Dump("param /rosdistro");
+	message.Dump();
+}
+
+
+public class RobotStatus : Message
+{
+	public const string RosMessageName = "mirMsgs/RobotStatus";
+	
+	public bool joystick_low_speed_mode_enabled {get;set;}
 }
 
 
