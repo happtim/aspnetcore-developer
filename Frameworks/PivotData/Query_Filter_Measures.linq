@@ -7,7 +7,7 @@
 
 //1.Select specific measures
 
-//如果数据立方体具有多个度量（使用 CompositeAggregatorFactory 配置），则可以使用方法仅选择特定度量。
+//如果数据立方体具有多个度量（使用 CompositeAggregatorFactory 配置），则可以使用Measure方法仅选择特定度量。
 
 // sample dataset
 var ordersTable = GetOrdersTable();

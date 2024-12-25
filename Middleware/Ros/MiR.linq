@@ -28,12 +28,19 @@ RosSocket rosSocket  = new RosSocket(new RosSharp.RosBridgeClient.Protocols.WebS
 //rosSocket.CallService<GetParamRequest, GetParamResponse>("/rosapi/get_param", GetParamResponseHandler, new GetParamRequest() { name = "/rosdistro"});
 
 
-rosSocket.Subscribe<RobotStatus>("/robot_status", SubscriptionHandler);
+//rosSocket.Subscribe<RobotStatus>("/robot_status", RobotStatusHandler);
+
+//rosSocket.Subscribe<PLCRegisterEvent>("/data_events/registers",PLCRegisterEventHandler);
 
 Console.ReadLine();
 
 
-void SubscriptionHandler(RobotStatus message)
+void RobotStatusHandler(RobotStatus message)
+{
+	message.Dump();
+}
+
+void PLCRegisterEventHandler(PLCRegisterEvent message)
 {
 	message.Dump();
 }
@@ -74,6 +81,22 @@ public class RobotStatus : Message
 	public const string RosMessageName = "mirMsgs/RobotStatus";
 	
 	public bool joystick_low_speed_mode_enabled {get;set;}
+}
+
+
+public class PLCRegisterEvent : Message
+{
+	public const string RosMessageName = "mir_data_msgs/PLCRegisterEvent";
+
+	public PLCRegister data { get; set; } //PLC寄存器数据
+
+	public class PLCRegister
+	{
+		public int id { get; set; }
+        public float value { get; set; }
+		public string label { get; set; }
+	}
+
 }
 
 

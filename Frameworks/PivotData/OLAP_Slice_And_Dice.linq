@@ -5,6 +5,9 @@
 
 #load ".\OrdersTable"
 
+//https://blog.infodiagram.com/2019/11/olap-data-cube-presentation-powerpoint.html
+//https://galaktika-soft.com/blog/overview-of-olap-technology.html
+
 //Slice
 //切片操作通过为其维度选择一个值，从立方体中提取一个子立方体。例如，
 //我们可以通过选择“USA”作为国家维度的值，从立方体中检索显示所有国家所有年份的互联网销售量的“切片”。
