@@ -21,9 +21,9 @@ var cube = new PivotData(
   
 cube.ProcessData(new DataTableReader(ordersTable));
 
-var oneMeasurePvtData = new SliceQuery(cube).Measure(1).Execute(); // take only measure at index #0
+var oneMeasurePvtData = new SliceQuery(cube).Measure(0).Measure(1).Execute(); // take only measure at index #0
 
-//oneMeasurePvtData.Dump();
+oneMeasurePvtData.Dump();
 
 //2. Define derived measure 
 

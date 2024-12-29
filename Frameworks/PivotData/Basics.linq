@@ -42,6 +42,15 @@ var totalAggr = cube[Key.Empty, Key.Empty];
 totalAggr.AsComposite().Aggregators[0].Value.Dump("Grand Total Count:");
 totalAggr.AsComposite().Aggregators[1].Value.Dump("Grand Total Sum:");
 
+//通过DimensionKeys来访问
+//DimensionKeys[0] => Product List
+//DimensionKeys[1] => Country List
+foreach(var product in cube.GetDimensionKeys()[0])
+{
+	Console.WriteLine($"Product:{product} total:{((object[])cube[product,Key.Empty].Value)[1] }"); //second aggregatro
+}
+
+//遍历cube
 foreach (var entry in cube)
 {
 	// entry.Key holds array of dimension keys
