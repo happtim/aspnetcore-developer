@@ -15,7 +15,9 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MudBlazorWasm", "MudBlazorW
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "BlazorLiveCharts2", "BlazorLiveCharts2\BlazorLiveCharts2.csproj", "{1E9E7D24-C207-414B-92A5-030D8A84A55D}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RadzenBlazorServer", "RadzenBlazorServer\RadzenBlazorServer.csproj", "{D93612A4-DAE9-4E1B-9CAA-CE6500905877}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "RadzenBlazorServer", "RadzenBlazorServer\RadzenBlazorServer.csproj", "{D93612A4-DAE9-4E1B-9CAA-CE6500905877}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RadzenWebassembly", "RadzenWebassembly\RadzenWebassembly.csproj", "{6F098F60-CACD-45A3-B529-7571AC46DCCC}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -51,6 +53,10 @@ Global
 		{D93612A4-DAE9-4E1B-9CAA-CE6500905877}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{D93612A4-DAE9-4E1B-9CAA-CE6500905877}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{D93612A4-DAE9-4E1B-9CAA-CE6500905877}.Release|Any CPU.Build.0 = Release|Any CPU
+		{6F098F60-CACD-45A3-B529-7571AC46DCCC}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{6F098F60-CACD-45A3-B529-7571AC46DCCC}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{6F098F60-CACD-45A3-B529-7571AC46DCCC}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{6F098F60-CACD-45A3-B529-7571AC46DCCC}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
