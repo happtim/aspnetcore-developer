@@ -1,0 +1,15 @@
+﻿/*h1{
+    color: red;
+}*/
+
+::deep h1 {
+    color: red;
+}
+
+div > a {
+    color: green;
+}
+
+div ::deep > a {
+    color: green;
+}

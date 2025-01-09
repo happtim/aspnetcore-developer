@@ -1,0 +1,34 @@
+@page "/templated-components/pets4"
+
+@attribute [RoutePriority(4)]
+
+<h1>Pets</h1>
+
+@* 在使用泛型组件时，如果可能的话，类型参数会被推断出来。
+然而，你可以通过一个与类型参数匹配的属性来显式指定类型，这在上面的示例中是 TItem 。 *@
+
+<TableTemplate Items="pets" TItem="Pet">
+    <TableHeader>
+        <th>ID</th>
+        <th>Name</th>
+    </TableHeader>
+    <RowTemplate>
+        <td>@context.PetId</td>
+        <td>@context.Name</td>
+    </RowTemplate>
+</TableTemplate>
+
+@code {
+    private List<Pet> pets = new()
+    {
+        new Pet { PetId = 2, Name = "Mr. Bigglesworth" },
+        new Pet { PetId = 4, Name = "Salem Saberhagen" },
+        new Pet { PetId = 7, Name = "K-9" }
+    };
+
+    private class Pet
+    {
+        public int PetId { get; set; }
+        public string? Name { get; set; }
+    }
+}

@@ -1,0 +1,23 @@
+﻿@page "/render-mode/render-mode-8"
+@using BlazorWebApp.Client.Pages.render_model
+@attribute [RoutePriority(8)]
+
+@* 本页面是静态页面SSR *@
+
+@* 以下示例演示了一个交互式子组件，该组件接受一个参数。参数必须是可序列化的。 *@
+
+<SharedMessage @rendermode="InteractiveServer" Greeting="Welcome!" />
+
+
+@* 不支持非序列化的组件参数，例如子内容或渲染片段。在以下示例中，将子内容传递给 SharedMessage 组件会导致运行时错误。 *@
+
+@* 
+    <SharedMessage @rendermode="InteractiveServer">
+        Child content
+    </SharedMessage> 
+ *@
+
+
+@* 为了绕过前面的限制，将子组件包装在另一个没有该参数的组件中。 *@
+
+<WrapperComponent @rendermode="InteractiveServer" />

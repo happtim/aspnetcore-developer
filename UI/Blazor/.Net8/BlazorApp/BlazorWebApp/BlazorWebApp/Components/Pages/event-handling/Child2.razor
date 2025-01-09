@@ -1,0 +1,13 @@
+﻿<h3>Child2 Component</h3>
+
+<button @onclick="TriggerEvent">Click Me</button>
+
+@code {
+    [Parameter]
+    public EventCallback<string> OnClickCallback { get; set; }
+
+    private async Task TriggerEvent()
+    {
+        await OnClickCallback.InvokeAsync("Blaze It!");
+    }
+}

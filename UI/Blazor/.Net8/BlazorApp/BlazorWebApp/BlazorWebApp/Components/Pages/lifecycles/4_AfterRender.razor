@@ -1,0 +1,37 @@
+@page "/lifecycles/after-render"
+@using Microsoft.Extensions.Logging
+@inject ILogger<_4_AfterRender> Logger 
+@attribute [RoutePriority(4)]
+
+
+@* 在组件完成渲染后，将调用OnAfterRender和OnAfterRenderAsync。此时，元素和组件引用已填充。
+使用此阶段来执行与渲染的DOM元素交互的附加初始化步骤，例如与渲染的内容进行JS互操作调用。 *@
+
+<button @onclick="StateHasChanged">Log information (and trigger a render)</button>
+
+@code {
+    private string message = "Initial assigned message.";
+
+    protected override void OnAfterRender(bool firstRender)
+    {
+        Logger.LogInformation("OnAfterRender(1): firstRender: " +
+            "{FirstRender}, message: {Message}", firstRender, message);
+
+        if (firstRender)
+        {
+            message = "Executed for the first render.";
+        }
+        else
+        {
+            message = "Executed after the first render.";
+        }
+
+        Logger.LogInformation("OnAfterRender(2): firstRender: " +
+            "{FirstRender}, message: {Message}", firstRender, message);
+    }
+
+    private void LogInformation()
+    {
+        Logger.LogInformation("LogInformation called");
+    }
+}

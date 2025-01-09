@@ -1,0 +1,35 @@
+@page "/rendering/multiple-asynchronous-phases"
+@attribute [RoutePriority(3)]
+
+@* 由于在.NET中任务的定义方式，任务的接收者只能观察到任务的最终完成状态，而不能观察到中间的异步状态。
+因此，当任务首次返回和任务最终完成时，ComponentBase才能触发重新渲染。框架无法在其他中间点重新渲染组件 *@
+
+<p>
+    Current count: @currentCount
+</p>
+
+<p>
+    <button class="btn btn-primary" @onclick="IncrementCount">Click me</button>
+</p>
+
+@code {
+    private int currentCount = 0;
+
+    private async Task IncrementCount()
+    {
+        currentCount++;
+        // Renders here automatically
+
+        await Task.Delay(1000);
+        currentCount++;
+        StateHasChanged();
+
+        await Task.Delay(1000);
+        currentCount++;
+        StateHasChanged();
+
+        await Task.Delay(1000);
+        currentCount++;
+        // Renders here automatically
+    }
+}

@@ -1,0 +1,33 @@
+@page "/cascading-parameters/themed-counter"
+
+<h1>Themed Counter</h1>
+
+<p>Current count: @currentCount</p>
+
+<p>
+    <button @onclick="IncrementCount">
+        Increment Counter (Unthemed)
+    </button>
+</p>
+
+<p>
+    <button 
+        class="btn @(ThemeInfo is not null ? ThemeInfo.ButtonClass : string.Empty)" 
+        @onclick="IncrementCount">
+        Increment Counter (Themed)
+    </button>
+</p>
+
+@code {
+    private int currentCount = 0;
+
+    // 为了利用级联值，后代组件使用[CascadingParameter] 属性声明级联参数。级联值通过类型与级联参数绑定。
+
+    [CascadingParameter]
+    protected ThemeInfo? ThemeInfo { get; set; }
+
+    private void IncrementCount()
+    {
+        currentCount++;
+    }
+}

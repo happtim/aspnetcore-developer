@@ -1,0 +1,55 @@
+@page "/event-handling/event-handler"
+@attribute [RoutePriority(1)]
+
+@* 使用 @on{DOM EVENT}="{DELEGATE}" Razor语法在Razor组件标记中指定委托事件处理程序 *@
+@* {DOM EVENT} 占位符是一个DOM事件（例如， click ）。 *@
+@* {DELEGATE} 占位符是C#委托事件处理程序。 *@
+@* 支持返回Task的异步委托事件处理程序。 *@
+@* 委托事件处理程序会自动触发UI渲染，因此无需手动调用 StateHasChanged 。 *@
+
+
+<h1>@currentHeading</h1>
+
+<p>
+    <label>
+        New title
+        <input @bind="newHeading" />
+    </label>
+    <button @onclick="UpdateHeading">
+        Update heading
+    </button>
+
+    <button @onclick="UpdateHeadingAsync">
+        Update heading Async
+    </button>
+</p>
+
+<p>
+    <label>
+        <input type="checkbox" @onchange="CheckChanged" />
+        @checkedMessage
+    </label>
+</p>
+
+@code {
+    private string currentHeading = "Initial heading";
+    private string? newHeading;
+    private string checkedMessage = "Not changed yet";
+
+    private void UpdateHeading()
+    {
+        currentHeading = $"{newHeading}!!!";
+    }
+
+    private void CheckChanged()
+    {
+        checkedMessage = $"Last changed at {DateTime.Now}";
+    }
+
+    private async Task UpdateHeadingAsync()
+    {
+        await Task.Delay(2000);
+
+        currentHeading = $"{newHeading}!!!";
+    }
+}

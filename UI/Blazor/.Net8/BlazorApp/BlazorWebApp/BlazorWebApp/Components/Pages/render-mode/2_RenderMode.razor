@@ -1,0 +1,18 @@
+﻿@page "/render-mode/render-mode-2"
+@rendermode InteractiveServer
+@attribute [RoutePriority(2)]
+
+@* 交互式服务器端渲染（interactive SSR）使用 Blazor Server 从服务器交互式地渲染组件。 *@
+
+@* 用户交互通过与浏览器的实时连接处理。当服务器组件被渲染时，与服务器连接被建立。 *@
+
+<button @onclick="UpdateMessage">Click me</button> @message
+
+@code {
+    private string message = "Not updated yet.";
+
+    private void UpdateMessage()
+    {
+        message = "Somebody updated me!";
+    }
+}

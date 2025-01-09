@@ -1,0 +1,36 @@
+@page "/event-handling/event-argument"
+@attribute [RoutePriority(2)]
+
+@* 对于支持事件参数类型的事件，只有在方法中使用事件类型时，才需要在事件方法定义中指定事件参数。 *@
+
+@for (var i = 0; i < 4; i++)
+{
+    <p>
+        <button @onclick="ReportPointerLocation">
+            Where's my mouse pointer for this button?
+        </button>
+    </p>
+
+    <p>
+        @* 向事件处理程序传递附加参数 *@
+        <button @onclick="@((e) => ReportPointerLocation2(e,i))">
+            Where's my mouse pointer for this button?
+        </button>
+    </p>
+}
+
+<p>@mousePointerMessage</p>
+
+@code {
+    private string? mousePointerMessage;
+
+    private void ReportPointerLocation(MouseEventArgs e)
+    {
+        mousePointerMessage = $"Mouse coordinates: {e.ScreenX}:{e.ScreenY}";
+    }
+
+    private void ReportPointerLocation2(MouseEventArgs e,int i)
+    {
+        mousePointerMessage = $"index: {i} Mouse coordinates: {e.ScreenX}:{e.ScreenY}";
+    }
+}

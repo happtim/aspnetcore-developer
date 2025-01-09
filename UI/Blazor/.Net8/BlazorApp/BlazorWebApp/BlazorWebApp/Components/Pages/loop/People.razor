@@ -1,0 +1,57 @@
+﻿@page "/loop/person"
+
+@* 在以下父组件中，在 OnTimerCallback 中添加一个人员的每个迭代都会导致 Blazor 重新生成整个集合。 
+页面的焦点保持在 <input> 元素的相同索引位置处，因此每次添加人员时，焦点都会移动。 
+将焦点从用户选择的内容移开是不可取的行为。 使用以下组件演示不良行为后，使用 @key 指令特性改善用户的体验。 *@
+
+@using System.Timers
+@implements IDisposable
+
+<PageTitle>People</PageTitle>
+
+<h1>People Example</h1>
+
+@foreach (var person in people)
+{
+@*     <Details Data="@person.Data" /> *@
+
+    <Details @key="person" Data="@person.Data" />
+}
+
+@code {
+    private Timer timer = new Timer(3000);
+
+    public List<Person> people =
+        new()
+            {
+            { new Person { Data = "Person 1" } },
+            { new Person { Data = "Person 2" } },
+            { new Person { Data = "Person 3" } }
+            };
+
+    protected override void OnInitialized()
+    {
+        timer.Elapsed += (sender, eventArgs) => OnTimerCallback();
+        timer.Start();
+    }
+
+    private void OnTimerCallback()
+    {
+        _ = InvokeAsync(() =>
+        {
+            people.Insert(0,
+                new Person
+                    {
+                        Data = $"INSERTED {DateTime.Now.ToString("hh:mm:ss tt")}"
+                    });
+            StateHasChanged();
+        });
+    }
+
+    public void Dispose() => timer.Dispose();
+
+    public class Person
+    {
+        public string? Data { get; set; }
+    }
+}

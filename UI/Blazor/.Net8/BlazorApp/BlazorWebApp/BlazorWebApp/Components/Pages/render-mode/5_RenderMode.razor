@@ -1,0 +1,7 @@
+﻿@page "/render-mode/render-mode-5"
+@using BlazorWebApp.Client.Pages.render_model
+@attribute [RoutePriority(5)]
+
+@*SharedMessage 组件放置在静态渲染的父组件中，SharedMessage 组件也会被静态渲染，不具有交互性。按钮不会调用 UpdateMessage ，消息也不会更新。 *@
+
+<SharedMessage />

@@ -1,0 +1,27 @@
+@page "/data-binding/parent-2"
+@attribute [RoutePriority(10)]
+
+@* 您可以通过任意数量的嵌套组件来绑定参数，但必须遵守单向数据流 *@
+@* * 更改通知向上流动到层次结构中。 *@
+@* * 新的参数值向下传递到层次结构中。 *@
+
+@* 常见且推荐的方法是只在父组件中存储底层数据，以避免对需要更新的状态产生任何混淆。 *@
+
+<h1>Parent Component</h1>
+
+<p>Parent Message: <b>@parentMessage</b></p>
+
+<p>
+    <button @onclick="ChangeValue">Change from Parent</button>
+</p>
+
+<NestedChild @bind-ChildMessage="parentMessage" />
+
+@code {
+    private string parentMessage = "Initial value set in Parent";
+
+    private void ChangeValue()
+    {
+        parentMessage = $"Set in Parent {DateTime.Now}";
+    }
+}

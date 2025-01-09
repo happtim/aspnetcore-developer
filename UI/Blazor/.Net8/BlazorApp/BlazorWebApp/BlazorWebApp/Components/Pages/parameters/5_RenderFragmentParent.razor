@@ -1,0 +1,36 @@
+﻿@page "/parameters/render-fragment-parent"
+@attribute [RoutePriority(5)]
+
+<h1>Render child content</h1>
+
+@* 组件可以设置另一个组件的内容。另一个组件在子组件的开始标记和结束标记之间提供内容。 *@
+
+@* RenderFragmentChild 组件具有一个 ChildContent 组件参数，该参数表示要呈现为 RenderFragment 的 UI 段。 *@
+
+@* 注意 *@
+@* * 接收 RenderFragment 内容的属性必须按约定命名 ChildContent 。 *@
+@* * RenderFragment 不支持事件回调。 *@
+
+<RenderFragmentChild>
+    Content of the child component is supplied
+    by the parent component.
+</RenderFragmentChild>
+
+
+@* 由于 Blazor 呈现子内容的方式，如果在组件的内容中使用递增循环变量 *@
+@* 在循环内呈现组件需要局部索引变量。 *@
+@* 否则，所有子组件都会显示相同的值，也就是下面案例中最终c极值。 *@
+
+<h1>Three children with an index variable</h1>
+
+@* 在for循环中使用局部变量 *@
+
+@for (int c = 0; c < 3; c++)
+{
+    var current = c;
+
+    <RenderFragmentChild>
+        Count: @current
+        Count: @c
+    </RenderFragmentChild>
+}

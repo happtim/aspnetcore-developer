@@ -1,0 +1,20 @@
+﻿<p>@Greeting</p>
+
+<button @onclick="UpdateMessage">Click me</button> @message
+
+<p>@ChildContent</p>
+
+@code {
+    private string message = "Not updated yet.";
+
+    [Parameter]
+    public RenderFragment? ChildContent { get; set; }
+
+    [Parameter]
+    public string Greeting { get; set; } = "Hello!";
+
+    private void UpdateMessage()
+    {
+        message = "Somebody updated me!";
+    }
+}

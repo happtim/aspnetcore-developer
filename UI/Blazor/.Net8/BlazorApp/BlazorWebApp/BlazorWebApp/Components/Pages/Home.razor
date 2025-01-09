@@ -1,0 +1,77 @@
+﻿@page "/"
+@using System.Reflection
+
+<PageTitle>Home</PageTitle>
+
+<h1>Hello, world!</h1>
+
+Welcome to your new app.
+
+@if (pageUrls.Count > 0)
+{
+    foreach (var item in pageUrls)
+    {
+        <h3>@item.Key</h3>
+        foreach (var url in item.Value)
+        {
+            <li>
+                <a href="@url">@url</a>
+            </li>
+        }
+    }
+
+}
+
+
+@code
+{
+    private Dictionary<string, List<string>> pageUrls = new Dictionary<string, List<string>>();
+
+    protected override Task OnInitializedAsync()
+    {
+        // Get the current assembly and the BlazorWebApp.Client assembly
+        Assembly assembly = Assembly.GetExecutingAssembly();
+        Assembly clientAssembly = Assembly.Load("BlazorWebApp.Client");
+
+        // Combine types from both assemblies
+        var types = assembly.GetTypes().Concat(clientAssembly.GetTypes());
+        var pageTypes = types.Where(type => type.BaseType == typeof(ComponentBase));
+
+        pageTypes = pageTypes.Where(type => type.GetCustomAttributes<RouteAttribute>().Count() > 0)
+            .OrderBy(type => type.GetCustomAttribute<RoutePriorityAttribute>()?.Priority ?? 999)
+            .ToList();
+
+        foreach (var pageType in pageTypes)
+        {
+            var routeAttributes = pageType.GetCustomAttributes<RouteAttribute>();
+
+            foreach (var routeAttribute in routeAttributes)
+            {
+                string[] segments = routeAttribute.Template.Split('/');
+                string group = segments[1];
+
+                if (!pageUrls.ContainsKey(group))
+                {
+                    pageUrls.Add(group, new List<string>());
+                }
+
+                var template = routeAttribute.Template;
+
+                //"/lifecycles/set-params-async/{Param?}"
+                if (routeAttribute.Template.EndsWith("{Param?}"))
+                {
+                    template = template.Replace("{Param?}", "123");
+                }
+                //"/lifecycles/on-params-set/{StartDate:datetime}"
+                if (routeAttribute.Template.EndsWith("{StartDate:datetime}"))
+                {
+                    template = template.Replace("{StartDate:datetime}", new DateTime(2008, 08, 08).ToString("yyyy-MM-dd"));
+                }
+
+                pageUrls[group].Add(template);
+            }
+        }
+
+        return Task.CompletedTask;
+    }
+}

@@ -1,0 +1,8 @@
+﻿@page "/render-mode/render-mode-9"
+@using BlazorWebApp.Client.Pages.render_model
+@rendermode InteractiveServer
+@attribute [RoutePriority(8)]
+
+@* 不要尝试对子组件应用与其父组件的渲染模式不同的交互渲染模式。 *@
+
+<SharedMessage @rendermode="InteractiveWebAssembly" />

@@ -1,0 +1,49 @@
+﻿@page "/lifecycles/handle-incomplete-async-actions-at-render"
+
+@attribute [RoutePriority(6)]
+
+<h1>Sci-Fi Movie Ratings</h1>
+
+@if (movies == null)
+{
+    <p><em>Loading...</em></p>
+}
+else
+{
+    <ul>
+        @foreach (var movie in movies)
+        {
+            <li>@movie.Title &mdash; @movie.Rating</li>
+        }
+    </ul>
+}
+
+@code {
+    private Movies[]? movies;
+
+    protected override async Task OnInitializedAsync()
+    {
+        movies = await GetMovieRatings(DateTime.Now);
+    }
+
+private async Task<Movies[]> GetMovieRatings(DateTime date)
+    {
+        var rng = new Random();
+        var movies = Enumerable.Range(1, 5).Select(index => new Movies
+        {
+            Title = $"Movie {index}",
+            Rating = rng.NextDouble() * 10
+        }).ToArray();
+
+        // Simulate a long-running operation
+        await Task.Delay(2000);
+
+        return movies;
+    }
+
+    class Movies
+    {
+        public string Title { get; set; }
+        public double Rating { get; set; }
+    }
+}

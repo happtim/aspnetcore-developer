@@ -1,0 +1,71 @@
+﻿@page "/lifecycles/all-lifecycles-2"
+
+@using Microsoft.Extensions.Logging
+@using System.Diagnostics;
+
+@attribute [RoutePriority(9)]
+
+<h3>_9_AllLifecycles</h3>
+
+<button class="btn btn-warning" @onclick="ChangeParamter">ChangeParamter</button>
+
+<LifecycleTest Title="@title" TitleChanged="ChildCalled"></LifecycleTest>
+
+@* 双向绑定@bind语法 *@
+@* <LifecycleTest @bind-Title="title"></LifecycleTest> *@
+
+@code
+{
+    string title = "here is the title parameter";
+
+    void ChangeParamter()
+    {
+        title = DateTime.Now.ToString("o");
+    }
+
+    void ChildCalled(string title)
+    {
+        this.title = title;
+        Console.WriteLine("Child componet called. Title:" + title);
+    }
+
+    //设置参数前
+    public override Task SetParametersAsync(ParameterView parameters)
+    {
+        Console.WriteLine("Parent-SetParametersAsync");
+        return base.SetParametersAsync(parameters);
+    }
+
+    //初始化
+    protected override void OnInitialized()
+    {
+        Console.WriteLine("Parent-OnInitialized");
+        base.OnInitialized();
+    }
+
+
+    //设置参数之后
+    protected override void OnParametersSet()
+    {
+        Console.WriteLine("Parent-OnParametersSet");
+        base.OnParametersSet();
+    }
+
+
+    //组件呈现之后
+    protected override void OnAfterRender(bool firstRender)
+    {
+        Console.WriteLine($"Parent-OnAfterRender, firstRender:{firstRender}");
+        base.OnAfterRender(firstRender);
+    }
+
+    //是否组件渲染
+    protected override bool ShouldRender()
+    {
+        Console.WriteLine("Parent-ShouldRender");
+        return true;
+    }
+
+
+    
+}

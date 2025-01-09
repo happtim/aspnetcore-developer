@@ -1,0 +1,53 @@
+﻿@page "/loop/todo-list"
+@namespace BlazorWebApp.Components.Pages.loop
+
+@* 
+如果你移除 @key="item.Id"，Blazor 在渲染列表时会根据渲染顺序复用组件实例，而不是根据每个项的唯一标识符。
+ 
+这可能导致以下问题：
+
+    状态混乱：删除某一项后，列表中的其他项可能会错误地共享或继承被删除项的状态（例如计数器的值）。
+
+    组件复用问题：Blazor 可能会错误地复用组件实例，导致每个待办事项项的计数器不独立。
+
+*@
+
+
+<h3>Todo List</h3>
+
+<button @onclick="AddItem">Add Item</button>
+
+<ul>
+    @foreach (var item in todoItems)
+    {
+        <li @key="item.Id" >
+            <!-- 使用 @key 来确保每个 TodoItemComponent 实例的唯一性 -->
+            <TodoItemComponent Item="item" OnDelete="DeleteItem" />
+        </li>
+    }
+</ul>
+
+@code {
+    private List<TodoItem> todoItems = new();
+    private int nextId = 1;
+
+    private void AddItem()
+    {
+        todoItems.Add(new TodoItem
+        {
+            Id = nextId++,
+            Text = $"Task {nextId}"
+        });
+    }
+
+    private void DeleteItem(int id)
+    {
+        todoItems.RemoveAll(x => x.Id == id);
+    }
+
+    public class TodoItem
+    {
+        public int Id { get; set; }
+        public string Text { get; set; }
+    }
+}  

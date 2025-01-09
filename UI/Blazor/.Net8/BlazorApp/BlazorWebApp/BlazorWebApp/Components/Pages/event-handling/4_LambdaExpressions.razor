@@ -1,0 +1,35 @@
+@page "/event-handling/lambda-expressions"
+@attribute [RoutePriority(4)]
+
+@* 支持将Lambda表达式用作委托事件处理程序。 *@
+
+<h1>@heading</h1>
+
+<p>
+    <button @onclick="@(e => heading = "New heading!!!")">
+        Update heading
+    </button>
+</p>
+
+@* 通常在使用C#函数参数时，可以方便地实现闭包，例如在迭代一组元素时。 *@
+
+@for (var i = 1; i < 4; i++)
+{
+    @* 避免在lambda表达式中直接使用循环变量， 否则，所有的lambda表达式都会使用同一个变量。*@
+    var buttonNumber = i;
+
+    <p>
+        <button @onclick="@(e => UpdateHeading(e, buttonNumber))">
+            Button #@i
+        </button>
+    </p>
+}
+
+@code {
+    private string heading = "Initial heading";
+
+    private void UpdateHeading(MouseEventArgs e, int buttonNumber)
+    {
+        heading = $"Selected #{buttonNumber} at {e.ClientX}:{e.ClientY}";
+    }
+}

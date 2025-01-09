@@ -1,0 +1,20 @@
+﻿@page "/render-mode/render-mode-3"
+@rendermode InteractiveWebAssembly
+@attribute [RoutePriority(3)]
+
+@* 客户端渲染（CSR）使用 Blazor WebAssembly 在客户端上交互式地渲染组件。 *@
+
+@* 当 WebAssembly 组件首次渲染时，.NET 运行时和应用程序包将被下载并缓存。 *@
+
+@* 使用客户端渲染（CSR）的组件必须从一个单独的客户端项目构建，该项目设置Blazor WebAssembly主机。 *@
+
+<button @onclick="UpdateMessage">Click me</button> @message
+
+@code {
+    private string message = "Not updated yet.";
+
+    private void UpdateMessage()
+    {
+        message = "Somebody updated me!";
+    }
+}

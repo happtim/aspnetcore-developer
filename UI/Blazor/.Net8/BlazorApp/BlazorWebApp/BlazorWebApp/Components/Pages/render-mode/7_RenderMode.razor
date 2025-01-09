@@ -1,0 +1,12 @@
+﻿@page "/render-mode/render-mode-7"
+@using BlazorWebApp.Client.Pages.render_model
+@attribute [RoutePriority(7)]
+
+@* 在下面的示例中， SharedMessage 组件都是预渲染的，并在页面在浏览器中显示时出现。 *@
+
+@* 第一个 SharedMessage 组件在 Blazor 的 SignalR 服务器连接建立后进行交互式服务器端渲染（interactive SSR）。 *@
+
+@* 第二个 SharedMessage 组件是交互式的。在Blazor 应用程序包下载完成后并且 .NET 运行时在客户端上活动后， *@
+
+<SharedMessage @rendermode="InteractiveServer" />
+<SharedMessage @rendermode="InteractiveWebAssembly" />

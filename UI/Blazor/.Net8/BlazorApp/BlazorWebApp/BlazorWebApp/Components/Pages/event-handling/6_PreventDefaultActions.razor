@@ -1,0 +1,22 @@
+@page "/event-handling/prevent-default-actions"
+@attribute [RoutePriority(6)]
+
+@* 使用 @on{DOM EVENT}:preventDefault 指令属性来阻止事件的默认操作，其中 {DOM EVENT} 占位符是一个DOM事件。 *@
+
+@* 当在输入设备上选择一个键并且元素焦点在文本框上时，浏览器通常会在文本框中显示该键的字符。
+在下面的示例中，通过指定 @onkeydown:preventDefault 指令属性来阻止默认行为。 *@
+<p>
+    <input value="@count" @onkeydown="KeyHandler" @onkeydown:preventDefault />
+</p>
+
+@code {
+    private int count = 0;
+
+    private void KeyHandler(KeyboardEventArgs e)
+    {
+        if (e.Key == "+")
+        {
+            count++;
+        }
+    }
+}

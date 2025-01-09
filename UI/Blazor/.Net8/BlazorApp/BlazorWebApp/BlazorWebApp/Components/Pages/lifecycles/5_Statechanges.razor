@@ -1,0 +1,18 @@
+﻿@page "/lifecycles/statechanges"
+@attribute [RoutePriority(5)]
+
+<h3>Blazor StateChanges Example</h3>
+
+<p>Current count: @count</p>
+
+<button class="btn btn-primary" @onclick="IncrementCount">Increment</button>
+
+@code {
+    private int count = 0;
+
+    private void IncrementCount()
+    {
+        count++;
+        StateHasChanged(); // 通知 Blazor 更新 UI
+    }
+}

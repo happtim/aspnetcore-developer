@@ -1,0 +1,21 @@
+@page "/data-binding/bind-event"
+
+@attribute [RoutePriority(3)]
+
+@* 通过在 @bind:event="{EVENT}" 属性中包含一个DOM事件,{EVENT}是一个占位符，可以DOM的事件。 *@
+
+@* 例如，@bind:event="oninput" 将绑定到 oninput 事件。 *@
+
+@* 与 onchange 事件（ change ）不同，该事件在元素失去焦点时触发， oninput （ input ）在文本框的值改变时触发。 *@
+
+<p>
+    <input @bind="InputValue" @bind:event="oninput" />
+</p>
+
+<p>
+    <code>InputValue</code>: @InputValue
+</p>
+
+@code {
+    private string? InputValue { get; set; }
+}

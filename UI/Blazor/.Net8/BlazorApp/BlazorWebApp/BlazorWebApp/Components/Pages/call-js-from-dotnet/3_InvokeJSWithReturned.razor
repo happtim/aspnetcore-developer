@@ -1,0 +1,66 @@
+@page "/call-js-from-dotnet/invoke-js-with-returned"
+
+@attribute [RoutePriority(3)]
+@inject IJSRuntime JS
+
+<h1>Call JS Example 4</h1>
+
+<p>
+    <button @onclick="SetStock">Set Stock</button>
+</p>
+
+<p>
+    <button @onclick="SetStock2">Set Stock</button>
+</p>
+
+@if (stockSymbol is not null)
+{
+    <p>@stockSymbol price: @price.ToString("c")</p>
+}
+
+@if (result is not null)
+{
+    <p>@result</p>
+}
+
+@code {
+    private Random r = new();
+    private string? stockSymbol;
+    private decimal price;
+    private string? result;
+    private JsInteropClasses2? jsClass;
+
+    protected override void OnInitialized()
+    {
+        jsClass = new(JS);
+    }
+
+    private async Task SetStock()
+    {
+        stockSymbol = 
+            $"{(char)('A' + r.Next(0, 26))}{(char)('A' + r.Next(0, 26))}";
+        price = r.Next(1, 101);
+
+        var module = await JS.InvokeAsync<IJSObjectReference>("import", "./Pages/call-js-from-dotnet/3_InvokeJSWithReturned.razor.js");
+
+        var interopResult = 
+            await module.InvokeAsync<string>("displayTickerAlert2", stockSymbol, price);
+        result = $"Result of TickerChanged call for {stockSymbol} at " +
+            $"{price.ToString("c")}: {interopResult}";
+    }
+
+    private async Task SetStock2()
+    {
+        if (jsClass is not null)
+        {
+            stockSymbol =
+                $"{(char)('A' + r.Next(0, 26))}{(char)('A' + r.Next(0, 26))}";
+            price = r.Next(1, 101);
+            var interopResult = await jsClass.TickerChanged(stockSymbol, price);
+            result = $"Result of TickerChanged call for {stockSymbol} at " +
+                $"{price.ToString("c")}: {interopResult}";
+        }
+    }
+
+    public void Dispose() => jsClass?.Dispose();
+}

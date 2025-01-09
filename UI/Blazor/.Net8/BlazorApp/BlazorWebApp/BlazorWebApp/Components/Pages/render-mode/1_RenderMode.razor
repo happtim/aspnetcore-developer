@@ -1,0 +1,43 @@
+﻿@page "/render-mode/render-mode-1"
+@attribute [RoutePriority(1)]
+
+
+@* ===================渲染规则================================ *@
+
+@* 1. 默认渲染模式为静态。 *@
+
+@* 2. 交互式服务器（InteractiveServer），交互式 WebAssembly（InteractiveWebAssembly）和交互式自动（InteractiveAuto）渲染模式
+可以在组件中使用，包括为同级组件使用不同的渲染模式。 7_RenderMode.razor *@
+
+@* 3. 您无法在子组件中切换到不同的交互式渲染模式。例如，服务器组件不能作为 WebAssembly 组件的子组件。 9_RenderMode *@
+
+@* 4. 从静态父组件传递给交互式子组件的参数必须是 JSON 可序列化的。这意味着您不能从静态父组件传递渲染片段或子内容给交互式子组件。 8_RenderMode *@
+
+@* ======================预渲染============================= *@
+
+@* 预渲染是最初在服务器上渲染页面内容的过程，而不为渲染的控件启用事件处理程序。服务器在响应初始请求时尽快输出页面的 HTML UI，这使得应用程序对用户感觉更加响应。 *@
+
+@* 交互式组件默认启用预渲染。 *@
+
+@* 禁用预渲染仅对顶级渲染模式生效。Abp8.0 的模板中是禁用WebAssembly预渲染的 *@
+
+@* ========================Sample1=========================== *@
+
+
+@* 组件的渲染模式没有指定，因此组件从其父级继承其渲染模式。 *@
+
+@* 由于没有祖先组件指定渲染模式，本页面组件在服务器上静态（SSR）渲染。 *@
+
+@* 按钮不是交互式的，也不调用 UpdateMessage 方法。 *@
+
+
+<button @onclick="UpdateMessage">Click me</button> @message
+
+@code {
+    private string message = "Not updated yet.";
+
+    private void UpdateMessage()
+    {
+        message = "Somebody updated me!";
+    }
+}

@@ -1,0 +1,82 @@
+﻿@using System.Diagnostics
+@implements IDisposable
+
+<h3>LifecycleTest,Title:@Title</h3>
+
+<p>Current count: @currentCount</p>
+<button class="btn btn-primary" @onclick="IncrementCount">Click me</button>
+<botton class="btn btn-primary" @onclick="NotifyParent">NotifyParent</botton>
+<button class="btn btn-secondary" @onclick="NotifyStateHasChanged">NotifyStateHasChanged</button>
+
+@code {
+
+    [Parameter]
+    public string Title { get; set; }
+
+    [Parameter]
+    public EventCallback<string> TitleChanged { get; set; }
+
+    private int currentCount = 0;
+
+    private void IncrementCount()
+    {
+        currentCount++;
+    }
+
+    private async Task NotifyParent()
+    {
+        await TitleChanged.InvokeAsync(currentCount.ToString());
+    }
+
+    void NotifyStateHasChanged()
+    {
+        Console.WriteLine("\tChild-NotifyStateHasChanged");
+        StateHasChanged();
+    }
+
+    //设置参数前
+    public override Task SetParametersAsync(ParameterView parameters)
+    {
+        Console.WriteLine("\tChild-SetParametersAsync");
+        return base.SetParametersAsync(parameters);
+    }
+
+    //初始化
+    protected override void OnInitialized()
+    {
+        Console.WriteLine("\tChild-OnInitialized");
+        base.OnInitialized();
+    }
+
+
+    //设置参数之后
+    protected override void OnParametersSet()
+    {
+        Console.WriteLine("\tChild-OnParametersSet");
+        base.OnParametersSet();
+    }
+
+    //组件呈现之后
+    protected override void OnAfterRender(bool firstRender)
+    {
+        Console.WriteLine($"\tChild-OnAfterRender, firstRender:{firstRender}");
+        Console.WriteLine($"=====================================================");
+        base.OnAfterRender(firstRender);
+    }
+
+
+    //是否组件渲染
+    protected override bool ShouldRender()
+    {
+        Console.WriteLine("\tChild-ShouldRender");
+        return base.ShouldRender();
+    }
+
+    //销毁释放
+    public void Dispose()
+    {
+        Console.WriteLine("\tChild-Dispose");
+    }
+
+
+}

@@ -1,0 +1,15 @@
+﻿@page "/render-mode/render-mode-4"
+@rendermode InteractiveAuto
+
+@attribute [RoutePriority(4)]
+
+<button @onclick="UpdateMessage">Click me</button> @message
+
+@code {
+    private string message = "Not updated yet.";
+
+    private void UpdateMessage()
+    {
+        message = "Somebody updated me!";
+    }
+}

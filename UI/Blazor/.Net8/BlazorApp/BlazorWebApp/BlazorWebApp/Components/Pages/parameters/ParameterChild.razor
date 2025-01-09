@@ -1,0 +1,26 @@
+﻿<div class="card w-25" style="margin-bottom:15px">
+    <div class="card-header font-weight-bold">@Title</div>
+    <div class="card-body" style="font-style:@Body.Style">
+        @Body.Text
+    </div>
+</div>
+
+@code {
+
+    //1. 组件参数应该声明为自动属性，意味着它们的访问器中不应包含自定义逻辑。
+    //2. 不要在 get 或 set 访问器中放置自定义逻辑，因为组件参数纯粹用于作为父组件向子组件传递信息的通道。
+    //3. 支持将初始值写入组件参数，因为初始值赋值不会干扰 Blazor 的自动组件渲染。
+    //4. 不要对初始值进行覆盖，
+
+    [Parameter]
+    public string Title { get; set; } = "Set By Child";
+
+    [Parameter]
+    public PanelBody Body { get; set; } =
+        new()
+        {
+            Text = "Set by child.",
+            Style = "normal"
+        };
+
+}

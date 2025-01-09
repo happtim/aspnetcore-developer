@@ -1,0 +1,8 @@
+﻿@page "/render-mode/render-mode-6"
+@using BlazorWebApp.Client.Pages.render_model
+@rendermode InteractiveServer
+@attribute [RoutePriority(6)]
+
+@*SharedMessage 组件放置在交互服务渲染的父组件中，SharedMessage 组件通过 SignalR 连接与客户端交互。按钮调用 UpdateMessage ，并更新消息。 *@
+
+<SharedMessage />

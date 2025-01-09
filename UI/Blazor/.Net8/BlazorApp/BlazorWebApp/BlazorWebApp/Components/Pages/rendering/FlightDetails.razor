@@ -1,0 +1,46 @@
+﻿<div>
+    <h4>入境航班</h4>
+    <p>航班ID: @InboundFlight?.FlightId</p>
+    <p>航空公司: @InboundFlight?.Airline</p>
+    <p>目的地: @InboundFlight?.Destination</p>
+
+    <h4>出境航班</h4>
+    <p>航班ID: @OutboundFlight?.FlightId</p>
+    <p>航空公司: @OutboundFlight?.Airline</p>
+    <p>目的地: @OutboundFlight?.Destination</p>
+</div>
+
+@code {
+    private int prevInboundFlightId = 0;
+    private int prevOutboundFlightId = 0;
+    private bool shouldRender;
+
+    [Parameter]
+    public FlightInfo? InboundFlight { get; set; }
+
+    [Parameter]
+    public FlightInfo? OutboundFlight { get; set; }
+
+    protected override void OnParametersSet()
+    {
+        Console.WriteLine("FlightDetails OnParametersSet");
+
+        shouldRender = (InboundFlight?.FlightId ?? 0) != prevInboundFlightId
+            || (OutboundFlight?.FlightId ?? 0) != prevOutboundFlightId;
+
+        prevInboundFlightId = InboundFlight?.FlightId ?? 0;
+        prevOutboundFlightId = OutboundFlight?.FlightId ?? 0;
+    }
+
+    protected override bool ShouldRender()
+    {
+        Console.WriteLine("FlightDetails ShouldRender:" + shouldRender);
+        return shouldRender;
+    }
+
+    protected override void OnAfterRender(bool firstRender)
+    {
+        Console.WriteLine("FlightDetails OnAfterRender");
+        base.OnAfterRender(firstRender);
+    }
+}  

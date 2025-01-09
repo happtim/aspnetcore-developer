@@ -1,0 +1,42 @@
+@page "/templated-components/pets1"
+
+@attribute [RoutePriority(1)]
+
+@* 模板化组件是接收一个或多个UI模板作为参数的组件，可以在组件的渲染逻辑中使用。
+通过使用模板化组件，您可以创建更可重用的高级组件。一些例子包括： *@
+@* 一个表格组件，允许用户为表格的标题、行和页脚指定模板。 *@
+@* 一个列表组件，允许用户指定一个模板来渲染列表中的项目。 *@
+
+@* 一个模板化组件是通过指定一个或多个类型为RenderFragment或RenderFragment<TValue>的组件参数来定义的。 *@
+@* RenderFragment代表一个UI片段，它是一个委托，它接收一个RenderTreeBuilder实例作为参数，该实例用于构建UI片段的渲染树。 *@
+@* 通常，模板化组件是泛型化的， *@
+<h1>Pets</h1>
+
+@* 在组件元素上指定 Context 属性, 可以指定隐式子内容的内容参数名称 Context="pet" *@
+<TableTemplate Items="pets" Context="pet">
+
+    @* 在使用模板化组件时，可以使用与参数名称匹配的子元素来指定模板参数。<TableHeader> *@
+    <TableHeader>
+        <th>ID</th>
+        <th>Name</th>
+    </TableHeader>
+    <RowTemplate>
+        <td>@pet.PetId</td>
+        <td>@pet.Name</td>
+    </RowTemplate>
+</TableTemplate>
+
+@code {
+    private List<Pet> pets = new()
+    {
+        new Pet { PetId = 2, Name = "Mr. Bigglesworth" },
+        new Pet { PetId = 4, Name = "Salem Saberhagen" },
+        new Pet { PetId = 7, Name = "K-9" }
+    };
+
+    private class Pet
+    {
+        public int PetId { get; set; }
+        public string? Name { get; set; }
+    }
+}

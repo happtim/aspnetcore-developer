@@ -1,0 +1,67 @@
+﻿@page "/rendering/optimize-rendering"
+
+@attribute [RoutePriority(5)]
+
+<h3>航班信息</h3>  
+
+<div class="row mb-3">
+    <div class="col-md-6">
+        <div class="form-group">
+            <label for="inboundFlight">起点航班</label>
+            <select id="inboundFlight" class="form-select" @bind="selectedInboundId">
+                @foreach (var flight in availableInboundFlights)
+                {
+                    <option value="@flight.FlightId">
+                        @($"{flight.Airline} - {flight.Destination} (航班号: {flight.FlightId})")
+                    </option>
+                }
+            </select>
+        </div>
+    </div>
+
+    <div class="col-md-6">
+        <div class="form-group">
+            <label for="outboundFlight">终点航班</label>
+            <select id="outboundFlight" class="form-select" @bind="selectedOutboundId">
+                @foreach (var flight in availableOutboundFlights)
+                {
+                    <option value="@flight.FlightId">
+                        @($"{flight.Airline} - {flight.Destination} (航班号: {flight.FlightId})")
+                    </option>
+                }
+            </select>
+        </div>
+    </div>
+</div>
+
+<button @onclick="StateHasChanged">Click me!</button>
+
+<FlightDetails   
+    InboundFlight="InboundFlight"   
+    OutboundFlight="OutboundFlight" />  
+
+@code {
+    private int selectedInboundId = 1;
+    private int selectedOutboundId = 1;
+
+    // 可选的起点航班列表
+    private List<FlightInfo> availableInboundFlights = new()
+    {
+        new FlightInfo { FlightId = 1, Airline = "航司A", Destination = "北京" },
+        new FlightInfo { FlightId = 2, Airline = "航司B", Destination = "上海" },
+        new FlightInfo { FlightId = 3, Airline = "航司C", Destination = "广州" }
+    };
+
+    // 可选的终点航班列表
+    private List<FlightInfo> availableOutboundFlights = new()
+    {
+        new FlightInfo { FlightId = 1, Airline = "航司X", Destination = "东京" },
+        new FlightInfo { FlightId = 2, Airline = "航司Y", Destination = "首尔" },
+        new FlightInfo { FlightId = 3, Airline = "航司Z", Destination = "曼谷" }
+    };
+
+    // 当前选中的航班信息
+    private FlightInfo InboundFlight => availableInboundFlights.First(f => f.FlightId == selectedInboundId);
+    private FlightInfo OutboundFlight => availableOutboundFlights.First(f => f.FlightId == selectedOutboundId);
+}
+} 
