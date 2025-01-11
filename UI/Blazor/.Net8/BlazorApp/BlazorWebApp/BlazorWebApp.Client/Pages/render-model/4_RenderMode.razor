@@ -1,4 +1,11 @@
 ﻿@page "/render-mode/render-mode-4"
+
+@* 如果是WebAssembly项目，使用InteractiveAuto 和 InteractiveServer 效果一样 *@
+
+@* 使用自动交互时，当页面第一次加载的时候使用服务器交互模式 *@
+
+@* 当第二次访问页面的时候，则使用webassembly方式。 *@
+
 @rendermode InteractiveAuto
 
 @attribute [RoutePriority(4)]

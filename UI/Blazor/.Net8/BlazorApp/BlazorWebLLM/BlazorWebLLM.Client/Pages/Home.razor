@@ -1,0 +1,94 @@
+﻿@page "/"
+
+@rendermode InteractiveWebAssembly
+@inject WebLLMService llm
+
+ <h1>WebLLM Chat</h1>
+
+@foreach (var message in messages)
+{
+
+    <ul>
+    
+        <li>@message.Role: @message.Content</li>
+    
+    </ul>
+ }
+
+ @if (progress is not null && progress.Text.Contains("Finish loading"))
+{
+     <div>
+        <input type="text" @bind-value="@Prompt" disabled="@isResponding" />
+        <button @ref="PromptRef" type="submit" @onclick="StreamPromptRequest" disabled="@isResponding">Chat</button>
+    </div>
+}
+
+ <p>@streamingText</p>
+
+Loading: @progress
+
+@code {
+
+    string? Prompt { get; set; } = "";
+    ElementReference PromptRef;
+    List<Message> messages = new List<Message>();
+    bool isResponding;
+    string streamingText = "";
+    InitProgress? progress;
+
+    protected override async Task OnAfterRenderAsync(bool firstRender)
+    {
+        if(firstRender)
+        {
+            llm.OnInitializingChanged += OnWebLLMInitialization;
+            llm.OnChunkCompletion += OnChunkCompletion;
+            try
+            {
+                await llm.InitializeAsync();
+            }
+            catch (Exception e)
+            {
+                // Potential errors: No browser support for WebGPU
+                Console.WriteLine(e.Message);
+                throw;
+            }
+        }
+    }
+
+    private void OnWebLLMInitialization(InitProgress p)
+    {
+        progress = p;
+        StateHasChanged();
+    }
+
+    private async Task OnChunkCompletion(WebLLMCompletion response)
+    {
+        if (response.IsStreamComplete)
+        {
+            isResponding = false;
+            messages.Add(new Message("assistant", streamingText));
+            streamingText = "";
+            Prompt = "";
+            await PromptRef.FocusAsync();
+        }
+        else
+        {
+            streamingText += response.Choices?.ElementAtOrDefault(0)?.Delta?.Content ?? "";
+        }
+
+        StateHasChanged();
+        await Task.CompletedTask;
+   }
+
+    private async Task StreamPromptRequest()
+    {
+        if (string.IsNullOrEmpty(Prompt))
+        {
+            return;
+        }
+
+        isResponding = true;
+        messages.Add(new Message("user", Prompt));
+        await llm.CompleteStreamAsync(messages);
+    }
+}
