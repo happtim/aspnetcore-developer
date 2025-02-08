@@ -1,0 +1,24 @@
+﻿@page "/dialog"
+
+@rendermode InteractiveAuto
+
+@inject IDialogService DialogService
+
+<MudButton @onclick="OpenDialogAsync" Variant="Variant.Filled" Color="Color.Primary">
+    Open Simple Dialog2
+</MudButton>
+
+<UiMessageAlert @ref="uiMessageAlert" />
+
+
+@code {
+    private int count;
+
+    private UiMessageAlert uiMessageAlert { get; set; }
+
+    private async Task OpenDialogAsync()
+    {
+        await uiMessageAlert.ShowMessageAlert();
+    }
+
+}

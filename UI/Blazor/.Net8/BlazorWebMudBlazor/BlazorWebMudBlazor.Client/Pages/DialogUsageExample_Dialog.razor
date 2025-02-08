@@ -1,0 +1,29 @@
+﻿<MudDialog @bind-Visible="_visible">
+    <TitleContent>
+        Dialog Title
+    </TitleContent>
+    <DialogContent>
+        Dialog Content
+    </DialogContent>
+    <DialogActions>
+        <MudButton OnClick="Cancel">Cancel</MudButton>
+        <MudButton Color="Color.Primary" OnClick="Submit">Ok</MudButton>
+    </DialogActions>
+</MudDialog>
+@code {
+
+    private bool _visible;
+
+    [CascadingParameter]
+    private MudDialogInstance MudDialog { get; set; }
+
+    private void Submit() => MudDialog.Close(DialogResult.Ok(true));
+
+    private void Cancel() => MudDialog.Cancel();
+
+    public void Open()
+    {
+        _visible = true;
+    }
+
+}

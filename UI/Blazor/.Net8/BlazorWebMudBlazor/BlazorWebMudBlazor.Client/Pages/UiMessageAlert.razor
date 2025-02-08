@@ -1,0 +1,30 @@
+﻿@using BlazorWebMudBlazor.Client.Components
+<h3>UiMessageAlert</h3>
+
+@inherits ComponentBase
+
+<MyMessageBox YesText="okk" @ref="MessageBox">
+
+</MyMessageBox>
+
+@code {
+
+    protected MyMessageBox MessageBox { get; set; } = default!;
+
+    public virtual async Task ShowMessageAlert()
+    {
+        Console.WriteLine("ShowAsync 1");
+        await MessageBox.ShowAsync();
+        Console.WriteLine("ShowAsync 2");
+        await MessageBox.ShowAsync();
+
+    }
+
+    private Task HandleYesClick(bool yes)
+    {
+        Console.WriteLine(yes);
+
+        return Task.CompletedTask;
+    }
+
+}
