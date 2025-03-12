@@ -2,18 +2,43 @@
 
 @* 在 Blazor 中，父组件和子组件的初始化和渲染顺序遵循一定的规律。以下是大致的顺序：
 
-1. 父组件构造函数
-2. 父组件 SetParametersAsync
-3. 父组件 OnInitialized/OnInitializedAsync
-4. 父组件 OnParametersSet/OnParametersSetAsync
-5. 子组件构造函数
-6. 子组件 SetParametersAsync
-7. 子组件 OnInitialized/OnInitializedAsync
-8. 子组件 OnParametersSet/OnParametersSetAsync
-9. 子组件 BuildRenderTree (渲染)
-10 .父组件 BuildRenderTree (渲染)
-11. 子组件 OnAfterRender/OnAfterRenderAsync
-12. 父组件 OnAfterRender/OnAfterRenderAsync
+** 初次渲染 **
+父组件构造函数
+父组件 SetParametersAsync
+父组件 OnInitialized/OnInitializedAsync
+父组件 OnParametersSet/OnParametersSetAsync
+父组件 ShouldRender (默认返回 true)
+    子组件构造函数
+    子组件 SetParametersAsync
+    子组件 OnInitialized/OnInitializedAsync
+    子组件 OnParametersSet/OnParametersSetAsync
+    子组件 ShouldRender (默认返回 true)
+    子组件 BuildRenderTree
+父组件 BuildRenderTree
+    子组件 OnAfterRender/OnAfterRenderAsync (firstRender: true)
+父组件 OnAfterRender/OnAfterRenderAsync (firstRender: true)
+
+** 参数变更后的重新渲染 **
+父组件 SetParametersAsync
+父组件 OnParametersSet/OnParametersSetAsync
+父组件 ShouldRender
+如果父组件 ShouldRender 返回 true:
+    子组件 SetParametersAsync
+    子组件 OnParametersSet/OnParametersSetAsync
+    子组件 ShouldRender
+    如果子组件 ShouldRender 返回 true:
+    子组件 BuildRenderTree
+父组件 BuildRenderTree
+    子组件 OnAfterRender/OnAfterRenderAsync (firstRender: false)
+父组件 OnAfterRender/OnAfterRenderAsync (firstRender: false)
+
+** 内部状态变更（StateHasChanged 触发）**
+组件调用 StateHasChanged
+组件 ShouldRender
+如果 ShouldRender 返回 true:
+组件 BuildRenderTree
+    子组件相关更新 (如有影响)
+组件 OnAfterRender/OnAfterRenderAsync (firstRender: false)
 
 需要注意以下几点：
 
