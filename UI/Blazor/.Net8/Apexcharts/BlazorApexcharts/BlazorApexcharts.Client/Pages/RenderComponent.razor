@@ -1,0 +1,52 @@
+﻿@using ApexCharts
+@using BlazorApexcharts.Client.Data
+
+<ApexChart @ref=chart TItem="Order" Title="@Title">
+
+    <ApexPointSeries TItem="Order"
+    Items="Orders"
+    Name="Gross Value"
+    SeriesType="SeriesType.Bar"
+    XValue="@(e => e.Country)"
+    YAggregate="@(e => e.Sum(e => e.GrossValue))"
+    OrderByDescending="e=>e.Y" />
+
+    <ApexPointSeries TItem="Order"
+    Items="Orders"
+    Name="Net Value"
+    SeriesType="SeriesType.Bar"
+    XValue="@(e => e.Country)"
+    YAggregate="@(e => e.Sum(e => e.NetValue))"
+    OrderByDescending="e=>e.Y" />
+
+
+</ApexChart>
+
+@code 
+{
+    private ApexChart<Order> chart;
+
+    [Parameter]
+    public string Title { get; set; }
+
+    [Parameter]
+    public List<Order> Orders { get; set; } = new List<Order>();
+
+    protected override async Task OnParametersSetAsync()
+    {
+        if (chart != null) 
+        {
+            await chart.RenderAsync();
+        }
+
+        Console.WriteLine("\t RenderComponent OnParametersSetAsync");
+        await base.OnParametersSetAsync();
+    }
+
+    protected override Task OnAfterRenderAsync(bool firstRender)
+    {
+        Console.WriteLine("\t RenderComponent OnAfterRenderAsync");
+        return base.OnAfterRenderAsync(firstRender);
+    }
+
+}

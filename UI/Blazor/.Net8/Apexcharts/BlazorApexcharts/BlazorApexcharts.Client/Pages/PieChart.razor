@@ -1,0 +1,26 @@
+﻿@page "/piechart"
+@using ApexCharts
+@using BlazorApexcharts.Client.Data
+@using System.Diagnostics
+
+@rendermode InteractiveAuto
+
+<h3>Pie Chart</h3>
+
+<ApexChart TItem="Order" Title="Order Gross Value">
+    <ApexPointSeries TItem="Order"
+                    Items="Orders"
+                    Name="Gross Value"
+                    SeriesType="SeriesType.Pie"
+                    XValue="@(e => e.Country)"
+                    YAggregate="@(e => e.Sum(e => e.GrossValue))"
+                    OrderByDescending="e=>e.Y" 
+    />
+</ApexChart>
+
+
+@code {
+
+    private List<Order> Orders { get; set; } = SampleData.GetOrders();
+
+}

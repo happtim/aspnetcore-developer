@@ -1,0 +1,53 @@
+﻿@using ApexCharts
+@using BlazorApexcharts.Client.Data
+@rendermode InteractiveAuto
+
+@page "/render"
+
+<button @onclick="RenderChart">Render</button>
+
+<RenderComponent Title="@title" Orders="orders" />
+
+@code 
+{
+
+    private ApexChart<Order> chart;
+    private List<Order> orders = SampleData.GetOrders();
+    private string title = "Orders";
+    private int counter = 1;
+
+    protected override Task OnParametersSetAsync()
+    {
+        Console.WriteLine("OnParametersSetAsync");
+        return base.OnParametersSetAsync();
+    }
+
+    protected override bool ShouldRender()
+    {
+        Console.WriteLine("ShouldRender");
+        return base.ShouldRender();
+    }
+
+    protected override Task OnAfterRenderAsync(bool firstRender)
+    {
+        Console.WriteLine("OnAfterRenderAsync");
+        return base.OnAfterRenderAsync(firstRender);
+    }
+
+    private Task RenderChart()
+    {
+        var rnd = new Random();
+        foreach (var order in orders)
+        {
+            var multiply = rnd.NextDouble() + 0.5;
+            order.GrossValue = Math.Round(order.GrossValue * (decimal)multiply);
+        }
+
+        title = $"Render[{counter}]";
+        counter++;
+
+        Console.WriteLine("RenderChart");
+
+        return Task.CompletedTask;
+    }
+}

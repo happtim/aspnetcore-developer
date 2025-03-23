@@ -15,6 +15,10 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BlazorWebMudBlazor.Client",
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BlazorWebMudBlazor", "BlazorWebMudBlazor\BlazorWebMudBlazor\BlazorWebMudBlazor.csproj", "{E67C72CC-BA84-4A18-9B34-3150D807DE25}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BlazorApexcharts", "Apexcharts\BlazorApexcharts\BlazorApexcharts\BlazorApexcharts.csproj", "{DDD221C5-95E9-4C53-AF38-44F7DD4245C3}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BlazorApexcharts.Client", "Apexcharts\BlazorApexcharts\BlazorApexcharts.Client\BlazorApexcharts.Client.csproj", "{7975FE05-8000-4CFF-B0FB-6888DE71D99C}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -45,6 +49,14 @@ Global
 		{E67C72CC-BA84-4A18-9B34-3150D807DE25}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{E67C72CC-BA84-4A18-9B34-3150D807DE25}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{E67C72CC-BA84-4A18-9B34-3150D807DE25}.Release|Any CPU.Build.0 = Release|Any CPU
+		{DDD221C5-95E9-4C53-AF38-44F7DD4245C3}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{DDD221C5-95E9-4C53-AF38-44F7DD4245C3}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{DDD221C5-95E9-4C53-AF38-44F7DD4245C3}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{DDD221C5-95E9-4C53-AF38-44F7DD4245C3}.Release|Any CPU.Build.0 = Release|Any CPU
+		{7975FE05-8000-4CFF-B0FB-6888DE71D99C}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{7975FE05-8000-4CFF-B0FB-6888DE71D99C}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{7975FE05-8000-4CFF-B0FB-6888DE71D99C}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{7975FE05-8000-4CFF-B0FB-6888DE71D99C}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
