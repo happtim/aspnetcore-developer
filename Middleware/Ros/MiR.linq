@@ -27,10 +27,17 @@ RosSocket rosSocket  = new RosSocket(new RosSharp.RosBridgeClient.Protocols.WebS
 //查看单个param
 //rosSocket.CallService<GetParamRequest, GetParamResponse>("/rosapi/get_param", GetParamResponseHandler, new GetParamRequest() { name = "/rosdistro"});
 
-
+//小车状态
 //rosSocket.Subscribe<RobotStatus>("/robot_status", RobotStatusHandler);
 
+//寄存器事件
 //rosSocket.Subscribe<PLCRegisterEvent>("/data_events/registers",PLCRegisterEventHandler);
+
+//MiR100 bms状态
+//rosSocket.Subscribe<LightCtrlBmsStatus>("/LightCtrl/bms_data",LightCtrlBmsStatusHandler );
+
+//MiR 其他型号bms状态
+//rosSocket.Subscribe<BmsStatus>("/PB/bms_status",BmsStatusHandler );
 
 Console.ReadLine();
 
@@ -41,6 +48,16 @@ void RobotStatusHandler(RobotStatus message)
 }
 
 void PLCRegisterEventHandler(PLCRegisterEvent message)
+{
+	message.Dump();
+}
+
+void LightCtrlBmsStatusHandler(LightCtrlBmsStatus message)
+{
+	message.Dump();	
+}
+
+void BmsStatusHandler(BmsStatus message)
 {
 	message.Dump();
 }
@@ -99,4 +116,24 @@ public class PLCRegisterEvent : Message
 
 }
 
+/// <summary>
+/// Mir100 Suport BmsStatus,the "/PB/bms_status" not return data
+/// </summary>
+public class LightCtrlBmsStatus : Message
+{
+	public const string RosMessageName = "mirMsgs/BMSData";
+	public int temperature { get; set; } //温度1
+	public int cycle_count { get; set; } //循环次数
+	public int[] cell_voltage { get; set; } //电芯电压
+
+}
+
+public class BmsStatus : Message
+{
+	public const string RosMessageName = "mirMsgs/BMSData";
+	//序列化数据需要都小写
+	public int temperature { get; set; } //温度1
+	public int cycle_count { get; set; } //循环次数
+	public int[] cell_voltage { get; set; } //电芯电压
+}
 
