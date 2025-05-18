@@ -39,8 +39,15 @@ RosSocket rosSocket  = new RosSocket(new RosSharp.RosBridgeClient.Protocols.WebS
 //MiR 其他型号bms状态
 //rosSocket.Subscribe<BmsStatus>("/PB/bms_status",BmsStatusHandler );
 
+//站点数据变更
+//rosSocket.Subscribe<DataEventsPositions>("/data_events/positions",DataEventsPositionsHandler );
+
 Console.ReadLine();
 
+void DataEventsPositionsHandler(DataEventsPositions message)
+{
+	message.Dump();
+}
 
 void RobotStatusHandler(RobotStatus message)
 {
@@ -137,3 +144,22 @@ public class BmsStatus : Message
 	public int[] cell_voltage { get; set; } //电芯电压
 }
 
+public class DataEventsPositions : Message
+{
+	public const string RosMessageName = "mir_data_msgs/PositionEvent";
+	
+    public Position data { get; set; }
+
+	public class Position
+	{
+		public string guid { get; set; }
+		public string name { get; set; }
+		public double pos_x { get; set; }
+		public double pos_y { get; set; }
+		public double orientation { get; set; }
+		public int type_id { get; set; }
+		public string map_id { get; set; }
+		public string parent_id { get; set; }
+		public string created_by_id { get; set; }
+	}
+}
