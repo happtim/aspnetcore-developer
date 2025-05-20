@@ -53,7 +53,7 @@ string jsonDefinition = @"{
             ""Id"": ""PrintResult"",
             ""StepType"": ""CustomMessage, LINQPadQuery"",
             ""Inputs"": {
-                ""Message"": "" \""The result is: \"" + data.Value3""
+                ""Message"": ""data.Value3""
             }
         }
     ]

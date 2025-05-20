@@ -88,8 +88,6 @@ public class DecisionBranchWorkflow : IWorkflow<MyData>
         builder
             .StartWith<PrintMessage>()
 				.Input(step => step.Message, data => $"Starting workflow with Value1 = '{data.Value1}'")
-			.Then(context => {})
-			.Branch ("123" , branch1)
             .Decide(data => data.Value1)
                 .Branch((data, outcome) => data.Value1 == "one", branch1)
                 .Branch((data, outcome) => data.Value1 == "two", branch2)
