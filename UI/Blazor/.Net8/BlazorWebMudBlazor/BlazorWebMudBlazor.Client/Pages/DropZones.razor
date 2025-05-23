@@ -1,0 +1,197 @@
+@page "/dropzones"
+@using MudBlazor
+
+<PageTitle>Drop Zones Example</PageTitle>
+
+<MudContainer MaxWidth="MaxWidth.ExtraLarge" Class="mt-4">
+    <MudText Typo="Typo.h4" Class="mb-4">Three-Level Nested Drop Zones</MudText>
+    
+    <!-- Main Container - Level 1: Categories -->
+    <MudDropContainer T="DropZoneItem" Items="_items" ItemsSelector="@((item, dropzone) => item.Zone == dropzone)" ItemDropped="ItemUpdated" Class="d-flex flex-column flex-grow-1">
+        <ChildContent>
+            <!-- Category Container - Level 2: Drop Zones within Categories -->
+            <MudDropContainer T="DropZone" Items="_zones" ItemsSelector="@((item, dropzone) => item.Category == dropzone)" ItemDropped="ZoneUpdated" Class="d-flex flex-wrap">
+                <ChildContent>
+                    <!-- Category Drop Zones -->
+                    @foreach (var category in _categories)
+                    {
+                        <div class="flex-fill ma-2">
+                            <MudPaper Class="pa-4 mud-theme-primary" Elevation="2">
+                                <MudText Typo="Typo.h5" Class="mb-3 text-center">@category.Name</MudText>
+                                <MudDropZone T="DropZone" Identifier="@category.Name" AllowReorder Class="rounded mud-background-gray pa-2 min-height-200" Style="min-height: 200px;">
+                                    <MudText Typo="Typo.caption" Class="text-center pa-2">Drop Zones Here</MudText>
+                                </MudDropZone>
+                            </MudPaper>
+                        </div>
+                    }
+                </ChildContent>
+                <ItemRenderer>
+                    <!-- Drop Zone Renderer - Level 3: Items within Drop Zones -->
+                    <MudPaper Class="pa-4 ma-2 mud-theme-secondary" Elevation="3" Style="min-width: 300px;">
+                        <MudText Typo="Typo.h6" Class="mb-2">
+                            <MudIcon Icon="@Icons.Material.Filled.DragIndicator" Class="mr-2" />
+                            @context.Name
+                        </MudText>
+                        <MudDivider Class="mb-2" />
+                        <MudDropZone T="DropZoneItem" Identifier="@context.Name" AllowReorder Class="rounded mud-background-gray pa-2" Style="min-height: 150px;">
+                            <MudText Typo="Typo.caption" Class="text-center pa-2">Drop Items Here</MudText>
+                        </MudDropZone>
+                    </MudPaper>
+                </ItemRenderer>
+            </MudDropContainer>
+        </ChildContent>
+        <ItemRenderer>
+            <!-- Item Renderer -->
+            <MudChip T="string" Color="Color.Primary" Class="ma-1" Variant="Variant.Filled">
+                <MudIcon Icon="@Icons.Material.Filled.DragIndicator" Class="mr-1" Size="Size.Small" />
+                @context.Name
+            </MudChip>
+        </ItemRenderer>
+    </MudDropContainer>
+
+    <!-- Two Container Example -->
+    <MudDivider Class="my-6" />
+    <MudText Typo="Typo.h5" Class="mb-4">Two Container Drop Zone Example</MudText>
+    
+    <MudGrid>
+        <MudItem xs="6">
+            <MudPaper Class="pa-4" Elevation="2">
+                <MudText Typo="Typo.h6" Class="mb-3">Container A</MudText>
+                <MudDropContainer T="SimpleItem" Items="_containerAItems" ItemsSelector="@((item, dropzone) => item.Container == dropzone)" ItemDropped="ContainerItemUpdated" Class="flex-grow-1">
+                    <ChildContent>
+                        <MudDropZone T="SimpleItem" Identifier="ContainerA" AllowReorder Class="rounded mud-background-gray pa-4" Style="min-height: 200px;">
+                            <MudText Typo="Typo.caption" Class="text-center">Drop items in Container A</MudText>
+                        </MudDropZone>
+                    </ChildContent>
+                    <ItemRenderer>
+                        <MudPaper Class="pa-2 ma-1" Elevation="1">
+                            <MudText>@context.Name</MudText>
+                        </MudPaper>
+                    </ItemRenderer>
+                </MudDropContainer>
+            </MudPaper>
+        </MudItem>
+        <MudItem xs="6">
+            <MudPaper Class="pa-4" Elevation="2">
+                <MudText Typo="Typo.h6" Class="mb-3">Container B</MudText>
+                <MudDropContainer T="SimpleItem" Items="_containerBItems" ItemsSelector="@((item, dropzone) => item.Container == dropzone)" ItemDropped="ContainerItemUpdated" Class="flex-grow-1">
+                    <ChildContent>
+                        <MudDropZone T="SimpleItem" Identifier="ContainerB" AllowReorder Class="rounded mud-background-gray pa-4" Style="min-height: 200px;">
+                            <MudText Typo="Typo.caption" Class="text-center">Drop items in Container B</MudText>
+                        </MudDropZone>
+                    </ChildContent>
+                    <ItemRenderer>
+                        <MudPaper Class="pa-2 ma-1" Elevation="1">
+                            <MudText>@context.Name</MudText>
+                        </MudPaper>
+                    </ItemRenderer>
+                </MudDropContainer>
+            </MudPaper>
+        </MudItem>
+    </MudGrid>
+</MudContainer>
+
+@code {
+    // Three-level nesting data
+    private List<Category> _categories = new()
+    {
+        new() { Name = "Work" },
+        new() { Name = "Personal" }
+    };
+
+    private List<DropZone> _zones = new()
+    {
+        new() { Name = "To Do", Category = "Work" },
+        new() { Name = "In Progress", Category = "Work" },
+        new() { Name = "Shopping List", Category = "Personal" },
+        new() { Name = "Goals", Category = "Personal" }
+    };
+
+    private List<DropZoneItem> _items = new()
+    {
+        new() { Zone = "To Do", Name = "Review Code" },
+        new() { Zone = "To Do", Name = "Write Documentation" },
+        new() { Zone = "In Progress", Name = "Fix Bug #123" },
+        new() { Zone = "Shopping List", Name = "Buy Groceries" },
+        new() { Zone = "Goals", Name = "Learn Blazor" }
+    };
+
+    // Two container data
+    private List<SimpleItem> _containerAItems = new()
+    {
+        new() { Container = "ContainerA", Name = "Item A1" },
+        new() { Container = "ContainerA", Name = "Item A2" }
+    };
+
+    private List<SimpleItem> _containerBItems = new()
+    {
+        new() { Container = "ContainerB", Name = "Item B1" },
+        new() { Container = "ContainerB", Name = "Item B2" }
+    };
+
+    private void ItemUpdated(MudItemDropInfo<DropZoneItem> dropItem)
+    {
+        dropItem.Item.Zone = dropItem.DropzoneIdentifier;
+        StateHasChanged();
+    }
+
+    private void ZoneUpdated(MudItemDropInfo<DropZone> dropItem)
+    {
+        dropItem.Item.Category = dropItem.DropzoneIdentifier;
+        StateHasChanged();
+    }
+
+    private void ContainerItemUpdated(MudItemDropInfo<SimpleItem> dropItem)
+    {
+        dropItem.Item.Container = dropItem.DropzoneIdentifier;
+        
+        // Update the appropriate list based on the new container
+        if (dropItem.DropzoneIdentifier == "ContainerA")
+        {
+            if (!_containerAItems.Contains(dropItem.Item))
+            {
+                _containerBItems.Remove(dropItem.Item);
+                _containerAItems.Add(dropItem.Item);
+            }
+        }
+        else if (dropItem.DropzoneIdentifier == "ContainerB")
+        {
+            if (!_containerBItems.Contains(dropItem.Item))
+            {
+                _containerAItems.Remove(dropItem.Item);
+                _containerBItems.Add(dropItem.Item);
+            }
+        }
+        
+        StateHasChanged();
+    }
+
+    private class Category
+    {
+        public string Name { get; init; }
+    }
+
+    private class DropZone
+    {
+        public string Name { get; init; }
+        public string Category { get; set; }
+    }
+
+    private class DropZoneItem
+    {
+        public string Zone { get; set; }
+        public string Name { get; init; }
+    }
+
+    private class SimpleItem
+    {
+        public string Container { get; set; }
+        public string Name { get; init; }
+    }
+}
+
+<style>
+    .min-height-200 {
+        min-height: 200px;
+    }
+</style>
