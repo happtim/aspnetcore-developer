@@ -1,0 +1,60 @@
+@page "/dynamic-form"
+@using Blazor.Shared.FormGenerator
+@using Blazor.Shared.FormGenerator.Models
+@using Blazor.UI.FormGenerator
+
+@if (_formBuilders is not null)
+{
+    <DynamicMudForm @ref="_dynamicMudFrom" FormBuilders="_formBuilders" />
+}
+
+
+@code
+{
+    private DynamicMudForm _dynamicMudFrom;
+    private FormBuilder[] _formBuilders;
+
+    protected override Task OnInitializedAsync()
+    {
+        _formBuilders = new FormBuilder[]
+        {
+            new FormBuilder
+            {
+                Header = new Header{ Enable = false },
+                Footer = new Footer 
+                { 
+                    Enable = true , 
+                    EnableSubmit = true,
+                    SubmitText = "Submit"
+                },
+                GridPosition = new GridPosition(),
+                Card = "Card1",
+                Fields = new List<Field>
+                {
+                    new Field
+                    {
+                        GridPosition = new GridPosition(),
+                        InputType = InputFieldType.Text,
+                        FieldName = "Name",
+                        Label = "√˚◊÷",
+                        Placeholder = "«Î ‰»Î√˚◊÷"
+                    }
+                }
+            }
+        };
+
+        DynamicMudForm.AttachSubmitButton_EventAction(_formBuilders, "Card1", SubmitButton_Click);
+
+        return Task.CompletedTask;
+    }
+
+    public async Task SubmitButton_Click(EventArgs args)
+    {
+        Console.WriteLine("Submit Button Click");
+        _dynamicMudFrom.GetMudFrom().Validate();
+        if (_dynamicMudFrom.GetMudFrom().IsValid)
+        {
+            Console.WriteLine(_dynamicMudFrom.GetFormData());
+        }
+    }
+}
