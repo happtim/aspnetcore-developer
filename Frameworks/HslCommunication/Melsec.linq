@@ -1,5 +1,5 @@
 <Query Kind="Statements">
-  <NuGetReference Version="7.0.1">HslCommunication</NuGetReference>
+  <NuGetReference Version="12.0.3">HslCommunication</NuGetReference>
   <Namespace>HslCommunication.Profinet.Melsec</Namespace>
 </Query>
 
