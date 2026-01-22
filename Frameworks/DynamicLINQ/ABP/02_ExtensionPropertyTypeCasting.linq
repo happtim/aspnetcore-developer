@@ -52,8 +52,8 @@ try
 		)
 	};
 	 
-	//var whereClause = "int(ExtraProperties[\"CustomRating\"]) > @0";
-	 var whereClause = "int(HasExtraPropertiesExtensions.GetProperty(it, \"CustomRating\", 0)) > @0";
+	var whereClause = "int(ExtraProperties[\"CustomRating\"]) > @0";
+	 //var whereClause = "int(HasExtraPropertiesExtensions.GetProperty(it, \"CustomRating\", 0)) > @0";
 	var parameters = new object[] { 4 };
 	var dynamicResult = products.AsQueryable().Where(parsingConfig, whereClause, parameters).ToList();
 	

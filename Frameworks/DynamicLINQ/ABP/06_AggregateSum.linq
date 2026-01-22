@@ -46,16 +46,25 @@ try
 			Console.WriteLine($"      ├─ {tag.Name}: {value}");
 		}
 	}
-	
+
 	// Dynamic LINQ 查询实现
 	Console.WriteLine("\n✓ Dynamic LINQ 查询:");
 	
+	var parsingConfig = new ParsingConfig
+	{
+		RestrictOrderByToPropertyOrField = false,
+		CustomTypeProvider = new DefaultDynamicLinqCustomTypeProvider(
+		 ParsingConfig.Default,
+		 new[] { typeof(HasExtraPropertiesExtensions) }
+	 )
+	};
+	
 	// 方式1: 使用 Sum 聚合函数访问扩展属性
-	var whereClause = "Tags.Sum(int(ExtraProperties.CustomValue)) > @0";
+	var whereClause = "Tags.Sum(HasExtraPropertiesExtensions.GetProperty(it, \"CustomRating\", null)) > @0";
 	var parameters = new object[] { 150 };
 	
 	var dynamicResult = products.AsQueryable()
-		.Where(whereClause, parameters)
+		.Where(parsingConfig,whereClause, parameters)
 		.ToList();
 	
 	Console.WriteLine($"  查询表达式: {whereClause}");
@@ -74,11 +83,8 @@ try
 
 	// 额外测试：按照聚合结果排序
 	Console.WriteLine("\n✓ Dynamic LINQ 排序 - 按标签总和降序:");
-	var parsingConfig = new ParsingConfig
-	{
-	    RestrictOrderByToPropertyOrField = false 
-	};
-	// 方式1: 直接访问 ExtraProperties
+
+	// 方式2: 直接访问 ExtraProperties
 	var orderByClause = "Tags.Sum(int(ExtraProperties.CustomValue)) descending";
 	
 	var sortedResult = products.AsQueryable()

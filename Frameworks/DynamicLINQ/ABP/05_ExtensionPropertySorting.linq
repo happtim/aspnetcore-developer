@@ -4,6 +4,7 @@
   <Namespace>System.Linq.Dynamic.Core</Namespace>
   <Namespace>Volo.Abp.Data</Namespace>
   <Namespace>Volo.Abp.ObjectExtending</Namespace>
+  <Namespace>System.Linq.Dynamic.Core.CustomTypeProviders</Namespace>
 </Query>
 
 #load ".\Common_Data.linq"
@@ -39,26 +40,24 @@ try
 		var rating = product.GetProperty<int>("CustomRating");
 		Console.WriteLine($"  └─ {product.Name} | Rating: {rating}");
 	}
-	
+
 	// Dynamic LINQ 排序实现
 	Console.WriteLine("\n✓ Dynamic LINQ 排序:");
 	
-	// 方式1: 直接访问 ExtraProperties 进行排序
-	var orderByClause = "ExtraProperties[\"CustomRating\"] descending";
+	var parsingConfig = new ParsingConfig
+	{
+		RestrictOrderByToPropertyOrField = false,
+		CustomTypeProvider = new DefaultDynamicLinqCustomTypeProvider(
+			 ParsingConfig.Default,
+			 new[] { typeof(HasExtraPropertiesExtensions) }
+		 )
+	};
 	
-	// 方式2: 使用 HasExtraPropertiesExtensions.GetProperty (需要配置 ParsingConfig)
-	// var parsingConfig = new ParsingConfig
-	// {
-	//     CustomTypeProvider = new DefaultDynamicLinqCustomTypeProvider(
-	//         ParsingConfig.Default,
-	//         new[] { typeof(HasExtraPropertiesExtensions) }
-	//     )
-	// };
-	// var orderByClause2 = "int(HasExtraPropertiesExtensions.GetProperty(it, \"CustomRating\", 0)) descending";
-	// var dynamicResult = products.AsQueryable().OrderBy(parsingConfig, orderByClause2).ToList();
-	
+	//var orderByClause = "int(ExtraProperties[\"CustomRating\"]) descending";
+	 var orderByClause = "HasExtraPropertiesExtensions.GetProperty(it, \"CustomRating\", null) descending";
+
 	var dynamicResult = products.AsQueryable()
-		.OrderBy(orderByClause)
+		.OrderBy(parsingConfig,orderByClause)
 		.ToList();
 	
 	Console.WriteLine($"  排序表达式: {orderByClause}");
