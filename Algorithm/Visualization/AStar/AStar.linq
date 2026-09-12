@@ -167,7 +167,8 @@ public class AStarSolver
 					p = _came[p.Value.r][p.Value.c];
 				}
 				path.Reverse();
-				Record("完成", $"到达终点 G！路径长度 = {path.Count - 1} 步（g={(int)_g[cr][cc]}），沿 came-from 回溯出绿色路径", (cr, cc), null, path);
+				int expanded = _closed.Sum(row => row.Count(x => x));
+				Record("完成", $"到达终点 G！路径长度 = {path.Count - 1} 步（g={(int)_g[cr][cc]}），共扩展 {expanded} 个格子，沿 came-from 回溯出绿色路径", (cr, cc), null, path);
 				return;
 			}
 

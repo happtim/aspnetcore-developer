@@ -1,8 +1,8 @@
 BasicSave.linq
 RelatedData.linq
-CascadeDeletePrincipal.linq
-CascadeDeleteDependent.linq
-CascadeDeleteInDatabase.linq
-CascadeDeleteSetNull.linq
-CascadeDeleteBehavior.linq
+CascadeDelete1_Default.linq
+CascadeDelete2_BehaviorMatrix.linq
+CascadeDelete3_Exceptions.linq
+CascadeDelete4_Orphans.linq
+CascadeContext.linq
 Entities.linq

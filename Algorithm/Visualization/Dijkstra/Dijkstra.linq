@@ -1,197 +1,195 @@
 <Query Kind="Program" />
 
 #load "..\Common\StepPlayer.linq"
-#load "..\Common\GraphRenderer.linq"
+#load "..\Common\GridRenderer.linq"
 
 // ============================================================
-// Dijkstra 最短路径可视化（无向带权图）
-// 每轮：从未确定节点中取距离最小者标记为"已确定"，然后松弛其邻边。
-// 逐步展示：当前节点（黄）、已确定集合（灰）、正在松弛的边（橙）、
-//          当前最短路径树（蓝）、最终路径（绿）、节点下方=当前最短距离。
-// 图数据可与 Algorithm\QuikGraph\ShortestPathsDijkstra.linq 交叉验证。
+// Dijkstra 网格寻路可视化（4 方向移动，格子带地形代价）
+// 每轮：从 open 集取 d（起点到该格的已知最短代价）最小的格子扩展，移入 closed，松弛邻居。
+// 与 A* 的唯一区别：没有启发值 h（等价于 h=0 的 A*），所以它向四周均匀扩散，
+// 扩展的格子更多，但不需要任何关于终点的先验知识，且天然支持带权地形。
+// 逐步展示：open（蓝）、closed（灰）、当前扩展（黄）、本步更新的邻居（橙框）、
+//          最终路径（绿）；格子右上角=进入该格的代价（仅非 1 时显示），底部=d 值。
+// 地图用字符串描述：S=起点 G=终点 #=墙 .=平地(代价 1) ~=沼泽(代价 3)，可自由修改。
+// 与 AStar\AStar.linq 使用同一张底图，可对比两者扩展的格子数量。
 // ============================================================
 
 void Main()
 {
-	var g = new WeightedGraph();
-	g.AddNode("A",  70, 200);
-	g.AddNode("B", 230,  90);
-	g.AddNode("C", 230, 310);
-	g.AddNode("D", 400,  90);
-	g.AddNode("E", 400, 310);
-	g.AddNode("F", 560, 200);
+	var map = new[]
+	{
+		"............",
+		".S....#.....",
+		"......#.....",
+		"..~~~.#.....",
+		"..~~~.#.....",
+		"..~~~.#..G..",
+		"......#.....",
+		"............",
+	};
 
-	g.AddEdge("A", "B", 4);
-	g.AddEdge("A", "C", 2);
-	g.AddEdge("B", "C", 1);
-	g.AddEdge("B", "D", 5);
-	g.AddEdge("C", "D", 8);
-	g.AddEdge("C", "E", 10);
-	g.AddEdge("D", "E", 2);
-	g.AddEdge("D", "F", 6);
-	g.AddEdge("E", "F", 5);
-
-	string start = "A", goal = "F";
-	var solver = new DijkstraSolver(g, start, goal);
+	var solver = new DijkstraSolver(map);
 	solver.Run();
 
-	new StepPlayer<DijkstraState>(solver.Recorder.Steps, s => Render(s.State, g, start, goal)).Show();
+	new StepPlayer<DijkstraState>(solver.Recorder.Steps, s => Render(s.State, solver)).Show();
 }
 
-static object Render(DijkstraState st, WeightedGraph g, string start, string goal)
+static object Render(DijkstraState st, DijkstraSolver s)
 {
-	bool OnPath(string a, string b)
+	var cells = new GridCell[s.Rows][];
+	for (int r = 0; r < s.Rows; r++)
 	{
-		for (int i = 0; i + 1 < st.Path.Count; i++)
-			if ((st.Path[i] == a && st.Path[i + 1] == b) || (st.Path[i] == b && st.Path[i + 1] == a))
-				return true;
-		return false;
-	}
-
-	var edges = new List<VisEdge>();
-	foreach (var (a, b, w) in g.Edges)
-	{
-		string stroke = "#bbbbbb";
-		double width = 1.5;
-		if (st.Prev.GetValueOrDefault(b) == a || st.Prev.GetValueOrDefault(a) == b) { stroke = "#1976d2"; width = 3; }     // 最短路径树
-		var ae = st.ActiveEdge;
-		if (ae != null && ((ae.Value.A == a && ae.Value.B == b) || (ae.Value.A == b && ae.Value.B == a))) { stroke = "#ef6c00"; width = 4; }  // 正在松弛
-		if (OnPath(a, b)) { stroke = "#2e7d32"; width = 5; }                                                               // 最终路径
-		edges.Add(new VisEdge { From = a, To = b, Label = F(w), Stroke = stroke, Width = width });
-	}
-
-	var nodes = new List<VisNode>();
-	foreach (var kv in g.Nodes)
-	{
-		string id = kv.Key;
-		string fill = "#ffffff";
-		if (st.Path.Contains(id)) fill = "#a5d6a7";
-		else if (id == st.Current) fill = "#ffd54f";
-		else if (st.Done.Contains(id)) fill = "#e0e0e0";
-		double d = st.Dist.GetValueOrDefault(id, double.PositiveInfinity);
-		nodes.Add(new VisNode
+		cells[r] = new GridCell[s.Cols];
+		for (int c = 0; c < s.Cols; c++)
 		{
-			Id = id,
-			X = kv.Value.X,
-			Y = kv.Value.Y,
-			Fill = fill,
-			Stroke = id == start ? "#2e7d32" : id == goal ? "#c62828" : "#555555",
-			StrokeW = id == start || id == goal ? 3 : 1.5,
-			SubLabel = double.IsInfinity(d) ? "∞" : F(d),
-		});
-	}
+			var cell = new GridCell();
+			cells[r][c] = cell;
+			if (s.Wall[r][c]) { cell.Fill = "#455a64"; continue; }
 
-	return GraphRenderer.Render(nodes, edges, 640, 400,
-		"绿框=起点　红框=终点　黄=当前节点　灰=已确定　橙边=正在松弛　蓝边=最短路径树　绿边=最终路径　节点内小字=当前最短距离");
-}
+			if (s.Cost[r][c] > 1) cell.Fill = "#fff3e0";                       // 沼泽底色（淡橙）
+			if (st.Closed[r][c]) cell.Fill = "#e0e0e0";
+			if (st.Open[r][c])   cell.Fill = "#bbdefb";
+			if (st.Path.Contains((r, c))) cell.Fill = "#a5d6a7";
+			if (st.Current.HasValue && st.Current.Value == (r, c)) cell.Fill = "#ffd54f";
+			if (st.Updated.Contains((r, c))) { cell.Stroke = "#ef6c00"; cell.StrokeW = 2.5; }
 
-static string F(double v) => v == Math.Floor(v) ? ((long)v).ToString() : v.ToString("0.##");
-
-public class WeightedGraph
-{
-	public Dictionary<string, (double X, double Y)> Nodes { get; } = new();
-	public List<(string A, string B, double W)> Edges { get; } = new();
-
-	public void AddNode(string id, double x, double y) => Nodes[id] = (x, y);
-	public void AddEdge(string a, string b, double w) => Edges.Add((a, b, w));   // 无向边
-
-	public IEnumerable<(string To, double W)> Neighbors(string id)
-	{
-		foreach (var e in Edges)
-		{
-			if (e.A == id) yield return (e.B, e.W);
-			else if (e.B == id) yield return (e.A, e.W);
+			if (s.Cost[r][c] > 1) cell.TR = $"×{s.Cost[r][c]}";
+			if (!double.IsInfinity(st.Dist[r][c])) cell.BC = $"d{(int)st.Dist[r][c]}";
+			if ((r, c) == s.Start) { cell.Center = "S"; cell.TextColor = "#1b5e20"; }
+			if ((r, c) == s.Goal)  { cell.Center = "G"; cell.TextColor = "#b71c1c"; }
 		}
 	}
+	return GridRenderer.Render(cells, 52,
+		"S=起点　G=终点　深灰=墙　淡橙=沼泽(进入代价 3)　蓝=open（待探索）　灰=closed（已确定）　黄=当前扩展　橙框=本步更新的邻居　绿=最终路径　d=起点到该格的最短代价");
 }
 
 public class DijkstraState
 {
-	public Dictionary<string, double> Dist { get; set; }
-	public Dictionary<string, string> Prev { get; set; }
-	public HashSet<string> Done { get; set; }
-	public string Current { get; set; }
-	public (string A, string B)? ActiveEdge { get; set; }
-	public List<string> Path { get; set; } = new();
+	public double[][] Dist { get; set; }
+	public bool[][] Open { get; set; }
+	public bool[][] Closed { get; set; }
+	public (int r, int c)? Current { get; set; }
+	public List<(int r, int c)> Updated { get; set; } = new();
+	public List<(int r, int c)> Path { get; set; } = new();
 }
 
 public class DijkstraSolver
 {
 	public StepRecorder<DijkstraState> Recorder { get; } = new();
+	public int Rows { get; }
+	public int Cols { get; }
+	public bool[][] Wall { get; }
+	public int[][] Cost { get; }                       // 进入该格的代价
+	public (int r, int c) Start { get; private set; }
+	public (int r, int c) Goal { get; private set; }
 
-	readonly WeightedGraph _g;
-	readonly string _start, _goal;
-	readonly Dictionary<string, double> _dist = new();
-	readonly Dictionary<string, string> _prev = new();
-	readonly HashSet<string> _done = new();
+	readonly double[][] _dist;
+	readonly bool[][] _open;
+	readonly bool[][] _closed;
+	readonly (int r, int c)?[][] _came;
 
-	public DijkstraSolver(WeightedGraph g, string start, string goal)
+	public DijkstraSolver(string[] map)
 	{
-		_g = g;
-		_start = start;
-		_goal = goal;
-	}
-
-	public void Run()
-	{
-		foreach (var id in _g.Nodes.Keys) _dist[id] = double.PositiveInfinity;
-		_dist[_start] = 0;
-		Record("初始化", $"起点 {_start} 的距离设为 0，其余节点为 ∞；每轮取未确定节点中距离最小者");
-
-		while (true)
+		Rows = map.Length;
+		Cols = map[0].Length;
+		Wall = new bool[Rows][];
+		Cost = new int[Rows][];
+		_dist = new double[Rows][];
+		_open = new bool[Rows][];
+		_closed = new bool[Rows][];
+		_came = new (int, int)?[Rows][];
+		for (int r = 0; r < Rows; r++)
 		{
-			// 取未确定节点中距离最小的（小图用线性扫描，步骤更直观）
-			string u = null;
-			double best = double.PositiveInfinity;
-			foreach (var kv in _dist)
-				if (!_done.Contains(kv.Key) && kv.Value < best) { best = kv.Value; u = kv.Key; }
-
-			if (u == null)
+			Wall[r] = new bool[Cols];
+			Cost[r] = new int[Cols];
+			_dist[r] = new double[Cols];
+			_open[r] = new bool[Cols];
+			_closed[r] = new bool[Cols];
+			_came[r] = new (int, int)?[Cols];
+			for (int c = 0; c < Cols; c++)
 			{
-				Record("结束", "剩余节点都不可达，算法结束");
-				break;
-			}
-
-			_done.Add(u);
-
-			if (u == _goal)
-			{
-				var path = new List<string>();
-				for (string p = _goal; p != null; p = _prev.GetValueOrDefault(p)) path.Add(p);
-				path.Reverse();
-				Record("完成", $"终点 {_goal} 已确定！最短路径：{string.Join(" → ", path)}，总距离 = {F(best)}", u, null, path);
-				break;
-			}
-
-			Record("选择", $"未确定节点中 {u} 的距离最小（{F(best)}）→ 标记为已确定，开始松弛它的邻边", u);
-
-			foreach (var (v, w) in _g.Neighbors(u))
-			{
-				if (_done.Contains(v)) continue;
-				double nd = best + w;
-				if (nd < _dist[v])
+				_dist[r][c] = double.PositiveInfinity;
+				Cost[r][c] = 1;
+				switch (map[r][c])
 				{
-					string old = double.IsInfinity(_dist[v]) ? "∞" : F(_dist[v]);
-					_dist[v] = nd;
-					_prev[v] = u;
-					Record("松弛", $"边 {u}–{v}（权 {F(w)}）：{F(best)} + {F(w)} = {F(nd)} < {old}，更新 {v} 的距离为 {F(nd)}", u, (u, v));
+					case '#': Wall[r][c] = true; break;
+					case '~': Cost[r][c] = 3; break;
+					case 'S': Start = (r, c); break;
+					case 'G': Goal = (r, c); break;
 				}
-				else
-					Record("松弛", $"边 {u}–{v}（权 {F(w)}）：{F(best)} + {F(w)} = {F(nd)} ≥ {F(_dist[v])}，不更新", u, (u, v));
 			}
 		}
 	}
 
-	void Record(string phase, string desc, string current = null, (string, string)? activeEdge = null, List<string> path = null)
+	public void Run()
+	{
+		_dist[Start.r][Start.c] = 0;
+		_open[Start.r][Start.c] = true;
+		Record("初始化", $"起点 S({Start.r},{Start.c}) 加入 open 集，d=0；其余格子 d=∞。每轮取 open 中 d 最小的格子（没有启发值 h）", Start);
+
+		var dirs = new (int dr, int dc)[] { (-1, 0), (1, 0), (0, -1), (0, 1) };
+		int expanded = 0;
+		while (true)
+		{
+			// 取 open 中 d 最小的格子（小网格用线性扫描，步骤更直观；实际实现用优先队列）
+			(int r, int c)? cur = null;
+			double best = double.PositiveInfinity;
+			for (int r = 0; r < Rows; r++)
+				for (int c = 0; c < Cols; c++)
+					if (_open[r][c] && _dist[r][c] < best) { best = _dist[r][c]; cur = (r, c); }
+
+			if (cur == null)
+			{
+				Record("失败", "open 集已空，起点到终点不可达", null);
+				return;
+			}
+
+			var (cr, cc) = cur.Value;
+			_open[cr][cc] = false;
+			_closed[cr][cc] = true;
+			expanded++;
+
+			if ((cr, cc) == Goal)
+			{
+				var path = new List<(int r, int c)>();
+				(int r, int c)? p = Goal;
+				while (p != null)
+				{
+					path.Add(p.Value);
+					p = _came[p.Value.r][p.Value.c];
+				}
+				path.Reverse();
+				Record("完成", $"终点 G 出队，即其 d={(int)best} 已是最短代价！路径 {path.Count - 1} 步，共扩展 {expanded} 个格子（对比 A* 在同一张图上的扩展数）", (cr, cc), null, path);
+				return;
+			}
+
+			var updated = new List<(int r, int c)>();
+			foreach (var (dr, dc) in dirs)
+			{
+				int nr = cr + dr, nc = cc + dc;
+				if (nr < 0 || nr >= Rows || nc < 0 || nc >= Cols) continue;
+				if (Wall[nr][nc] || _closed[nr][nc]) continue;
+				double nd = best + Cost[nr][nc];          // 松弛：经由当前格进入邻居的代价
+				if (nd < _dist[nr][nc])
+				{
+					_dist[nr][nc] = nd;
+					_came[nr][nc] = (cr, cc);
+					_open[nr][nc] = true;
+					updated.Add((nr, nc));
+				}
+			}
+			Record("扩展", $"open 中 d 最小的是 ({cr},{cc})，d={(int)best} → 移入 closed（最短代价已确定），松弛后更新 {updated.Count} 个邻居", (cr, cc), updated);
+		}
+	}
+
+	void Record(string phase, string desc, (int r, int c)? current, List<(int r, int c)> updated = null, List<(int r, int c)> path = null)
 		=> Recorder.Record(phase, desc, new DijkstraState
 		{
-			Dist = new Dictionary<string, double>(_dist),
-			Prev = new Dictionary<string, string>(_prev),
-			Done = new HashSet<string>(_done),
+			Dist = _dist.Select(x => x.ToArray()).ToArray(),
+			Open = _open.Select(x => x.ToArray()).ToArray(),
+			Closed = _closed.Select(x => x.ToArray()).ToArray(),
 			Current = current,
-			ActiveEdge = activeEdge,
-			Path = path ?? new List<string>(),
+			Updated = updated ?? new List<(int r, int c)>(),
+			Path = path ?? new List<(int r, int c)>(),
 		});
-
-	static string F(double v) => v == Math.Floor(v) ? ((long)v).ToString() : v.ToString("0.##");
 }
