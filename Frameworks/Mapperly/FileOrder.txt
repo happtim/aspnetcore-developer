@@ -1,0 +1,6 @@
+2_Configuration
+1_GettingStart.g.linq
+1_GettingStart.linq
+Generator.linq
+MapperlyRunner.linq
+Models.linq
