@@ -84,6 +84,9 @@ public static class MapperlyRunner
 		void Load(string path)
 		{
 			path = Path.GetFullPath(path);
+			// LINQPad 允许 #load 省略 .linq 扩展名
+			if (!File.Exists(path) && !path.EndsWith(".linq", StringComparison.OrdinalIgnoreCase))
+				path += ".linq";
 			if (string.Equals(path, outPath, StringComparison.OrdinalIgnoreCase) || !visited.Add(path))
 				return;
 

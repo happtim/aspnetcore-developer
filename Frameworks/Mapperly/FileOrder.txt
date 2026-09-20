@@ -4,3 +4,5 @@
 Generator.linq
 MapperlyRunner.linq
 Models.linq
+3_StaticMapper.linq
+4_Flattening.linq

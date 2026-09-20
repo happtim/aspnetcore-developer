@@ -13,7 +13,17 @@ public class Car
 
 	public Manufacturer? Manufacturer { get; set; }
 
+	// 嵌套对象，属性可读写，供 4_Flattening 演示展平 / 反展平
+	public Engine Engine { get; set; } = new Engine();
+
 	public List<Tire> Tires { get; } = new List<Tire>();
+}
+
+public class Engine
+{
+	public int Horsepower { get; set; }
+
+	public string FuelType { get; set; } = string.Empty;
 }
 
 public enum CarColor
@@ -50,6 +60,13 @@ public class CarDto
 	public CarColorDto Color { get; set; }
 
 	public ProducerDto? Producer { get; set; }
+
+	// 展平属性：名称 = 嵌套路径按 PascalCase 拼接，Mapperly 自动从 Car.Manufacturer.Id / .Name、Car.Engine.Horsepower 取值
+	public int ManufacturerId { get; set; }
+
+	public string ManufacturerName { get; set; } = string.Empty;
+
+	public int EngineHorsepower { get; set; }
 
 	public List<TireDto>? Tires { get; set; }
 }

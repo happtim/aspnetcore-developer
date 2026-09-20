@@ -14,6 +14,12 @@ public partial class CarMapper
         target.Name = car.Name;
         target.NumberOfSeats = car.NumberOfSeats;
         target.Color = (global::CarColorDto)car.Color;
+        if (car.Manufacturer != null)
+        {
+            target.ManufacturerId = car.Manufacturer.Id;
+            target.ManufacturerName = car.Manufacturer.Name;
+        }
+        target.EngineHorsepower = car.Engine.Horsepower;
         target.Tires = MapToListOfTireDto(car.Tires);
         return target;
     }
