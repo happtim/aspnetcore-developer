@@ -4,9 +4,9 @@
 </Query>
 
 // 配置示例：[MapProperty] 把名称不同的属性对应起来（Car.Manufacturer → CarDto.Producer）。
-// 子目录里的脚本用相对路径引用共享模型；.g.linq 由根目录的 Generator.linq 生成到本目录。
-#load "..\Models.linq"
-#load "1_MapProperty_Custom.g.linq"
+// .g.linq 由 Generator.linq 生成。
+#load "Models.linq"
+#load "03_MapProperty.g.linq"
 
 var mapper = new CarMapper();
 

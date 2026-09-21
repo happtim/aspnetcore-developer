@@ -6,7 +6,7 @@
 // 配置示例：PropertyNameMappingStrategy。
 // Mapperly 默认按“区分大小写”匹配属性名，ModelName 与 modelName 被当成两个不相干的成员；
 // 设为 CaseInsensitive 后忽略大小写匹配。本例模型只在大小写上不同，所以写在脚本里，不用共享的 Models.linq。
-#load "3_PropertyName_CaseInsensitive.g.linq"
+#load "04_PropertyName_CaseInsensitive.g.linq"
 
 var car = new Car { ModelName = "Model 3", NumberOfSeats = 5 };
 

@@ -7,7 +7,7 @@
 // 由 Generator.linq 生成到同名的 .g.linq。Mapper 有改动时先运行 Generator.linq，再运行本脚本。
 // Mapperly 中的 static mapper（静态映射器），就是通过 C# 静态方法完成对象转换，调用时不需要创建 Mapper 实例。
 #load "Models.linq"
-#load "3_StaticMapper.g"
+#load "02_StaticMapper.g.linq"
 
 var car = new Car
 {

@@ -1,6 +1,6 @@
 <Query Kind="Statements" />
 
-// 示例用的基础模型，供 GettingStart.linq 通过 #load 引入。
+// 示例用的基础模型，供各示例脚本通过 #load 引入。
 // 这个文件只放类型声明，不要写语句。
 
 public class Car
@@ -13,7 +13,7 @@ public class Car
 
 	public Manufacturer? Manufacturer { get; set; }
 
-	// 嵌套对象，属性可读写，供 4_Flattening 演示展平 / 反展平
+	// 嵌套对象，属性可读写，供 08_Flattening 演示展平 / 反展平
 	public Engine Engine { get; set; } = new Engine();
 
 	public List<Tire> Tires { get; } = new List<Tire>();

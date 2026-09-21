@@ -10,7 +10,7 @@
 //   4) 反展平：Mapperly 不会自动做，必须用 [MapProperty] 手动指定目标路径
 // 基础模型在 Models.linq；Mapper 有改动时先运行 Generator.linq，再运行本脚本。
 #load "Models.linq"
-#load "4_Flattening.g.linq"
+#load "08_Flattening.g.linq"
 
 var mapper = new CarMapper();
 var car = new Car
@@ -54,7 +54,7 @@ public partial class CarMapper
 	// “full nameof”：@ 前缀让 Mapperly 取完整路径 
 	//检查 nameof( 后面第一个字符是不是 @。是的话，它就自己沿着语法树把 Car.Engine.FuelType 整条路径取出来，
 	
-	// 只要求目标成员都有来源；Car 上用不到的成员不报警（见 2_Configuration/4_RequiredMapping_OneSideStrict）
+	// 只要求目标成员都有来源；Car 上用不到的成员不报警（见 06_RequiredMapping_OneSideStrict）
 	[MapperRequiredMapping(RequiredMappingStrategy.Target)]
 	public partial CarSummaryDto CarToSummary(Car car);
 

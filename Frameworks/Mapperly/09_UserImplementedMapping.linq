@@ -7,8 +7,8 @@
 //   1) 按类型对自动发现：Mapper 里任何 “TSource → TTarget” 签名的普通方法，Mapperly 遇到这对类型就会调用它
 //   2) 只给某个属性用：[MapProperty(..., Use = nameof(方法))]
 //   3) [UserMapping(Default = false)]：方法仍可被 Use 引用，但不会成为该类型对的默认映射
-#load "..\Models.linq"
-#load "5_UserImplemented_Mapping.g.linq"
+#load "Models.linq"
+#load "09_UserImplementedMapping.g.linq"
 
 var mapper = new CarMapper();
 

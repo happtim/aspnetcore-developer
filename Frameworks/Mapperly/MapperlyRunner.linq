@@ -38,8 +38,10 @@ public static class MapperlyRunner
 			var relative = Path.GetRelativePath(root, path);
 			try
 			{
-				var generated = Generate(path);
-				results.Add(new GenerateResult(relative, "OK", Path.GetFileName(generated)));
+				var generated = Generate(path, out var errorIds);
+				results.Add(errorIds.Count == 0
+					? new GenerateResult(relative, "OK", Path.GetFileName(generated))
+					: new GenerateResult(relative, "有错误", $"{string.Join(", ", errorIds)}（见上方 Diagnostics；真实项目里会编译失败）"));
 			}
 			catch (Exception ex)
 			{
@@ -70,7 +72,10 @@ public static class MapperlyRunner
 	}
 
 	/// <summary>读取 linqPath（及其 #load 的文件），跑生成器，把生成的代码写成同目录下的 &lt;name&gt;.g.linq，返回生成文件路径。</summary>
-	public static string Generate(string linqPath)
+	public static string Generate(string linqPath) => Generate(linqPath, out _);
+
+	/// <param name="errorIds">Error 级诊断的 Id。生成器遇到 Error 仍会产出代码，但真实项目里这会导致编译失败，不能当成 OK。</param>
+	public static string Generate(string linqPath, out List<string> errorIds)
 	{
 		linqPath = Path.GetFullPath(linqPath);
 		var outPath = Path.Combine(Path.GetDirectoryName(linqPath)!, Path.GetFileNameWithoutExtension(linqPath) + ".g.linq");
@@ -114,7 +119,7 @@ public static class MapperlyRunner
 		var (driver, outputCompilation, generatorDiagnostics) = RunGenerators(trees.ToArray(), OutputKind.ConsoleApplication);
 		var generated = driver.GetRunResult().Results.SelectMany(r => r.GeneratedSources).ToList();
 
-		Report(generatorDiagnostics, outputCompilation, $"Diagnostics: {Path.GetFileName(linqPath)}");
+		errorIds = Report(generatorDiagnostics, outputCompilation, $"Diagnostics: {Path.GetFileName(linqPath)}");
 
 		if (generated.Count == 0)
 			throw new InvalidOperationException($"{Path.GetFileName(linqPath)} 里没有产生任何生成代码，检查 [Mapper] 类是否存在及上面的诊断信息。");
@@ -191,9 +196,11 @@ public static class MapperlyRunner
 		return (driver, outputCompilation, diagnostics);
 	}
 
-	static void Report(IEnumerable<Diagnostic> generatorDiagnostics, Compilation outputCompilation, string title = "Diagnostics")
+	// Dump 警告/错误，返回 Error 级诊断的 Id（真实 dotnet build 下这些会让编译失败）
+	static List<string> Report(IEnumerable<Diagnostic> generatorDiagnostics, Compilation outputCompilation, string title = "Diagnostics")
 	{
-		var rows = generatorDiagnostics.Concat(outputCompilation.GetDiagnostics())
+		var all = generatorDiagnostics.Concat(outputCompilation.GetDiagnostics()).ToList();
+		var rows = all
 			.Where(d => d.Severity >= DiagnosticSeverity.Warning)
 			.Select(d => new
 			{
@@ -207,6 +214,8 @@ public static class MapperlyRunner
 			.ToList();
 		if (rows.Count > 0)
 			rows.Dump(title);
+
+		return all.Where(d => d.Severity == DiagnosticSeverity.Error).Select(d => d.Id).Distinct().ToList();
 	}
 
 	// 诊断所在的 Mapper 类名，一个脚本里有多个 Mapper 时方便区分

@@ -14,7 +14,7 @@
 // 所以 Mapperly 的 “strict” 只是警告，本身并不强制；正式项目里要强制，得在 .editorconfig 里把 RMG012 / RMG020 提成 error。
 // 对比 AutoMapper：Map() 时静默跳过未映射成员，只有主动调用 AssertConfigurationIsValid() 才在运行期抛异常，
 // 且默认只检查目标一边（MemberList.Destination ≈ Target，MemberList.Source ≈ Source，MemberList.None ≈ None）。
-#load "4_RequiredMapping_OneSideStrict.g.linq"
+#load "06_RequiredMapping_OneSideStrict.g.linq"
 
 var car = new Car { Name = "Model 3", NumberOfSeats = 5, InternalCode = "X-001" };
 
