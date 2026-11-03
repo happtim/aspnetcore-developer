@@ -11,7 +11,7 @@ button.Click += (sender, args) =>
 { 
 	var html =  GetHtml();
 	button.Content = "I've just been gethtml()";
-	html =  GetHtml2().Result;
+	var html2 =  GetHtml2().Result;
 	button.Content = "I've just been clicked!";
 };
 
