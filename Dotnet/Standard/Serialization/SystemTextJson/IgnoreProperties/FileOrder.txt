@@ -1,0 +1,5 @@
+Ignore_Individual_Properties.linq
+Ignore_Properties_Condition.linq
+Ignore_Readonly_Properties.linq
+Ignore_Null_Value_Properties.linq
+Ignore_Default_Value_Properties.linq

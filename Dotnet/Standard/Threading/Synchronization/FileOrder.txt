@@ -4,5 +4,4 @@ MutexNamed.linq
 ReaderWriterLockSlim.linq
 SemaphoreSlim_AsyncLock.linq
 AutoResetEvent.linq
-HttpClientNotReturn.linq
 HybridLock.linq

@@ -1,6 +1,6 @@
 <Query Kind="Statements" />
 
-//https://learn.microsoft.com/zh-cn/dotnet/csharp/linq/group-query-results
+//https://learn.microsoft.com/zh-cn/dotnet/csharp/linq/standard-query-operators/grouping-data
 
 "按单个属性分组示例:".Dump();
 //通过使用元素的单个属性作为分组键对源元素进行分组。

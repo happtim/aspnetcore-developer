@@ -1,3 +1,0 @@
-ThreadingTimer.linq
-TimersTimer.linq
-TimerAccuracy.linq

@@ -1,4 +1,0 @@
-CustomizeProperties
-IgnoreProperties
-Fields
-Serialize.linq

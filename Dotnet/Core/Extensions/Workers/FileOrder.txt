@@ -1,4 +1,3 @@
-GenericHost.linq
 BackGroundService.linq
 TimedHostedService.linq
 ScopedBackGroundService.linq
